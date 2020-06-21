@@ -1,16 +1,13 @@
-package nhom7.thh.meomeonote.ui.home;
+package nhom7.thh.meomeonote.ui.notes;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import java.util.ArrayList;
@@ -21,17 +18,17 @@ import nhom7.thh.meomeonote.adapter.LineNoteAdapter;
 import nhom7.thh.meomeonote.model.LineNote;
 import nhom7.thh.meomeonote.util.BaseUtil;
 
-public class HomeFragment extends Fragment {
+public class NotesFragment extends Fragment {
     List<LineNote> lineNotes;
     ListView listNotes;
     View root;
 
-    private HomeViewModel homeViewModel;
+    private NotesViewModel notesViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+        notesViewModel =
+                ViewModelProviders.of(this).get(NotesViewModel.class);
         root = inflater.inflate(R.layout.fragment_home, container, false);
         listNotes = root.findViewById(R.id.list_notes);
         listNotes = root.findViewById(R.id.list_notes);
