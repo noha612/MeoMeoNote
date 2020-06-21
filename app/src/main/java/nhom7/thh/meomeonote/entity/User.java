@@ -4,20 +4,24 @@ public class User {
     private int id;
     private String phoneNumber;
     private String password;
-    private String created;
+    private int status;
 
     public User() {
     }
 
-    public User(int id, String phoneNumber, String password, String created) {
+    public User(int id, String phoneNumber, String password, int status) {
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.password = password;
-        this.created = created;
+        this.status = status;
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getPassword() {
@@ -26,10 +30,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getPhoneNumber() {

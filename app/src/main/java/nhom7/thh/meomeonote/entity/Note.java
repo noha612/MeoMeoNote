@@ -1,19 +1,20 @@
 package nhom7.thh.meomeonote.entity;
 
 public class Note {
-    private String id;
+    private int id;
     private String password;
     private String title;
     private String content;
     private String created;
     private String last_modified;
     private String timer;
-    private String status;
-    private String user_id;
+    private String catName;
+    private int status;
+    private int user_id;
 
-    public Note(String id, String password,
+    public Note(int id, String password,
                 String title, String content, String created,
-                String last_modified, String timer, String status, String user_id) {
+                String last_modified, String timer, int status, int user_id, String catName) {
 
         this.id = id;
         this.password = password;
@@ -24,16 +25,25 @@ public class Note {
         this.timer = timer;
         this.status = status;
         this.user_id = user_id;
+        this.catName=catName;
+    }
+
+    public String getCatName() {
+        return catName;
+    }
+
+    public void setCatName(String catName) {
+        this.catName = catName;
     }
 
     public Note() {
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -85,19 +95,19 @@ public class Note {
         this.timer = timer;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public String getUser_id() {
+    public int getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(String user_id) {
+    public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
 }
