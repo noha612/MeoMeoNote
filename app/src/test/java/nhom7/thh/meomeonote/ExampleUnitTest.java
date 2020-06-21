@@ -2,6 +2,11 @@ package nhom7.thh.meomeonote;
 
 import org.junit.Test;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -12,6 +17,11 @@ import static org.junit.Assert.assertEquals;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+
+        System.out.println(new Date().toString());
+        Date date = Calendar.getInstance().getTime();
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss dd/mm/yyyy");
+        String strDate = dateFormat.format(date);
+        System.out.println("Converted String: " + strDate.substring(9));
     }
 }

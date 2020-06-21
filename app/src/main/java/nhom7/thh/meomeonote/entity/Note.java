@@ -110,4 +110,20 @@ public class Note {
     public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "id=" + id +
+                ", password='" + password + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", created='" + created + '\'' +
+                ", last_modified='" + last_modified + '\'' +
+                ", timer='" + timer + '\'' +
+                ", catName='" + catName + '\'' +
+                ", status=" + status +
+                ", user_id=" + user_id +
+                '}';
+    }
 }

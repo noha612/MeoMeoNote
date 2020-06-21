@@ -105,7 +105,6 @@ public class DbHelper extends SQLiteOpenHelper {
                 ATTACHMENT_TYPE + " TEXT," +
                 ATTACHMENT_NOTE_ID + " integer)";
         db.execSQL(sqlQueryAtt);
-        Toast.makeText(context, "Create Database successfully", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -458,6 +457,7 @@ public class DbHelper extends SQLiteOpenHelper {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public int deleteAttachment(Attachment attachment) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();

@@ -1,19 +1,21 @@
 package nhom7.thh.meomeonote.model;
 
 public class LineNote {
+    private int id;
     private String title;
     private String shortContent;
     private String lastModified;
     private int catAvt;
 
-    public LineNote() {
-    }
-
-    public LineNote(String title, String shortContent, String lastModified, int catAvt) {
+    public LineNote(int id, String title, String shortContent, String lastModified, int catAvt) {
+        this.id = id;
         this.title = title;
         this.shortContent = shortContent;
         this.lastModified = lastModified;
         this.catAvt = catAvt;
+    }
+
+    public LineNote() {
     }
 
     public String getTitle() {
@@ -48,13 +50,22 @@ public class LineNote {
         this.catAvt = catAvt;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "LineNote{" +
-                "title='" + title + '\'' +
+                "id=" + id +
+                ", title='" + title + '\'' +
                 ", shortContent='" + shortContent + '\'' +
-                ", lastModified=" + lastModified +
-                ", catAvt='" + catAvt + '\'' +
+                ", lastModified='" + lastModified + '\'' +
+                ", catAvt=" + catAvt +
                 '}';
     }
 }
