@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import nhom7.thh.meomeonote.entity.Attachment;
 import nhom7.thh.meomeonote.entity.Note;
@@ -116,187 +117,254 @@ public class DbHelper extends SQLiteOpenHelper {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void addUser(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(USER_PHONE_NUMBER, user.getPhoneNumber());
-        values.put(USER_PASSWORD, user.getPassword());
-        values.put(USER_STATUS, 1);
-        if (getUserByPhoneNumber(user.getPhoneNumber()) != null) {
-            db.update(USER_TABLE_NAME, values, USER_ID + "=?", new String[]{String.valueOf(user.getId())});
-        } else
-            db.insert(USER_TABLE_NAME, null, values);
-        db.close();
-    }
-
-    public User getUserById(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(USER_TABLE_NAME, new String[]{USER_ID
-                        , USER_PHONE_NUMBER, USER_PASSWORD}, USER_ID + "=?",
-                new String[]{String.valueOf(id)}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-        else
-            return null;
-        User User = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2), parseInt(cursor.getString(3)));
-        cursor.close();
-        db.close();
-        return User;
-    }
-
-    public int updateUser(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(USER_ID, user.getId());
-        values.put(USER_PHONE_NUMBER, user.getPhoneNumber());
-        values.put(USER_PASSWORD, user.getPassword());
-        return db.update(USER_TABLE_NAME, values, USER_ID + "=?", new String[]{String.valueOf(user.getId())});
-    }
-
-    public int deleteUser(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(USER_ID, user.getId());
-        values.put(USER_STATUS, 0);
-        return db.update(USER_TABLE_NAME, values, USER_ID + "=?", new String[]{String.valueOf(user.getId())});
-    }
-
-    public List<User> getAllUser() {
-        List<User> listUser = new ArrayList<>();
-        String selectQuery = "SELECT  * FROM " + USER_TABLE_NAME;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                User user = new User();
-                user.setId(cursor.getInt(0));
-                user.setPhoneNumber(cursor.getString(1));
-                user.setPassword(cursor.getString(2));
-                listUser.add(user);
-            } while (cursor.moveToNext());
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(USER_PHONE_NUMBER, user.getPhoneNumber());
+            values.put(USER_PASSWORD, user.getPassword());
+            values.put(USER_STATUS, 1);
+            if (getUserByPhoneNumber(user.getPhoneNumber()) != null) {
+                db.update(USER_TABLE_NAME, values, USER_ID + "=?", new String[]{String.valueOf(user.getId())});
+            } else
+                db.insert(USER_TABLE_NAME, null, values);
+            db.close();
+        } catch (Exception e) {
+            Log.v("error", Objects.requireNonNull(e.getMessage()));
         }
-        cursor.close();
-        db.close();
-        return listUser;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public User getUserById(int id) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.query(USER_TABLE_NAME, new String[]{USER_ID
+                            , USER_PHONE_NUMBER, USER_PASSWORD}, USER_ID + "=?",
+                    new String[]{String.valueOf(id)}, null, null, null, null);
+            if (cursor != null)
+                cursor.moveToFirst();
+            else
+                return null;
+            User User = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2), parseInt(cursor.getString(3)));
+            cursor.close();
+            db.close();
+            return User;
+        } catch (Exception e) {
+            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            return null;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public int updateUser(User user) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(USER_ID, user.getId());
+            values.put(USER_PHONE_NUMBER, user.getPhoneNumber());
+            values.put(USER_PASSWORD, user.getPassword());
+            return db.update(USER_TABLE_NAME, values, USER_ID + "=?", new String[]{String.valueOf(user.getId())});
+        } catch (Exception e) {
+            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            return 0;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public int deleteUser(User user) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(USER_ID, user.getId());
+            values.put(USER_STATUS, 0);
+            return db.update(USER_TABLE_NAME, values, USER_ID + "=?", new String[]{String.valueOf(user.getId())});
+        } catch (Exception e) {
+            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            return 0;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public List<User> getAllUser() {
+        try {
+            List<User> listUser = new ArrayList<>();
+            String selectQuery = "SELECT  * FROM " + USER_TABLE_NAME;
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    User user = new User();
+                    user.setId(cursor.getInt(0));
+                    user.setPhoneNumber(cursor.getString(1));
+                    user.setPassword(cursor.getString(2));
+                    listUser.add(user);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return listUser;
+        } catch (Exception e) {
+            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            return null;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public User getUserByPhoneNumber(String phoneNumber) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(USER_TABLE_NAME, new String[]{USER_ID,
-                        USER_ID, USER_PHONE_NUMBER, USER_PASSWORD}, USER_PHONE_NUMBER + "=?",
-                new String[]{String.valueOf(phoneNumber)}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-        else
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.query(USER_TABLE_NAME, new String[]{USER_ID,
+                            USER_ID, USER_PHONE_NUMBER, USER_PASSWORD}, USER_PHONE_NUMBER + "=?",
+                    new String[]{String.valueOf(phoneNumber)}, null, null, null, null);
+            if (cursor != null)
+                cursor.moveToFirst();
+            else
+                return null;
+            User User = new User(cursor.getInt(0), cursor.getString(1),
+                    cursor.getString(2), parseInt(cursor.getString(3)));
+            cursor.close();
+            db.close();
+            return User;
+        } catch (Exception e) {
+            Log.v("error", Objects.requireNonNull(e.getMessage()));
             return null;
-        User User = new User(cursor.getInt(0), cursor.getString(1),
-                cursor.getString(2), parseInt(cursor.getString(3)));
-        cursor.close();
-        db.close();
-        return User;
+        }
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void addNote(Note note) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(NOTE_PASSWORD, note.getPassword());
-        values.put(NOTE_CONTENT, note.getContent());
-        values.put(NOTE_CREATED, note.getCreated());
-        values.put(NOTE_LAST_MODIFIED, note.getLast_modified());
-        values.put(NOTE_STATUS, note.getStatus());
-        values.put(NOTE_TIMER, note.getTimer());
-        values.put(NOTE_TITLE, note.getTitle());
-        values.put(NOTE_USER_ID, note.getUser_id());
-        values.put(NOTE_CAT_NAME, note.getCatName());
-        db.insert(NOTE_TABLE_NAME, null, values);
-        db.close();
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(NOTE_PASSWORD, note.getPassword());
+            values.put(NOTE_CONTENT, note.getContent());
+            values.put(NOTE_CREATED, note.getCreated());
+            values.put(NOTE_LAST_MODIFIED, note.getLast_modified());
+            values.put(NOTE_STATUS, note.getStatus());
+            values.put(NOTE_TIMER, note.getTimer());
+            values.put(NOTE_TITLE, note.getTitle());
+            values.put(NOTE_USER_ID, note.getUser_id());
+            values.put(NOTE_CAT_NAME, note.getCatName());
+            db.insert(NOTE_TABLE_NAME, null, values);
+            db.close();
+        } catch (Exception e) {
+            Log.v("error", Objects.requireNonNull(e.getMessage()));
+        }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public Note getNoteById(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(NOTE_TABLE_NAME, new String[]{NOTE_ID,
-                        NOTE_TITLE, NOTE_CREATED, NOTE_CONTENT
-                        , NOTE_STATUS, NOTE_USER_ID, NOTE_LAST_MODIFIED
-                        , NOTE_PASSWORD, NOTE_TIMER, NOTE_CAT_NAME}, NOTE_ID + "=?",
-                new String[]{String.valueOf(id)}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-        else
-            return null;
-        Note note = new Note();
-        note.setId(cursor.getInt(0));
-        note.setPassword(cursor.getString(1));
-        note.setContent(cursor.getString(2));
-        note.setCreated(cursor.getString(3));
-        note.setLast_modified(cursor.getString(4));
-        note.setStatus(cursor.getInt(5));
-        note.setTimer(cursor.getString(6));
-        note.setTitle(cursor.getString(7));
-        note.setUser_id(cursor.getInt(8));
-        note.setCatName(cursor.getString(9));
-        cursor.close();
-        db.close();
-        return note;
-    }
-
-    public int updateNote(Note note) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(NOTE_ID, note.getId());
-        values.put(NOTE_PASSWORD, note.getPassword());
-        values.put(NOTE_CONTENT, note.getContent());
-        values.put(NOTE_CREATED, note.getCreated());
-        values.put(NOTE_LAST_MODIFIED, note.getLast_modified());
-        values.put(NOTE_STATUS, note.getStatus());
-        values.put(NOTE_TIMER, note.getTimer());
-        values.put(NOTE_TITLE, note.getTitle());
-        values.put(NOTE_USER_ID, note.getUser_id());
-        values.put(NOTE_CAT_NAME, note.getCatName());
-        return db.update(NOTE_TABLE_NAME, values, NOTE_ID + "=?", new String[]{String.valueOf(note.getId())});
-    }
-
-    public int deleteNote(Note note) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(NOTE_ID, note.getId());
-        values.put(NOTE_STATUS, 0);
-        return db.update(NOTE_TABLE_NAME, values, NOTE_ID + "=?", new String[]{String.valueOf(note.getId())});
-    }
-
-
-    public List<Note> getNodeByUserId(int userId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        List<Note> nodes = new ArrayList<>();
-        Cursor cursor = db.query(NOTE_TABLE_NAME, new String[]{NOTE_ID,
-                        NOTE_PASSWORD, NOTE_TITLE, NOTE_CONTENT, NOTE_CREATED,
-                        NOTE_LAST_MODIFIED, NOTE_TIMER, NOTE_STATUS, NOTE_USER_ID, NOTE_CAT_NAME},
-                NOTE_USER_ID + "=?" + " AND " + NOTE_STATUS + "= 1 ",
-                new String[]{String.valueOf(userId)}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-        else
-            return null;
-        do {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.query(NOTE_TABLE_NAME, new String[]{NOTE_ID,
+                            NOTE_TITLE, NOTE_CREATED, NOTE_CONTENT
+                            , NOTE_STATUS, NOTE_USER_ID, NOTE_LAST_MODIFIED
+                            , NOTE_PASSWORD, NOTE_TIMER, NOTE_CAT_NAME}, NOTE_ID + "=?",
+                    new String[]{String.valueOf(id)}, null, null, null, null);
+            if (cursor != null)
+                cursor.moveToFirst();
+            else
+                return null;
             Note note = new Note();
             note.setId(cursor.getInt(0));
             note.setPassword(cursor.getString(1));
-            note.setTitle(cursor.getString(2));
-            note.setContent(cursor.getString(3));
-            note.setCreated(cursor.getString(4));
-            note.setLast_modified(cursor.getString(5));
+            note.setContent(cursor.getString(2));
+            note.setCreated(cursor.getString(3));
+            note.setLast_modified(cursor.getString(4));
+            note.setStatus(cursor.getInt(5));
             note.setTimer(cursor.getString(6));
-            note.setStatus(cursor.getInt(7));
+            note.setTitle(cursor.getString(7));
             note.setUser_id(cursor.getInt(8));
             note.setCatName(cursor.getString(9));
-            nodes.add(note);
-        } while (cursor.moveToNext());
+            cursor.close();
+            db.close();
+            return note;
+        } catch (Exception e) {
+            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            return null;
+        }
 
-        cursor.close();
-        db.close();
-        return nodes;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public int updateNote(Note note) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(NOTE_ID, note.getId());
+            values.put(NOTE_PASSWORD, note.getPassword());
+            values.put(NOTE_CONTENT, note.getContent());
+            values.put(NOTE_CREATED, note.getCreated());
+            values.put(NOTE_LAST_MODIFIED, note.getLast_modified());
+            values.put(NOTE_STATUS, note.getStatus());
+            values.put(NOTE_TIMER, note.getTimer());
+            values.put(NOTE_TITLE, note.getTitle());
+            values.put(NOTE_USER_ID, note.getUser_id());
+            values.put(NOTE_CAT_NAME, note.getCatName());
+            return db.update(NOTE_TABLE_NAME, values, NOTE_ID + "=?", new String[]{String.valueOf(note.getId())});
+        } catch (Exception e) {
+            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            return 0;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public int deleteNote(Note note) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(NOTE_ID, note.getId());
+            values.put(NOTE_STATUS, 0);
+            return db.update(NOTE_TABLE_NAME, values, NOTE_ID + "=?", new String[]{String.valueOf(note.getId())});
+        } catch (Exception e) {
+            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            return 0;
+        }
+
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public List<Note> getNodeByUserId(int userId) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            List<Note> nodes = new ArrayList<>();
+            Cursor cursor = db.query(NOTE_TABLE_NAME, new String[]{NOTE_ID,
+                            NOTE_PASSWORD, NOTE_TITLE, NOTE_CONTENT, NOTE_CREATED,
+                            NOTE_LAST_MODIFIED, NOTE_TIMER, NOTE_STATUS, NOTE_USER_ID, NOTE_CAT_NAME},
+                    NOTE_USER_ID + "=?" + " AND " + NOTE_STATUS + "= 1 ",
+                    new String[]{String.valueOf(userId)}, null, null, null, null);
+            if (cursor != null)
+                cursor.moveToFirst();
+            else
+                return null;
+            do {
+                Note note = new Note();
+                note.setId(cursor.getInt(0));
+                note.setPassword(cursor.getString(1));
+                note.setTitle(cursor.getString(2));
+                note.setContent(cursor.getString(3));
+                note.setCreated(cursor.getString(4));
+                note.setLast_modified(cursor.getString(5));
+                note.setTimer(cursor.getString(6));
+                note.setStatus(cursor.getInt(7));
+                note.setUser_id(cursor.getInt(8));
+                note.setCatName(cursor.getString(9));
+                nodes.add(note);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+            db.close();
+            return nodes;
+        } catch (Exception e) {
+            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            return null;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public List<Note> getNodeByUserIdOrderByCreaded(int userId) {
         List<Note> noteList = getNodeByUserId(userId);
         Collections.sort(noteList, new Comparator<Note>() {
@@ -310,6 +378,7 @@ public class DbHelper extends SQLiteOpenHelper {
         return noteList;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public List<Note> getNodeByUserIdOrderByTimer(int userId) {
         List<Note> noteList = getNodeByUserId(userId);
         Collections.sort(noteList, new Comparator<Note>() {
@@ -323,88 +392,116 @@ public class DbHelper extends SQLiteOpenHelper {
         return noteList;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void addAttachment(Attachment attachment) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(ATTACHMENT_CREATED, attachment.getCreated());
-        values.put(ATTACHMENT_LAST_MODIFIED, attachment.getLast_modified());
-        values.put(ATTACHMENT_LINK, attachment.getLink());
-        values.put(ATTACHMENT_STATUS, 1);
-        values.put(ATTACHMENT_TYPE, attachment.getType());
-        values.put(ATTACHMENT_NOTE_ID, attachment.getNote_id());
-        db.insert(ATTACHMENT_TABLE_NAME, null, values);
-        db.close();
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(ATTACHMENT_CREATED, attachment.getCreated());
+            values.put(ATTACHMENT_LAST_MODIFIED, attachment.getLast_modified());
+            values.put(ATTACHMENT_LINK, attachment.getLink());
+            values.put(ATTACHMENT_STATUS, 1);
+            values.put(ATTACHMENT_TYPE, attachment.getType());
+            values.put(ATTACHMENT_NOTE_ID, attachment.getNote_id());
+            db.insert(ATTACHMENT_TABLE_NAME, null, values);
+            db.close();
+        } catch (Exception e) {
+            Log.v("error", Objects.requireNonNull(e.getMessage()));
+        }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public Attachment getAttachmentById(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(ATTACHMENT_TABLE_NAME, new String[]{ATTACHMENT_ID,
-                        ATTACHMENT_CREATED, ATTACHMENT_LAST_MODIFIED, ATTACHMENT_LINK
-                        , ATTACHMENT_STATUS, ATTACHMENT_TYPE, ATTACHMENT_NOTE_ID}, ATTACHMENT_ID + "=?",
-                new String[]{String.valueOf(id)}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-        else
-            return null;
-        Attachment attachment = new Attachment();
-        attachment.setId(cursor.getInt(0));
-        attachment.setCreated(cursor.getString(1));
-        attachment.setLast_modified(cursor.getString(2));
-        attachment.setLink(cursor.getString(3));
-        attachment.setStatus(cursor.getInt(4));
-        attachment.setType(cursor.getString(5));
-        attachment.setNote_id(cursor.getInt(6));
-        cursor.close();
-        db.close();
-        return attachment;
-    }
-
-    public int updateAttachment(Attachment attachment) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(ATTACHMENT_ID, attachment.getId());
-        values.put(ATTACHMENT_CREATED, attachment.getCreated());
-        values.put(ATTACHMENT_LAST_MODIFIED, attachment.getLast_modified());
-        values.put(ATTACHMENT_LINK, attachment.getLink());
-        values.put(ATTACHMENT_STATUS, attachment.getStatus());
-        values.put(ATTACHMENT_TYPE, attachment.getType());
-        values.put(ATTACHMENT_NOTE_ID, attachment.getNote_id());
-        return db.update(ATTACHMENT_TABLE_NAME, values, ATTACHMENT_ID + "=?", new String[]{String.valueOf(attachment.getId())});
-    }
-
-    public int deleteAttachment(Attachment attachment) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(ATTACHMENT_ID, attachment.getId());
-        values.put(ATTACHMENT_STATUS, 0);
-        return db.update(ATTACHMENT_TABLE_NAME, values, ATTACHMENT_ID + "=?", new String[]{String.valueOf(attachment.getId())});
-    }
-
-
-    public List<Attachment> getAttachmentByNoteId(int noteId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        List<Attachment> attachments = new ArrayList<>();
-        Cursor cursor = db.query(ATTACHMENT_TABLE_NAME, new String[]{ATTACHMENT_ID,
-                        ATTACHMENT_CREATED, ATTACHMENT_LAST_MODIFIED, ATTACHMENT_NOTE_ID,
-                        ATTACHMENT_TYPE, ATTACHMENT_STATUS, ATTACHMENT_LINK}, ATTACHMENT_NOTE_ID + "=?" + " AND " + ATTACHMENT_STATUS + "= 1 ",
-                new String[]{String.valueOf(noteId)}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-        else
-            return null;
-        do {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.query(ATTACHMENT_TABLE_NAME, new String[]{ATTACHMENT_ID,
+                            ATTACHMENT_CREATED, ATTACHMENT_LAST_MODIFIED, ATTACHMENT_LINK
+                            , ATTACHMENT_STATUS, ATTACHMENT_TYPE, ATTACHMENT_NOTE_ID}, ATTACHMENT_ID + "=?",
+                    new String[]{String.valueOf(id)}, null, null, null, null);
+            if (cursor != null)
+                cursor.moveToFirst();
+            else
+                return null;
             Attachment attachment = new Attachment();
             attachment.setId(cursor.getInt(0));
             attachment.setCreated(cursor.getString(1));
             attachment.setLast_modified(cursor.getString(2));
-            attachment.setNote_id(cursor.getInt(3));
-            attachment.setType(cursor.getString(4));
-            attachment.setStatus(cursor.getInt(5));
-            attachment.setLink(cursor.getString(6));
-            attachments.add(attachment);
-        } while (cursor.moveToNext());
-        cursor.close();
-        db.close();
-        return attachments;
+            attachment.setLink(cursor.getString(3));
+            attachment.setStatus(cursor.getInt(4));
+            attachment.setType(cursor.getString(5));
+            attachment.setNote_id(cursor.getInt(6));
+            cursor.close();
+            db.close();
+            return attachment;
+        } catch (Exception e) {
+            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            return null;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public int updateAttachment(Attachment attachment) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(ATTACHMENT_ID, attachment.getId());
+            values.put(ATTACHMENT_CREATED, attachment.getCreated());
+            values.put(ATTACHMENT_LAST_MODIFIED, attachment.getLast_modified());
+            values.put(ATTACHMENT_LINK, attachment.getLink());
+            values.put(ATTACHMENT_STATUS, attachment.getStatus());
+            values.put(ATTACHMENT_TYPE, attachment.getType());
+            values.put(ATTACHMENT_NOTE_ID, attachment.getNote_id());
+            return db.update(ATTACHMENT_TABLE_NAME, values, ATTACHMENT_ID + "=?", new String[]{String.valueOf(attachment.getId())});
+        } catch (Exception e) {
+            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            return 0;
+        }
+    }
+
+    public int deleteAttachment(Attachment attachment) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(ATTACHMENT_ID, attachment.getId());
+            values.put(ATTACHMENT_STATUS, 0);
+            return db.update(ATTACHMENT_TABLE_NAME, values, ATTACHMENT_ID + "=?", new String[]{String.valueOf(attachment.getId())});
+        } catch (Exception e) {
+            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            return 0;
+        }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public List<Attachment> getAttachmentByNoteId(int noteId) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            List<Attachment> attachments = new ArrayList<>();
+            Cursor cursor = db.query(ATTACHMENT_TABLE_NAME, new String[]{ATTACHMENT_ID,
+                            ATTACHMENT_CREATED, ATTACHMENT_LAST_MODIFIED, ATTACHMENT_NOTE_ID,
+                            ATTACHMENT_TYPE, ATTACHMENT_STATUS, ATTACHMENT_LINK}, ATTACHMENT_NOTE_ID + "=?" + " AND " + ATTACHMENT_STATUS + "= 1 ",
+                    new String[]{String.valueOf(noteId)}, null, null, null, null);
+            if (cursor != null)
+                cursor.moveToFirst();
+            else
+                return null;
+            do {
+                Attachment attachment = new Attachment();
+                attachment.setId(cursor.getInt(0));
+                attachment.setCreated(cursor.getString(1));
+                attachment.setLast_modified(cursor.getString(2));
+                attachment.setNote_id(cursor.getInt(3));
+                attachment.setType(cursor.getString(4));
+                attachment.setStatus(cursor.getInt(5));
+                attachment.setLink(cursor.getString(6));
+                attachments.add(attachment);
+            } while (cursor.moveToNext());
+            cursor.close();
+            db.close();
+            return attachments;
+        } catch (Exception e) {
+            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            return null;
+        }
     }
 }
