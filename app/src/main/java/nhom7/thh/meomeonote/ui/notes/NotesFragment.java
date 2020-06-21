@@ -49,7 +49,14 @@ public class NotesFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Snackbar.make(view, "Deleted.", Snackbar.LENGTH_LONG).show();
-                loadNotes();
+                DbHelper dbHelper = new DbHelper(getActivity().getApplicationContext());
+                Note temp = new Note();
+                temp.setId(lineNotes.get(position).getId());
+                dbHelper.deleteNote(temp);
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(NotesFragment.this).attach(NotesFragment.this).commit();
+
                 return true;
             }
         });
@@ -62,6 +69,7 @@ public class NotesFragment extends Fragment {
         try {
             DbHelper dbHelper = new DbHelper(getActivity().getApplicationContext());
             List<Note> notes = dbHelper.getNodeByUserId(9999);
+            Log.v("size", notes.size() + "");
             for (Note i : notes) {
                 lineNotes.add(Mapper.mapNoteEntityToLineNote(i, getActivity()));
             }

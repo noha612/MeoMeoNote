@@ -11,7 +11,7 @@ public class Mapper {
                 new LineNote(
                         note.getId(),
                         note.getTitle(),
-                        note.getContent().length() > 15 ? note.getContent().substring(0, 15) + "..." : note.getContent(),
+                        note.getContent().length() > 30 ? note.getContent().substring(0, 30) + "..." : note.getContent(),
                         note.getLast_modified().substring(9),
                         BaseUtil.getIdResource(activity, "cat_avt_" + note.getCatName(), "drawable", activity.getPackageName())
                 );

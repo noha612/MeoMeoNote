@@ -20,8 +20,9 @@ public class ExampleUnitTest {
 
         System.out.println(new Date().toString());
         Date date = Calendar.getInstance().getTime();
-        DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss dd/mm/yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
         String strDate = dateFormat.format(date);
+        System.out.println("Converted String: " + strDate);
         System.out.println("Converted String: " + strDate.substring(9));
     }
 }

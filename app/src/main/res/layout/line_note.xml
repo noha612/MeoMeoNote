@@ -43,15 +43,15 @@
 
     <TextView
         android:id="@+id/line_last_modified"
-        android:layout_width="64dp"
+        android:layout_width="78dp"
         android:layout_height="19dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="80dp"
         android:text="20/06/20"
         android:textColor="#231C1C"
         android:textSize="13dp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.943"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

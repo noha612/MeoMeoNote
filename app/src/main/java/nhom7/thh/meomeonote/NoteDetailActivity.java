@@ -72,11 +72,10 @@ public class NoteDetailActivity extends AppCompatActivity {
                 View view1 = layoutInflater.inflate(R.layout.cat_avatar_gridview, null);
                 GridView gridView = view1.findViewById(R.id.cat_avt_chooser);
                 final List<Integer> avts = new ArrayList<>();
-                avts.add(BaseUtil.getIdResource(NoteDetailActivity.this, "cat_avt_ms_fortune", "drawable", getPackageName()));
-                avts.add(BaseUtil.getIdResource(NoteDetailActivity.this, "cat_avt_chocola", "drawable", getPackageName()));
-                avts.add(BaseUtil.getIdResource(NoteDetailActivity.this, "cat_avt_guy", "drawable", getPackageName()));
-                avts.add(BaseUtil.getIdResource(NoteDetailActivity.this, "cat_avt_jeeves", "drawable", getPackageName()));
-                avts.add(BaseUtil.getIdResource(NoteDetailActivity.this, "cat_avt_snowball", "drawable", getPackageName()));
+                String[] catNames = getResources().getStringArray(R.array.cat_name);
+                for (String i : catNames) {
+                    avts.add(BaseUtil.getIdResource(NoteDetailActivity.this, "cat_avt_" + i, "drawable", getPackageName()));
+                }
                 GridViewICatIconAdapter adapter = new GridViewICatIconAdapter(avts, NoteDetailActivity.this);
                 gridView.setAdapter(adapter);
                 final AlertDialog alertDialog = builder.create();

@@ -21,7 +21,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string-array name="cat_name">
-        <item>"aprciot"</item>
+        <item>"apricot"</item>
         <item>"bandit"</item>
         <item>"bolt"</item>
         <item>"breezy"</item>
