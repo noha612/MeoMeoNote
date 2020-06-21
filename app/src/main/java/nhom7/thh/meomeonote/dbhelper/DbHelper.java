@@ -356,7 +356,7 @@ public class DbHelper extends SQLiteOpenHelper {
         attachment.setLink(cursor.getString(3));
         attachment.setStatus(cursor.getInt(4));
         attachment.setType(cursor.getString(5));
-        attachment.setNote_id(cursor.getString(6));
+        attachment.setNote_id(cursor.getInt(6));
         cursor.close();
         db.close();
         return attachment;
@@ -400,7 +400,7 @@ public class DbHelper extends SQLiteOpenHelper {
             attachment.setId(cursor.getInt(0));
             attachment.setCreated(cursor.getString(1));
             attachment.setLast_modified(cursor.getString(2));
-            attachment.setNote_id(cursor.getString(3));
+            attachment.setNote_id(cursor.getInt(3));
             attachment.setType(cursor.getString(4));
             attachment.setStatus(cursor.getInt(5));
             attachment.setLink(cursor.getString(6));

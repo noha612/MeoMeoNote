@@ -7,12 +7,12 @@ public class Attachment {
     private String created;
     private String last_modified;
     private int status;
-    private String note_id;
+    private int note_id;
 
     public Attachment() {
     }
 
-    public Attachment(int id, String link, String type, String created, String last_modified, int status, String note_id) {
+    public Attachment(int id, String link, String type, String created, String last_modified, int status, int note_id) {
         this.id = id;
         this.link = link;
         this.type = type;
@@ -71,11 +71,11 @@ public class Attachment {
         this.status = status;
     }
 
-    public String getNote_id() {
+    public int getNote_id() {
         return note_id;
     }
 
-    public void setNote_id(String note_id) {
+    public void setNote_id(int note_id) {
         this.note_id = note_id;
     }
 }
