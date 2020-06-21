@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 import nhom7.thh.meomeonote.entity.Attachment;
 import nhom7.thh.meomeonote.entity.Note;
@@ -116,7 +115,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void addUser(User user) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -130,11 +128,10 @@ public class DbHelper extends SQLiteOpenHelper {
                 db.insert(USER_TABLE_NAME, null, values);
             db.close();
         } catch (Exception e) {
-            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            Log.v("error", e.toString());
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public User getUserById(int id) {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
@@ -150,12 +147,11 @@ public class DbHelper extends SQLiteOpenHelper {
             db.close();
             return User;
         } catch (Exception e) {
-            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            Log.v("error", e.toString());
             return null;
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public int updateUser(User user) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -165,7 +161,7 @@ public class DbHelper extends SQLiteOpenHelper {
             values.put(USER_PASSWORD, user.getPassword());
             return db.update(USER_TABLE_NAME, values, USER_ID + "=?", new String[]{String.valueOf(user.getId())});
         } catch (Exception e) {
-            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            Log.v("error", e.toString());
             return 0;
         }
     }
@@ -179,12 +175,11 @@ public class DbHelper extends SQLiteOpenHelper {
             values.put(USER_STATUS, 0);
             return db.update(USER_TABLE_NAME, values, USER_ID + "=?", new String[]{String.valueOf(user.getId())});
         } catch (Exception e) {
-            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            Log.v("error", e.toString());
             return 0;
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public List<User> getAllUser() {
         try {
             List<User> listUser = new ArrayList<>();
@@ -204,12 +199,11 @@ public class DbHelper extends SQLiteOpenHelper {
             db.close();
             return listUser;
         } catch (Exception e) {
-            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            Log.v("error", e.toString());
             return null;
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public User getUserByPhoneNumber(String phoneNumber) {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
@@ -226,13 +220,12 @@ public class DbHelper extends SQLiteOpenHelper {
             db.close();
             return User;
         } catch (Exception e) {
-            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            Log.v("error", e.toString());
             return null;
         }
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void addNote(Note note) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -249,11 +242,10 @@ public class DbHelper extends SQLiteOpenHelper {
             db.insert(NOTE_TABLE_NAME, null, values);
             db.close();
         } catch (Exception e) {
-            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            Log.v("error", e.toString());
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public Note getNoteById(int id) {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
@@ -281,13 +273,12 @@ public class DbHelper extends SQLiteOpenHelper {
             db.close();
             return note;
         } catch (Exception e) {
-            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            Log.v("error", e.toString());
             return null;
         }
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public int updateNote(Note note) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -304,12 +295,11 @@ public class DbHelper extends SQLiteOpenHelper {
             values.put(NOTE_CAT_NAME, note.getCatName());
             return db.update(NOTE_TABLE_NAME, values, NOTE_ID + "=?", new String[]{String.valueOf(note.getId())});
         } catch (Exception e) {
-            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            Log.v("error", e.toString());
             return 0;
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public int deleteNote(Note note) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -318,14 +308,13 @@ public class DbHelper extends SQLiteOpenHelper {
             values.put(NOTE_STATUS, 0);
             return db.update(NOTE_TABLE_NAME, values, NOTE_ID + "=?", new String[]{String.valueOf(note.getId())});
         } catch (Exception e) {
-            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            Log.v("error", e.toString());
             return 0;
         }
 
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public List<Note> getNodeByUserId(int userId) {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
@@ -358,12 +347,11 @@ public class DbHelper extends SQLiteOpenHelper {
             db.close();
             return nodes;
         } catch (Exception e) {
-            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            Log.v("error", e.toString());
             return null;
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public List<Note> getNodeByUserIdOrderByCreaded(int userId) {
         List<Note> noteList = getNodeByUserId(userId);
         Collections.sort(noteList, new Comparator<Note>() {
@@ -377,7 +365,6 @@ public class DbHelper extends SQLiteOpenHelper {
         return noteList;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public List<Note> getNodeByUserIdOrderByTimer(int userId) {
         List<Note> noteList = getNodeByUserId(userId);
         Collections.sort(noteList, new Comparator<Note>() {
@@ -391,7 +378,6 @@ public class DbHelper extends SQLiteOpenHelper {
         return noteList;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void addAttachment(Attachment attachment) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -405,11 +391,10 @@ public class DbHelper extends SQLiteOpenHelper {
             db.insert(ATTACHMENT_TABLE_NAME, null, values);
             db.close();
         } catch (Exception e) {
-            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            Log.v("error", e.toString());
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public Attachment getAttachmentById(int id) {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
@@ -433,12 +418,11 @@ public class DbHelper extends SQLiteOpenHelper {
             db.close();
             return attachment;
         } catch (Exception e) {
-            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            Log.v("error", e.toString());
             return null;
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public int updateAttachment(Attachment attachment) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -452,12 +436,11 @@ public class DbHelper extends SQLiteOpenHelper {
             values.put(ATTACHMENT_NOTE_ID, attachment.getNote_id());
             return db.update(ATTACHMENT_TABLE_NAME, values, ATTACHMENT_ID + "=?", new String[]{String.valueOf(attachment.getId())});
         } catch (Exception e) {
-            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            Log.v("error", e.toString());
             return 0;
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public int deleteAttachment(Attachment attachment) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -466,13 +449,12 @@ public class DbHelper extends SQLiteOpenHelper {
             values.put(ATTACHMENT_STATUS, 0);
             return db.update(ATTACHMENT_TABLE_NAME, values, ATTACHMENT_ID + "=?", new String[]{String.valueOf(attachment.getId())});
         } catch (Exception e) {
-            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            Log.v("error", e.toString());
             return 0;
         }
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public List<Attachment> getAttachmentByNoteId(int noteId) {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
@@ -500,7 +482,7 @@ public class DbHelper extends SQLiteOpenHelper {
             db.close();
             return attachments;
         } catch (Exception e) {
-            Log.v("error", Objects.requireNonNull(e.getMessage()));
+            Log.v("error", e.toString());
             return null;
         }
     }
