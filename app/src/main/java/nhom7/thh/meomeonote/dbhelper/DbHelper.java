@@ -129,7 +129,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public User getUserById(String id) {
+    public User getUserById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(USER_TABLE_NAME, new String[]{USER_ID
                         , USER_PHONE_NUMBER, USER_PASSWORD}, USER_ID + "=?",
@@ -213,7 +213,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Note getNoteById(String id) {
+    public Note getNoteById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(NOTE_TABLE_NAME, new String[]{NOTE_ID,
                         NOTE_TITLE, NOTE_CREATED, NOTE_CONTENT
@@ -265,7 +265,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
 
-    public List<Note> getNodeByUserId(String userId) {
+    public List<Note> getNodeByUserId(int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<Note> nodes = new ArrayList<>();
         Cursor cursor = db.query(NOTE_TABLE_NAME, new String[]{NOTE_ID,
@@ -297,7 +297,7 @@ public class DbHelper extends SQLiteOpenHelper {
         return nodes;
     }
 
-    public List<Note> getNodeByUserIdOrderByCreaded(String userId) {
+    public List<Note> getNodeByUserIdOrderByCreaded(int userId) {
         List<Note> noteList = getNodeByUserId(userId);
         Collections.sort(noteList, new Comparator<Note>() {
             @Override
@@ -310,7 +310,7 @@ public class DbHelper extends SQLiteOpenHelper {
         return noteList;
     }
 
-    public List<Note> getNodeByUserIdOrderByTimer(String userId) {
+    public List<Note> getNodeByUserIdOrderByTimer(int userId) {
         List<Note> noteList = getNodeByUserId(userId);
         Collections.sort(noteList, new Comparator<Note>() {
             @Override
@@ -336,7 +336,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Attachment getAttachmentById(String id) {
+    public Attachment getAttachmentById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(ATTACHMENT_TABLE_NAME, new String[]{ATTACHMENT_ID,
                         ATTACHMENT_CREATED, ATTACHMENT_LAST_MODIFIED, ATTACHMENT_LINK
@@ -381,7 +381,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
 
-    public List<Attachment> getAttachmentByNoteId(String noteId) {
+    public List<Attachment> getAttachmentByNoteId(int noteId) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<Attachment> attachments = new ArrayList<>();
         Cursor cursor = db.query(ATTACHMENT_TABLE_NAME, new String[]{ATTACHMENT_ID,
