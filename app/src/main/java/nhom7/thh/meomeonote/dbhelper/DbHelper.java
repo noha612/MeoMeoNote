@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import nhom7.thh.meomeonote.entity.Attachment;
 import nhom7.thh.meomeonote.entity.Note;
 import nhom7.thh.meomeonote.entity.User;
 
@@ -254,7 +255,7 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put(NOTE_TITLE, note.getTitle());
         values.put(NOTE_USER_ID, note.getUser_id());
         values.put(NOTE_CAT_NAME, note.getCatName());
-        return db.update(NOTE_TABLE_NAME, values, USER_ID + "=?", new String[]{String.valueOf(note.getId())});
+        return db.update(NOTE_TABLE_NAME, values, NOTE_ID + "=?", new String[]{String.valueOf(note.getId())});
     }
 
     public int deleteNote(Note note) {
@@ -262,7 +263,7 @@ public class DbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(NOTE_ID, note.getId());
         values.put(NOTE_STATUS, 0);
-        return db.update(NOTE_TABLE_NAME, values, USER_ID + "=?", new String[]{String.valueOf(note.getId())});
+        return db.update(NOTE_TABLE_NAME, values, NOTE_ID + "=?", new String[]{String.valueOf(note.getId())});
     }
 
 
@@ -271,7 +272,8 @@ public class DbHelper extends SQLiteOpenHelper {
         List<Note> nodes = new ArrayList<>();
         Cursor cursor = db.query(NOTE_TABLE_NAME, new String[]{NOTE_ID,
                         NOTE_PASSWORD, NOTE_TITLE, NOTE_CONTENT, NOTE_CREATED,
-                        NOTE_LAST_MODIFIED, NOTE_TIMER, NOTE_STATUS, NOTE_USER_ID, NOTE_CAT_NAME}, NOTE_USER_ID + "=?" + " AND " + NOTE_STATUS + "= 1 ",
+                        NOTE_LAST_MODIFIED, NOTE_TIMER, NOTE_STATUS, NOTE_USER_ID, NOTE_CAT_NAME},
+                NOTE_USER_ID + "=?" + " AND " + NOTE_STATUS + "= 1 ",
                 new String[]{String.valueOf(userId)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
@@ -323,4 +325,89 @@ public class DbHelper extends SQLiteOpenHelper {
         return noteList;
     }
 
+    public void addAttachment(Attachment attachment) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ATTACHMENT_ID, attachment.getId());
+        values.put(ATTACHMENT_CREATED, attachment.getCreated());
+        values.put(ATTACHMENT_LAST_MODIFIED, attachment.getLast_modified());
+        values.put(ATTACHMENT_LINK, attachment.getLink());
+        values.put(ATTACHMENT_STATUS, 1);
+        values.put(ATTACHMENT_TYPE, attachment.getType());
+        values.put(ATTACHMENT_NOTE_ID, attachment.getNote_id());
+        db.insert(ATTACHMENT_TABLE_NAME, null, values);
+        db.close();
+    }
+
+    public Attachment getAttachmentById(String id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(ATTACHMENT_TABLE_NAME, new String[]{ATTACHMENT_ID,
+                        ATTACHMENT_CREATED, ATTACHMENT_LAST_MODIFIED, ATTACHMENT_LINK
+                        , ATTACHMENT_STATUS, ATTACHMENT_TYPE, ATTACHMENT_NOTE_ID}, ATTACHMENT_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+        else
+            return null;
+        Attachment attachment = new Attachment();
+        attachment.setId(cursor.getInt(0));
+        attachment.setCreated(cursor.getString(1));
+        attachment.setLast_modified(cursor.getString(2));
+        attachment.setLink(cursor.getString(3));
+        attachment.setStatus(cursor.getInt(4));
+        attachment.setType(cursor.getString(5));
+        attachment.setNote_id(cursor.getString(6));
+        cursor.close();
+        db.close();
+        return attachment;
+    }
+
+    public int updateAttachment(Attachment attachment) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ATTACHMENT_ID, attachment.getId());
+        values.put(ATTACHMENT_CREATED, attachment.getCreated());
+        values.put(ATTACHMENT_LAST_MODIFIED, attachment.getLast_modified());
+        values.put(ATTACHMENT_LINK, attachment.getLink());
+        values.put(ATTACHMENT_STATUS, attachment.getStatus());
+        values.put(ATTACHMENT_TYPE, attachment.getType());
+        values.put(ATTACHMENT_NOTE_ID, attachment.getNote_id());
+        return db.update(ATTACHMENT_TABLE_NAME, values, ATTACHMENT_ID + "=?", new String[]{String.valueOf(attachment.getId())});
+    }
+
+    public int deleteAttachment(Attachment attachment) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ATTACHMENT_ID, attachment.getId());
+        values.put(ATTACHMENT_STATUS, 0);
+        return db.update(ATTACHMENT_TABLE_NAME, values, ATTACHMENT_ID + "=?", new String[]{String.valueOf(attachment.getId())});
+    }
+
+
+    public List<Attachment> getAttachmentByNoteId(String noteId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Attachment> attachments = new ArrayList<>();
+        Cursor cursor = db.query(ATTACHMENT_TABLE_NAME, new String[]{ATTACHMENT_ID,
+                        ATTACHMENT_CREATED, ATTACHMENT_LAST_MODIFIED, ATTACHMENT_NOTE_ID,
+                        ATTACHMENT_TYPE, ATTACHMENT_STATUS, ATTACHMENT_LINK}, ATTACHMENT_NOTE_ID + "=?" + " AND " + ATTACHMENT_STATUS + "= 1 ",
+                new String[]{String.valueOf(noteId)}, null, null, null, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+        else
+            return null;
+        do {
+            Attachment attachment = new Attachment();
+            attachment.setId(cursor.getInt(0));
+            attachment.setCreated(cursor.getString(1));
+            attachment.setLast_modified(cursor.getString(2));
+            attachment.setNote_id(cursor.getString(3));
+            attachment.setType(cursor.getString(4));
+            attachment.setStatus(cursor.getInt(5));
+            attachment.setLink(cursor.getString(6));
+            attachments.add(attachment);
+        } while (cursor.moveToNext());
+        cursor.close();
+        db.close();
+        return attachments;
+    }
 }
