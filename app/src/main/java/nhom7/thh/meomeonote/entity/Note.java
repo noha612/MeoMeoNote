@@ -1,7 +1,6 @@
 package nhom7.thh.meomeonote.entity;
 
 public class Note {
-    private String note;
     private String id;
     private String password;
     private String title;
@@ -12,10 +11,10 @@ public class Note {
     private String status;
     private String user_id;
 
-    public Note(String note, String id, String password,
+    public Note(String id, String password,
                 String title, String content, String created,
                 String last_modified, String timer, String status, String user_id) {
-        this.note = note;
+
         this.id = id;
         this.password = password;
         this.title = title;
@@ -27,12 +26,7 @@ public class Note {
         this.user_id = user_id;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
+    public Note() {
     }
 
     public String getId() {

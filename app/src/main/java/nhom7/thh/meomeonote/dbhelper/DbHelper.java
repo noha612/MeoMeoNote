@@ -14,9 +14,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import org.w3c.dom.Node;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import nhom7.thh.meomeonote.entity.Note;
 import nhom7.thh.meomeonote.entity.User;
 
 public class DbHelper extends SQLiteOpenHelper {
@@ -118,20 +123,22 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public User getUserById(int id) {
+    public User getUserById(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(USER_TABLE_NAME, new String[]{USER_ID,
-                        USER_ID, USER_PHONE_NUMBER, USER_PASSWORD}, USER_ID + "=?",
+        Cursor cursor = db.query(USER_TABLE_NAME, new String[]{USER_ID
+                        , USER_PHONE_NUMBER, USER_PASSWORD}, USER_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
+        else
+            return null;
         User User = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
         cursor.close();
         db.close();
         return User;
     }
 
-    public int update(User user) {
+    public int updateUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(USER_ID, user.getId());
@@ -140,7 +147,7 @@ public class DbHelper extends SQLiteOpenHelper {
         return db.update(USER_TABLE_NAME, values, USER_ID + "=?", new String[]{String.valueOf(user.getId())});
     }
 
-    public int delete(User user) {
+    public int deleteUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(USER_ID, user.getId());
@@ -175,10 +182,142 @@ public class DbHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(phoneNumber)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
+        else
+            return null;
         User User = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
         cursor.close();
         db.close();
         return User;
+    }
+
+
+    public void addNote(Note note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(NOTE_ID, note.getId());
+        values.put(NOTE_PASSWORD, note.getPassword());
+        values.put(NOTE_CONTENT, note.getContent());
+        values.put(NOTE_CREATED, note.getCreated());
+        values.put(NOTE_LAST_MODIFIED, note.getLast_modified());
+        values.put(NOTE_STATUS, note.getStatus());
+        values.put(NOTE_TIMER, note.getTimer());
+        values.put(NOTE_TITLE, note.getTitle());
+        values.put(NOTE_USER_ID, note.getUser_id());
+        db.insert(NOTE_TABLE_NAME, null, values);
+        db.close();
+    }
+
+    public Note getNoteById(String id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(NOTE_TABLE_NAME, new String[]{NOTE_ID,
+                        NOTE_TITLE, NOTE_CREATED, NOTE_CONTENT
+                        , NOTE_STATUS, NOTE_USER_ID, NOTE_LAST_MODIFIED
+                        , NOTE_PASSWORD, NOTE_TIMER}, NOTE_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+        else
+            return null;
+        Note note = new Note();
+        note.setId(cursor.getString(0));
+        note.setPassword(cursor.getString(1));
+        note.setContent(cursor.getString(2));
+        note.setCreated(cursor.getString(3));
+        note.setLast_modified(cursor.getString(4));
+        note.setStatus(cursor.getString(5));
+        note.setTimer(cursor.getString(6));
+        note.setTitle(cursor.getString(7));
+        note.setUser_id(cursor.getString(8));
+        cursor.close();
+        db.close();
+        return note;
+    }
+
+    public int updateNote(Note note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(NOTE_ID, note.getId());
+        values.put(NOTE_PASSWORD, note.getPassword());
+        values.put(NOTE_CONTENT, note.getContent());
+        values.put(NOTE_CREATED, note.getCreated());
+        values.put(NOTE_LAST_MODIFIED, note.getLast_modified());
+        values.put(NOTE_STATUS, note.getStatus());
+        values.put(NOTE_TIMER, note.getTimer());
+        values.put(NOTE_TITLE, note.getTitle());
+        values.put(NOTE_USER_ID, note.getUser_id());
+        return db.update(NOTE_TABLE_NAME, values, USER_ID + "=?", new String[]{String.valueOf(note.getId())});
+    }
+
+    public int deleteNote(Note note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(NOTE_ID, note.getId());
+        values.put(NOTE_PASSWORD, note.getPassword());
+        values.put(NOTE_CONTENT, note.getContent());
+        values.put(NOTE_CREATED, note.getCreated());
+        values.put(NOTE_LAST_MODIFIED, note.getLast_modified());
+        values.put(NOTE_STATUS, note.getStatus());
+        values.put(NOTE_TIMER, note.getTimer());
+        values.put(NOTE_TITLE, note.getTitle());
+        values.put(NOTE_USER_ID, note.getUser_id());
+        return db.delete(USER_TABLE_NAME, USER_ID + "=?", new String[]{String.valueOf(note.getId())});
+    }
+
+
+    public List<Note> getNodeByUserId(String userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Note> nodes = new ArrayList<>();
+        Cursor cursor = db.query(NOTE_TABLE_NAME, new String[]{NOTE_ID,
+                        NOTE_PASSWORD, NOTE_TITLE, NOTE_CONTENT, NOTE_CREATED,
+                        NOTE_LAST_MODIFIED, NOTE_TIMER, NOTE_STATUS, NOTE_USER_ID}, NOTE_USER_ID + "=?" + " AND " + NOTE_STATUS + "= 1 ",
+                new String[]{String.valueOf(userId)}, null, null, null, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+        else
+            return null;
+        do {
+            Note note = new Note();
+            note.setId(cursor.getInt(0) + "");
+            note.setPassword(cursor.getString(1));
+            note.setTitle(cursor.getString(2));
+            note.setContent(cursor.getString(3));
+            note.setCreated(cursor.getString(4));
+            note.setLast_modified(cursor.getString(5));
+            note.setTimer(cursor.getString(6));
+            note.setStatus(cursor.getString(7));
+            note.setUser_id(cursor.getString(8));
+            nodes.add(note);
+        } while (cursor.moveToNext());
+
+        cursor.close();
+        db.close();
+        return nodes;
+    }
+
+    public List<Note> getNodeByUserIdOrderByCreaded(String userId) {
+        List<Note> noteList = getNodeByUserId(userId);
+        Collections.sort(noteList, new Comparator<Note>() {
+            @Override
+            public int compare(Note o1, Note o2) {
+                int time1 = Integer.parseInt(o1.getCreated());
+                int time2 = Integer.parseInt(o2.getCreated());
+                return time1 - time2;
+            }
+        });
+        return noteList;
+    }
+
+    public List<Note> getNodeByUserIdOrderByTimer(String userId) {
+        List<Note> noteList = getNodeByUserId(userId);
+        Collections.sort(noteList, new Comparator<Note>() {
+            @Override
+            public int compare(Note o1, Note o2) {
+                int time1 = Integer.parseInt(o1.getTimer());
+                int time2 = Integer.parseInt(o2.getTimer());
+                return time1 - time2;
+            }
+        });
+        return noteList;
     }
 
 }
