@@ -78,13 +78,13 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sqlQueryUser = "CREATE TABLE " + USER_TABLE_NAME + " (" +
-                USER_ID + " integer primary key, " +
+                USER_ID + " integer primary key AUTOINCREMENT, " +
                 USER_PASSWORD + " TEXT," +
                 USER_STATUS + " TEXT," +
                 USER_PHONE_NUMBER + " TEXT)";
         db.execSQL(sqlQueryUser);
         String sqlQueryNote = "CREATE TABLE " + NOTE_TABLE_NAME + " (" +
-                NOTE_ID + " integer primary key, " +
+                NOTE_ID + " integer primary key AUTOINCREMENT , " +
                 NOTE_PASSWORD + " TEXT," +
                 NOTE_CONTENT + " TEXT," +
                 NOTE_TITLE + " TEXT," +
@@ -96,7 +96,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 NOTE_USER_ID + " integer)";
         db.execSQL(sqlQueryNote);
         String sqlQueryAtt = "CREATE TABLE " + ATTACHMENT_TABLE_NAME + " (" +
-                ATTACHMENT_ID + " integer primary key, " +
+                ATTACHMENT_ID + " integer primary key AUTOINCREMENT, " +
                 ATTACHMENT_LINK + " TEXT," +
                 ATTACHMENT_STATUS + " integer," +
                 ATTACHMENT_CREATED + " TEXT," +
@@ -119,7 +119,6 @@ public class DbHelper extends SQLiteOpenHelper {
     public void addUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(USER_ID, user.getId());
         values.put(USER_PHONE_NUMBER, user.getPhoneNumber());
         values.put(USER_PASSWORD, user.getPassword());
         values.put(USER_STATUS, 1);
@@ -201,7 +200,6 @@ public class DbHelper extends SQLiteOpenHelper {
     public void addNote(Note note) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(NOTE_ID, note.getId());
         values.put(NOTE_PASSWORD, note.getPassword());
         values.put(NOTE_CONTENT, note.getContent());
         values.put(NOTE_CREATED, note.getCreated());
@@ -328,7 +326,6 @@ public class DbHelper extends SQLiteOpenHelper {
     public void addAttachment(Attachment attachment) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(ATTACHMENT_ID, attachment.getId());
         values.put(ATTACHMENT_CREATED, attachment.getCreated());
         values.put(ATTACHMENT_LAST_MODIFIED, attachment.getLast_modified());
         values.put(ATTACHMENT_LINK, attachment.getLink());
