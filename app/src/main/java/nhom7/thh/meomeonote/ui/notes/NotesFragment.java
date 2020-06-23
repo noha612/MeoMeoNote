@@ -1,5 +1,6 @@
 package nhom7.thh.meomeonote.ui.notes;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,8 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import nhom7.thh.meomeonote.MainActivity;
+import nhom7.thh.meomeonote.NoteDetailActivity;
 import nhom7.thh.meomeonote.R;
 import nhom7.thh.meomeonote.adapter.LineNoteAdapter;
 import nhom7.thh.meomeonote.dbhelper.DbHelper;
@@ -29,6 +32,8 @@ import nhom7.thh.meomeonote.util.BaseUtil;
 import nhom7.thh.meomeonote.util.Mapper;
 
 public class NotesFragment extends Fragment {
+    DbHelper dbHelper;
+    List<Note> notes;
     List<LineNote> lineNotes;
     ListView listNotes;
     View root;
@@ -48,7 +53,14 @@ public class NotesFragment extends Fragment {
         listNotes.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Snackbar.make(view, "Deleted.", Snackbar.LENGTH_LONG).show();
+                final Snackbar snackbar = Snackbar.make(view, "Deleted.", Snackbar.LENGTH_LONG);
+                snackbar.setAction("REDO(not release...)", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snackbar.dismiss();
+                    }
+                });
+                snackbar.show();
                 DbHelper dbHelper = new DbHelper(getActivity().getApplicationContext());
                 Note temp = new Note();
                 temp.setId(lineNotes.get(position).getId());
@@ -57,7 +69,18 @@ public class NotesFragment extends Fragment {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.detach(NotesFragment.this).attach(NotesFragment.this).commit();
 
+
+
                 return true;
+            }
+        });
+
+        listNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(getActivity(), NoteDetailActivity.class);
+                i.putExtra("note", notes.get(position));
+                startActivityForResult(i, 0);
             }
         });
         return root;
@@ -67,8 +90,8 @@ public class NotesFragment extends Fragment {
     private void loadNotes() {
         lineNotes = new ArrayList<>();
         try {
-            DbHelper dbHelper = new DbHelper(getActivity().getApplicationContext());
-            List<Note> notes = dbHelper.getNodeByUserId(9999);
+            dbHelper = new DbHelper(getActivity().getApplicationContext());
+            notes = dbHelper.getNodeByUserId(9999);
             Log.v("size", notes.size() + "");
             for (Note i : notes) {
                 lineNotes.add(Mapper.mapNoteEntityToLineNote(i, getActivity()));

@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,24 +26,58 @@ import nhom7.thh.meomeonote.util.BaseUtil;
 public class NoteDetailActivity extends AppCompatActivity {
     Button btnBack;
     Button btnAvtChooser;
+    TextView pageName;
+    Button btnEditable;
     EditText title;
     EditText content;
     Note note;
+
+    DbHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_detail);
-        note = new Note();
-        note.setUser_id(9999);
-        note.setCatName("snowball");
-        note.setStatus(1);
         Toolbar toolbar = findViewById(R.id.toolbar3);
 //        setSupportActionBar(toolbar);
         title = findViewById(R.id.note_title);
         content = findViewById(R.id.note_content);
         btnBack = findViewById(R.id.btn_back);
         btnAvtChooser = findViewById(R.id.btn_avt_chooser);
+        btnEditable = findViewById(R.id.btn_editable);
+        pageName = findViewById(R.id.page_name);
+
+        dbHelper = new DbHelper(getApplicationContext());
+
+//        int noteId = getIntent().getIntExtra("note_ID",-1);
+        note = (Note) getIntent().getSerializableExtra("note");
+
+        if (note == null) {
+            btnEditable.setVisibility(View.INVISIBLE);
+            btnEditable.setEnabled(false);
+            note = new Note();
+            note.setId(-1);
+            note.setUser_id(9999);
+            note.setCatName("snowball");
+            note.setStatus(1);
+        } else {
+            pageName.setText(" View Note");
+            title.setText(note.getTitle());
+            content.setText(note.getContent());
+            btnAvtChooser.setBackgroundResource(BaseUtil.getIdResource(NoteDetailActivity.this, "cat_avt_" + note.getCatName(), "drawable", getPackageName()));
+            title.setEnabled(false);
+            content.setEnabled(false);
+            btnAvtChooser.setEnabled(false);
+        }
+        btnEditable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                title.setEnabled(true);
+                content.setEnabled(true);
+                btnAvtChooser.setEnabled(true);
+                pageName.setText(" Edit Note");
+            }
+        });
         btnBack.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -53,8 +88,12 @@ public class NoteDetailActivity extends AppCompatActivity {
                     note.setTitle(strTitle);
                     note.setContent(strContent);
                     note.setLast_modified(BaseUtil.getCurrentTime());
-                    DbHelper dbHelper = new DbHelper(getApplicationContext());
-                    dbHelper.addNote(note);
+                    if (note.getId() == -1) {
+                        note.setCreated(BaseUtil.getCurrentTime());
+                        dbHelper.addNote(note);
+                    } else {
+                        dbHelper.updateNote(note);
+                    }
                 }
                 finish();
             }
