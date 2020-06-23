@@ -141,4 +141,7 @@
         <item>"Whiteshadow"</item>
         <item>"Xerxes IX"</item>
     </string-array>
+    <string name="title_activity_calendar_info">CalendarInfo</string>
+    <string name="tab_text_1">Note</string>
+    <string name="tab_text_2">Check List</string>
 </resources>

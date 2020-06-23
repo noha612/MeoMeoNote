@@ -1,6 +1,7 @@
 package nhom7.thh.meomeonote.util;
 
 import android.app.Activity;
+import android.content.Context;
 
 import nhom7.thh.meomeonote.entity.Note;
 import nhom7.thh.meomeonote.model.LineNote;
