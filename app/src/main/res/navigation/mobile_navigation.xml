@@ -12,10 +12,22 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/nav_checklist"
+        android:name="nhom7.thh.meomeonote.ui.checklist.ChecklistFragment"
+        android:label="@string/menu_checklist"
+        tools:layout="@layout/fragment_checklist" />
+
+    <fragment
         android:id="@+id/nav_calendar"
         android:name="nhom7.thh.meomeonote.ui.calendar.CalendarFragment"
         android:label="@string/menu_calendar"
         tools:layout="@layout/fragment_calendar" />
+
+<!--    <fragment-->
+<!--        android:id="@+id/nav_cats"-->
+<!--        android:name="nhom7.thh.meomeonote.ui.cats"-->
+<!--        android:label="@string/menu_checklist"-->
+<!--        tools:layout="@layout/fragment_checklist" />-->
 
     <fragment
         android:id="@+id/nav_about"

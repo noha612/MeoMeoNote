@@ -9,9 +9,17 @@
             android:icon="@drawable/memento_marshmallow"
             android:title="@string/menu_home" />
         <item
+            android:id="@+id/nav_checklist"
+            android:icon="@drawable/memento_kathmandu"
+            android:title="@string/menu_checklist" />
+        <item
             android:id="@+id/nav_calendar"
             android:icon="@drawable/lounge_decorations_calligraphyworks"
             android:title="@string/menu_calendar" />
+        <item
+            android:id="@+id/nav_cats"
+            android:icon="@drawable/sunny_alert"
+            android:title="@string/menu_cats" />
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/cat_avt_willow"

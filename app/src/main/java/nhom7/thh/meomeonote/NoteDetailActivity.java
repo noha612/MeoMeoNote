@@ -81,6 +81,7 @@ public class NoteDetailActivity extends AppCompatActivity {
                 final AlertDialog alertDialog = builder.create();
                 alertDialog.setView(view1);
                 alertDialog.show();
+                alertDialog.getWindow().setLayout(1000, 800);
 
                 gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override

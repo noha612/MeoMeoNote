@@ -9,7 +9,9 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">Notes</string>
+    <string name="menu_checklist">Checklist</string>
     <string name="menu_calendar">Calendar</string>
+    <string name="menu_cats">Cats</string>
     <string name="menu_about">About</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -23,12 +25,16 @@
     <string-array name="cat_name">
         <item>"apricot"</item>
         <item>"bandit"</item>
+        <item>"bengal_jack"</item>
+        <item>"billy_0"</item>
+        <item>"bob_the_cat"</item>
         <item>"bolt"</item>
         <item>"breezy"</item>
         <item>"callie"</item>
         <item>"caramel"</item>
         <item>"chair"</item>
         <item>"chip"</item>
+        <item>"chocola"</item>
         <item>"cocoa"</item>
         <item>"dottie"</item>
         <item>"fred"</item>
@@ -39,8 +45,45 @@
         <item>"gozer"</item>
         <item>"great"</item>
         <item>"guy"</item>
+        <item>"hermeowne"</item>
+        <item>"jeeves"</item>
+        <item>"joe_dimeowgio"</item>
+        <item>"kathmandu"</item>
         <item>"lexy"</item>
         <item>"mack"</item>
         <item>"maple"</item>
+        <item>"marshmellow"</item>
+        <item>"meow"</item>
+        <item>"meowgi"</item>
+        <item>"misty"</item>
+        <item>"ms_fortune"</item>
+        <item>"pasty"</item>
+        <item>"patches"</item>
+        <item>"peaches"</item>
+        <item>"pepper"</item>
+        <item>"pickles"</item>
+        <item>"princess"</item>
+        <item>"pumpkin"</item>
+        <item>"quicksilver"</item>
+        <item>"rascal"</item>
+        <item>"saint"</item>
+        <item>"sapphire"</item>
+        <item>"sassy_fran"</item>
+        <item>"senor_don_gato"</item>
+        <item>"shadow"</item>
+        <item>"smokey"</item>
+        <item>"snowball"</item>
+        <item>"socks"</item>
+        <item>"sooty"</item>
+        <item>"speckles"</item>
+        <item>"spooky"</item>
+        <item>"spud"</item>
+        <item>"sunny"</item>
+        <item>"tabb"</item>
+        <item>"whiskers"</item>
+        <item>"whiteshadow"</item>
+        <item>"willie"</item>
+        <item>"willow"</item>
+        <item>"xerxes"</item>
     </string-array>
 </resources>
