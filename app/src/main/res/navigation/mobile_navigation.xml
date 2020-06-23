@@ -23,11 +23,11 @@
         android:label="@string/menu_calendar"
         tools:layout="@layout/fragment_calendar" />
 
-<!--    <fragment-->
-<!--        android:id="@+id/nav_cats"-->
-<!--        android:name="nhom7.thh.meomeonote.ui.cats"-->
-<!--        android:label="@string/menu_checklist"-->
-<!--        tools:layout="@layout/fragment_checklist" />-->
+    <fragment
+        android:id="@+id/nav_cats"
+        android:name="nhom7.thh.meomeonote.ui.cats.CatsFragment"
+        android:label="@string/menu_cats"
+        tools:layout="@layout/fragment_cats" />
 
     <fragment
         android:id="@+id/nav_about"

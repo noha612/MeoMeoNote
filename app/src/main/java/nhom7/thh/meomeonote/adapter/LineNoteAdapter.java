@@ -40,7 +40,7 @@ public class LineNoteAdapter extends BaseAdapter {
     @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater layoutInflater = activity.getLayoutInflater();
-            convertView = layoutInflater.inflate(R.layout.line_note, null);
+            convertView = layoutInflater.inflate(R.layout.list_view_line_note, null);
             TextView title = convertView.findViewById(R.id.line_title);
             TextView shortContent = convertView.findViewById(R.id.line_short_content);
             TextView lastModified = convertView.findViewById(R.id.line_last_modified);
