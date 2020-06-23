@@ -6,12 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.List;
 
 import nhom7.thh.meomeonote.R;
-import nhom7.thh.meomeonote.util.BaseUtil;
 
 public class GridViewICatIconAdapter extends BaseAdapter {
     List<Integer> imageViews;
@@ -40,7 +38,7 @@ public class GridViewICatIconAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater = activity.getLayoutInflater();
-        convertView = layoutInflater.inflate(R.layout.cat_avatar_gridview_item, null);
+        convertView = layoutInflater.inflate(R.layout.gridview_cat_icon_item, null);
         ImageView catAvt = convertView.findViewById(R.id.gridview_item_avt);
         catAvt.setImageResource(imageViews.get(position));
         return convertView;

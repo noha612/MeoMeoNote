@@ -5,21 +5,16 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageView;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import nhom7.thh.meomeonote.adapter.GridViewICatIconAdapter;
@@ -69,10 +64,10 @@ public class NoteDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(NoteDetailActivity.this);
                 LayoutInflater layoutInflater = getLayoutInflater();
-                View view1 = layoutInflater.inflate(R.layout.cat_avatar_gridview, null);
+                View view1 = layoutInflater.inflate(R.layout.gridview_cat_icon, null);
                 GridView gridView = view1.findViewById(R.id.cat_avt_chooser);
                 final List<Integer> avts = new ArrayList<>();
-                String[] catNames = getResources().getStringArray(R.array.cat_name);
+                String[] catNames = getResources().getStringArray(R.array.cat_short_name);
                 for (String i : catNames) {
                     avts.add(BaseUtil.getIdResource(NoteDetailActivity.this, "cat_avt_" + i, "drawable", getPackageName()));
                 }
@@ -81,6 +76,7 @@ public class NoteDetailActivity extends AppCompatActivity {
                 final AlertDialog alertDialog = builder.create();
                 alertDialog.setView(view1);
                 alertDialog.show();
+                alertDialog.getWindow().setLayout(1000, 800);
 
                 gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -94,10 +90,10 @@ public class NoteDetailActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.note_detail_activity, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.note_detail_activity, menu);
+//        return true;
+//    }
 }
