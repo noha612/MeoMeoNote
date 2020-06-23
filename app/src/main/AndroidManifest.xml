@@ -12,16 +12,6 @@
         <activity
             android:name=".CalendarInfoActivity"
             android:label="@string/title_activity_calendar_info"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".CalendarInfo"
-            android:label="@string/title_activity_calendar_info"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".NoteDetailActivity" />
         <activity
