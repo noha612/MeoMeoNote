@@ -20,7 +20,16 @@
             android:id="@+id/btn_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="?attr/homeAsUpIndicator" />
+            android:background="@drawable/abc_vector_test" />
+
+        <TextView
+            android:id="@+id/page_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" New Note"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
@@ -37,12 +46,19 @@
 
         <EditText
             android:id="@+id/note_title"
-            android:layout_width="match_parent"
+            android:layout_width="240dp"
             android:layout_height="85dp"
             android:hint="Title..."
             android:textColor="@android:color/background_dark"
             android:textSize="24sp"
             android:textStyle="bold" />
+
+
+        <Button
+            android:id="@+id/btn_editable"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@android:drawable/ic_menu_edit" />
     </LinearLayout>
 
     <EditText
