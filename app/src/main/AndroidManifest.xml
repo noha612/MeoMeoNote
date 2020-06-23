@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NoteDetailActivity"></activity>
+        <activity
+            android:name=".CalendarInfoActivity"
+            android:label="@string/title_activity_calendar_info"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".NoteDetailActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main2"

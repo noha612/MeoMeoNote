@@ -441,7 +441,6 @@ public class DbHelper extends SQLiteOpenHelper {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public int deleteAttachment(Attachment attachment) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();

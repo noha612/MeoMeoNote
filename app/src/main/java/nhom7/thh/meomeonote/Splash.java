@@ -25,6 +25,8 @@ public class Splash extends AppCompatActivity {
 
                     Intent i = new Intent(Splash.this,
                             MainActivity.class);
+//                    Intent i = new Intent(Splash.this,
+//                            TestTimePicker.class);
                     startActivity(i);
                     finish();
                 }

@@ -54,7 +54,7 @@ public class NotesFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 final Snackbar snackbar = Snackbar.make(view, "Deleted.", Snackbar.LENGTH_LONG);
-                snackbar.setAction("REDO(not release...)", new View.OnClickListener() {
+                snackbar.setAction("redo(not release...)", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         snackbar.dismiss();
