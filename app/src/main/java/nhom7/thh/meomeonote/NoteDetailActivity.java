@@ -5,17 +5,23 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import nhom7.thh.meomeonote.adapter.GridViewICatIconAdapter;
@@ -26,6 +32,8 @@ import nhom7.thh.meomeonote.util.BaseUtil;
 public class NoteDetailActivity extends AppCompatActivity {
     Button btnBack;
     Button btnAvtChooser;
+    Button btnReminder;
+    Button btnReminder2;
     TextView pageName;
     Button btnEditable;
     EditText title;
@@ -45,6 +53,8 @@ public class NoteDetailActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btn_back);
         btnAvtChooser = findViewById(R.id.btn_avt_chooser);
         btnEditable = findViewById(R.id.btn_editable);
+        btnReminder = findViewById(R.id.btn_reminder);
+        btnReminder2 = findViewById(R.id.btn_reminder2);
         pageName = findViewById(R.id.page_name);
 
         dbHelper = new DbHelper(getApplicationContext());
@@ -125,6 +135,40 @@ public class NoteDetailActivity extends AppCompatActivity {
                         alertDialog.cancel();
                     }
                 });
+            }
+        });
+        btnReminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(NoteDetailActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Log.e("time", year+" "+monthOfYear+" "+dayOfMonth);
+                    }
+                }, year, month, day);
+                datePickerDialog.show();
+            }
+        });
+        btnReminder2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                int h = calendar.get(Calendar.HOUR);
+                int m = calendar.get(Calendar.MINUTE);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(NoteDetailActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                    }
+                }, h, m, true);
+                timePickerDialog.show();
             }
         });
     }
