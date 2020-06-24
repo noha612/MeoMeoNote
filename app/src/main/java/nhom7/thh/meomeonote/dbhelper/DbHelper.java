@@ -22,6 +22,7 @@ import java.util.List;
 import nhom7.thh.meomeonote.entity.Attachment;
 import nhom7.thh.meomeonote.entity.Note;
 import nhom7.thh.meomeonote.entity.User;
+import nhom7.thh.meomeonote.util.BaseUtil;
 
 import static java.lang.Integer.parseInt;
 
@@ -314,6 +315,16 @@ public class DbHelper extends SQLiteOpenHelper {
 
     }
 
+    public List<Note> getNodeByUserIdAndDate(int userId, String date) {
+        List<Note> list = getNodeByUserId(userId);
+        List<Note> listReturn = new ArrayList<>();
+        for (Note note : list) {
+            if (BaseUtil.compareDate(date, note.getTimer())) {
+                listReturn.add(note);
+            }
+        }
+        return listReturn;
+    }
 
     public List<Note> getNodeByUserId(int userId) {
         try {

@@ -63,15 +63,6 @@ public class PlaceholderFragment extends Fragment {
                 textView.setText(s);
             }
         });
-        DbHelper dbHelper = new DbHelper(getContext());
-        List<Note> notes = dbHelper.getNodeByUserId(9999);
-        List<LineNote> lineNotes = new ArrayList<>();
-        for (Note i : notes) {
-            lineNotes.add(Mapper.mapNoteEntityToLineNote(i, getActivity()));
-        }
-        LineNoteAdapter lineNoteAdapter = new LineNoteAdapter(lineNotes, getActivity());
-        ListView listView = root.findViewById(R.id.lstViewCalendar);
-        listView.setAdapter(lineNoteAdapter);
         return root;
     }
 }
