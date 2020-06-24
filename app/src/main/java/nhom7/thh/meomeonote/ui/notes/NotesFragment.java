@@ -53,17 +53,22 @@ public class NotesFragment extends Fragment {
         listNotes.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                final Note temp = notes.get(position);
+                final DbHelper dbHelper = new DbHelper(getActivity().getApplicationContext());
                 final Snackbar snackbar = Snackbar.make(view, "Deleted.", Snackbar.LENGTH_LONG);
-                snackbar.setAction("redo(not release...)", new View.OnClickListener() {
+                snackbar.setAction("redo", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        temp.setStatus(1);
+                        dbHelper.updateNote(temp);
                         snackbar.dismiss();
+
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.detach(NotesFragment.this).attach(NotesFragment.this).commit();
                     }
                 });
                 snackbar.show();
-                DbHelper dbHelper = new DbHelper(getActivity().getApplicationContext());
-                Note temp = new Note();
-                temp.setId(lineNotes.get(position).getId());
                 dbHelper.deleteNote(temp);
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();

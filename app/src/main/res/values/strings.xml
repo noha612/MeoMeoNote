@@ -144,4 +144,6 @@
     <string name="title_activity_calendar_info">CalendarInfo</string>
     <string name="tab_text_1">Note</string>
     <string name="tab_text_2">Check List</string>
+    <string name="set_date"><![CDATA[-> Set Date <-]]></string>
+    <string name="set_time"><![CDATA[-> Set Time <-]]></string>
 </resources>

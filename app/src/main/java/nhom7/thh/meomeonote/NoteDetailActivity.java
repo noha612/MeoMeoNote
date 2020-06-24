@@ -5,8 +5,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,12 +37,14 @@ public class NoteDetailActivity extends AppCompatActivity {
     Button btnBack;
     Button btnAvtChooser;
     Button btnReminder;
-    Button btnReminder2;
     TextView pageName;
     Button btnEditable;
     EditText title;
     EditText content;
     Note note;
+
+    String timerDate;
+    String timerTime;
 
     DbHelper dbHelper;
 
@@ -54,7 +60,6 @@ public class NoteDetailActivity extends AppCompatActivity {
         btnAvtChooser = findViewById(R.id.btn_avt_chooser);
         btnEditable = findViewById(R.id.btn_editable);
         btnReminder = findViewById(R.id.btn_reminder);
-        btnReminder2 = findViewById(R.id.btn_reminder2);
         pageName = findViewById(R.id.page_name);
 
         dbHelper = new DbHelper(getApplicationContext());
@@ -98,6 +103,23 @@ public class NoteDetailActivity extends AppCompatActivity {
                     note.setTitle(strTitle);
                     note.setContent(strContent);
                     note.setLast_modified(BaseUtil.getCurrentTime());
+                    if (timerDate != null || timerTime != null) {
+                        note.setTimer(timerTime + " " + timerDate);
+
+                        Intent myIntent = new Intent(this , NotifyService.class);
+                        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+                        PendingIntent pendingIntent = PendingIntent.getService(this, 0, myIntent, 0);
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(Calendar.SECOND, 0);
+                        calendar.set(Calendar.MINUTE, 0);
+                        calendar.set(Calendar.HOUR, 0);
+                        calendar.set(Calendar.AM_PM, Calendar.AM);
+                        calendar.add(Calendar.DAY_OF_MONTH, 1);
+
+                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000*60*60*24 , pendingIntent);
+                    }
+
                     if (note.getId() == -1) {
                         note.setCreated(BaseUtil.getCurrentTime());
                         dbHelper.addNote(note);
@@ -140,35 +162,76 @@ public class NoteDetailActivity extends AppCompatActivity {
         btnReminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(NoteDetailActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        Log.e("time", year+" "+monthOfYear+" "+dayOfMonth);
-                    }
-                }, year, month, day);
-                datePickerDialog.show();
-            }
-        });
-        btnReminder2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                int h = calendar.get(Calendar.HOUR);
-                int m = calendar.get(Calendar.MINUTE);
-                TimePickerDialog timePickerDialog = new TimePickerDialog(NoteDetailActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
+                final AlertDialog.Builder builder = new AlertDialog.Builder(NoteDetailActivity.this);
+                LayoutInflater layoutInflater = getLayoutInflater();
+                View view1 = layoutInflater.inflate(R.layout.dialog_reminder, null);
+                final AlertDialog alertDialog = builder.create();
+                alertDialog.setView(view1);
+                alertDialog.show();
+                alertDialog.getWindow().setLayout(600, 700);
+
+                final TextView setDate = view1.findViewById(R.id.set_date);
+                final TextView setTime = view1.findViewById(R.id.set_time);
+                final Button clear = view1.findViewById(R.id.btn_clear_date_time);
+
+                if (note.getId() != -1 && note.getTimer() != null) {
+                    timerTime = note.getTimer().split(" ")[0];
+                    setTime.setText(timerTime);
+                    timerDate = note.getTimer().split(" ")[1];
+                    setDate.setText(timerDate);
+                }
+
+                setDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Calendar calendar = Calendar.getInstance();
+                        int year = calendar.get(Calendar.YEAR);
+                        int month = calendar.get(Calendar.MONTH);
+                        int day = calendar.get(Calendar.DAY_OF_MONTH);
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(NoteDetailActivity.this, new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                monthOfYear+=1;
+                                String day = dayOfMonth < 10 ? ("0" + dayOfMonth) : dayOfMonth + "";
+                                String month = monthOfYear < 10 ? ("0" + monthOfYear) : monthOfYear + "";
+                                setDate.setText(day + "/" + month + "/" + year);
+                                timerDate = day + "/" + month + "/" + year;
+                            }
+                        }, year, month, day);
+                        datePickerDialog.show();
                     }
-                }, h, m, true);
-                timePickerDialog.show();
+                });
+
+                setTime.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Calendar calendar = Calendar.getInstance();
+                        int h = calendar.get(Calendar.HOUR);
+                        int m = calendar.get(Calendar.MINUTE);
+                        TimePickerDialog timePickerDialog = new TimePickerDialog(NoteDetailActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                String h = hourOfDay < 10 ? ("0" + hourOfDay) : hourOfDay + "";
+                                String m = minute < 10 ? ("0" + minute) : minute + "";
+                                setTime.setText(h + ":" + m);
+                                timerTime = h + ":" + m;
+                            }
+                        }, h, m, true);
+                        timePickerDialog.show();
+                    }
+                });
+
+                clear.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        setDate.setText("-> Set Date <-");
+                        setTime.setText("-> Set Time <-");
+                        timerDate = null;
+                        timerTime = null;
+                    }
+                });
+
             }
         });
     }
