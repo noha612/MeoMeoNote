@@ -13,6 +13,12 @@ public class BaseUtil {
         return context.getResources().getIdentifier(name, defType, packageName);
     }
 
+    public static boolean compareDate(String date, String timer) {
+        if (date == null || timer == null || date.equals("") || timer.equals(""))
+            return false;
+        return timer.endsWith(date);
+    }
+
     public static String getCurrentTime() {
         Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");

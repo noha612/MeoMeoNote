@@ -1,4 +1,4 @@
-package nhom7.thh.meomeonote.ui.main;
+package nhom7.thh.meomeonote.ui.calendarinfo;
 
 import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
