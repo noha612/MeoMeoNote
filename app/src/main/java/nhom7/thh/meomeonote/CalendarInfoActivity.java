@@ -16,7 +16,7 @@ import nhom7.thh.meomeonote.adapter.LineNoteAdapter;
 import nhom7.thh.meomeonote.dbhelper.DbHelper;
 import nhom7.thh.meomeonote.entity.Note;
 import nhom7.thh.meomeonote.model.LineNote;
-import nhom7.thh.meomeonote.ui.main.SectionsPagerAdapter;
+import nhom7.thh.meomeonote.ui.calendarinfo.SectionsPagerAdapter;
 import nhom7.thh.meomeonote.util.Mapper;
 
 public class CalendarInfoActivity extends AppCompatActivity {
@@ -42,7 +42,6 @@ public class CalendarInfoActivity extends AppCompatActivity {
                     List<LineNote> lineNotes = new ArrayList<>();
                     List<Note> notes = dbHelper.getNodeByUserIdAndDate(9999, date);
                     for (Note i : notes) {
-
                         lineNotes.add(Mapper.mapNoteEntityToLineNote(i, CalendarInfoActivity.this));
                     }
                     LineNoteAdapter lineNoteAdapter = new LineNoteAdapter(lineNotes, CalendarInfoActivity.this);
@@ -54,7 +53,6 @@ public class CalendarInfoActivity extends AppCompatActivity {
                     LineNoteAdapter lineNoteAdapter = new LineNoteAdapter(lineNotes, CalendarInfoActivity.this);
                     listView.setAdapter(lineNoteAdapter);
                 }
-
             }
 
             @Override

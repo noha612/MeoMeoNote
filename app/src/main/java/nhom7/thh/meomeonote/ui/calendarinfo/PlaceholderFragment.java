@@ -1,10 +1,9 @@
-package nhom7.thh.meomeonote.ui.main;
+package nhom7.thh.meomeonote.ui.calendarinfo;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,15 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import nhom7.thh.meomeonote.R;
-import nhom7.thh.meomeonote.adapter.LineNoteAdapter;
-import nhom7.thh.meomeonote.dbhelper.DbHelper;
-import nhom7.thh.meomeonote.entity.Note;
-import nhom7.thh.meomeonote.model.LineNote;
-import nhom7.thh.meomeonote.util.Mapper;
 
 /**
  * A placeholder fragment containing a simple view.
