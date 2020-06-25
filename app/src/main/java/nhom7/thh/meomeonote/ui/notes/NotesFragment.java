@@ -45,9 +45,7 @@ public class NotesFragment extends Fragment {
                 ViewModelProviders.of(this).get(NotesViewModel.class);
         root = inflater.inflate(R.layout.fragment_home, container, false);
         listNotes = root.findViewById(R.id.list_notes);
-
         loadNotes();
-
         listNotes.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -61,18 +59,14 @@ public class NotesFragment extends Fragment {
                         temp.setStatus(1);
                         dbHelper.updateNote(temp);
                         snackbar.dismiss();
-
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.detach(NotesFragment.this).attach(NotesFragment.this).commit();
                     }
                 });
                 snackbar.show();
                 dbHelper.deleteNote(temp);
-
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.detach(NotesFragment.this).attach(NotesFragment.this).commit();
-
-
                 return true;
             }
         });

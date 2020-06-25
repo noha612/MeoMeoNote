@@ -232,7 +232,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
 
-    public void addNote(Note note) {
+    public long addNote(Note note) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
@@ -245,10 +245,12 @@ public class DbHelper extends SQLiteOpenHelper {
             values.put(NOTE_TITLE, note.getTitle());
             values.put(NOTE_USER_ID, note.getUser_id());
             values.put(NOTE_CAT_NAME, note.getCatName());
-            db.insert(NOTE_TABLE_NAME, null, values);
+            long id = db.insert(NOTE_TABLE_NAME, null, values);
             db.close();
+            return id;
         } catch (Exception e) {
             Log.v("error", e.toString());
+            return 0;
         }
     }
 
