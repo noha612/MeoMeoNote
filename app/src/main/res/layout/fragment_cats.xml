@@ -4,16 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background2"
-    tools:context=".ui.cats.CatsFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.cats.CatsFragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cat Collections"
         android:gravity="center"
+        android:text="Cat Collections"
         android:textSize="18sp"
         android:textStyle="bold" />
+
     <GridView
         android:id="@+id/grid_cats"
         android:layout_width="match_parent"

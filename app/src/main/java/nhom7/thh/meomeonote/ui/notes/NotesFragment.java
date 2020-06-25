@@ -21,14 +21,12 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import nhom7.thh.meomeonote.MainActivity;
 import nhom7.thh.meomeonote.NoteDetailActivity;
 import nhom7.thh.meomeonote.R;
 import nhom7.thh.meomeonote.adapter.LineNoteAdapter;
 import nhom7.thh.meomeonote.dbhelper.DbHelper;
 import nhom7.thh.meomeonote.entity.Note;
 import nhom7.thh.meomeonote.model.LineNote;
-import nhom7.thh.meomeonote.util.BaseUtil;
 import nhom7.thh.meomeonote.util.Mapper;
 
 public class NotesFragment extends Fragment {
@@ -73,7 +71,6 @@ public class NotesFragment extends Fragment {
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.detach(NotesFragment.this).attach(NotesFragment.this).commit();
-
 
 
                 return true;
