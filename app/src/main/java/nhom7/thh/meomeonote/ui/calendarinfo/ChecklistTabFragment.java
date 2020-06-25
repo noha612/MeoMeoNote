@@ -4,19 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import nhom7.thh.meomeonote.R;
-import nhom7.thh.meomeonote.adapter.LineNoteAdapter;
-import nhom7.thh.meomeonote.dbhelper.DbHelper;
-import nhom7.thh.meomeonote.entity.Note;
-import nhom7.thh.meomeonote.model.LineNote;
-import nhom7.thh.meomeonote.util.Mapper;
 
 public class ChecklistTabFragment extends Fragment {
     String date;

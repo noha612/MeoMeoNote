@@ -9,7 +9,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 import nhom7.thh.meomeonote.adapter.TabAdapter;
-import nhom7.thh.meomeonote.dbhelper.DbHelper;
 import nhom7.thh.meomeonote.ui.calendarinfo.ChecklistTabFragment;
 import nhom7.thh.meomeonote.ui.calendarinfo.NoteTabFragment;
 
