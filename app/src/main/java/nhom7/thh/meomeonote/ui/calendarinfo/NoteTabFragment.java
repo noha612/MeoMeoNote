@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,13 @@ public class NoteTabFragment extends Fragment {
             }
         });
         return root;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(NoteTabFragment.this).attach(NoteTabFragment.this).commit();
     }
 
     public void setDate(String date) {

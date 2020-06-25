@@ -3,16 +3,10 @@ package nhom7.thh.meomeonote.dbhelper;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
@@ -53,6 +47,15 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String NOTE_CAT_NAME = "cat_name";
 
 
+    private static final String CHECKLIST_TABLE_NAME = "checklist";
+    private static final String CHECKLIST_ID = "id";
+    private static final String CHECKLIST_PASSWORD = "password";
+    private static final String CHECKLIST_CONTENT = "content";
+    private static final String CHECKLIST_CREATED = "created";
+    private static final String CHECKLIST_LAST_MODIFIED = "last_modified";
+    private static final String CHECKLIST_STATUS = "status";
+    private static final String CHECKLIST_USER_ID = "user_id";
+
     private static final String ATTACHMENT_TABLE_NAME = "attachment";
     private static final String ATTACHMENT_ID = "id";
     private static final String ATTACHMENT_LINK = "link";
@@ -69,19 +72,6 @@ public class DbHelper extends SQLiteOpenHelper {
         this.context = context;
     }
 
-    public DbHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
-    }
-
-    public DbHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version, @Nullable DatabaseErrorHandler errorHandler) {
-        super(context, name, factory, version, errorHandler);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    public DbHelper(@Nullable Context context, @Nullable String name, int version, @NonNull SQLiteDatabase.OpenParams openParams) {
-        super(context, name, version, openParams);
-    }
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sqlQueryUser = "CREATE TABLE " + USER_TABLE_NAME + " (" +
@@ -90,6 +80,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 USER_STATUS + " TEXT," +
                 USER_PHONE_NUMBER + " TEXT)";
         db.execSQL(sqlQueryUser);
+
         String sqlQueryNote = "CREATE TABLE " + NOTE_TABLE_NAME + " (" +
                 NOTE_ID + " integer primary key AUTOINCREMENT , " +
                 NOTE_PASSWORD + " TEXT," +
@@ -102,6 +93,17 @@ public class DbHelper extends SQLiteOpenHelper {
                 NOTE_STATUS + " integer," +
                 NOTE_USER_ID + " integer)";
         db.execSQL(sqlQueryNote);
+
+        String sqlQueryChecklist = "CREATE TABLE " + CHECKLIST_TABLE_NAME + " (" +
+                CHECKLIST_ID + " integer primary key AUTOINCREMENT , " +
+                CHECKLIST_CONTENT + " TEXT," +
+                CHECKLIST_CREATED + " TEXT," +
+                CHECKLIST_LAST_MODIFIED + " TEXT," +
+                CHECKLIST_PASSWORD + " TEXT," +
+                CHECKLIST_STATUS + " integer," +
+                CHECKLIST_USER_ID + " integer)";
+        db.execSQL(sqlQueryChecklist);
+
         String sqlQueryAtt = "CREATE TABLE " + ATTACHMENT_TABLE_NAME + " (" +
                 ATTACHMENT_ID + " integer primary key AUTOINCREMENT, " +
                 ATTACHMENT_LINK + " TEXT," +
