@@ -33,7 +33,6 @@ public class CalendarFragment extends Fragment {
                 String m = month > 10 ? month + "" : ("0" + month);
                 String date = dayOfMonth + "/" + m + "/" + year;
                 intent.putExtra("date", date);
-                Toast.makeText(getContext(), date, Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
         });
