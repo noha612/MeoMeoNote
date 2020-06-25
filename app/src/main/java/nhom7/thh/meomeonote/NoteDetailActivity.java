@@ -105,19 +105,6 @@ public class NoteDetailActivity extends AppCompatActivity {
                     note.setLast_modified(BaseUtil.getCurrentTime());
                     if (timerDate != null || timerTime != null) {
                         note.setTimer(timerTime + " " + timerDate);
-
-                        Intent myIntent = new Intent(this , NotifyService.class);
-                        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-                        PendingIntent pendingIntent = PendingIntent.getService(this, 0, myIntent, 0);
-
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.set(Calendar.SECOND, 0);
-                        calendar.set(Calendar.MINUTE, 0);
-                        calendar.set(Calendar.HOUR, 0);
-                        calendar.set(Calendar.AM_PM, Calendar.AM);
-                        calendar.add(Calendar.DAY_OF_MONTH, 1);
-
-                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000*60*60*24 , pendingIntent);
                     }
 
                     if (note.getId() == -1) {
@@ -192,7 +179,7 @@ public class NoteDetailActivity extends AppCompatActivity {
                         DatePickerDialog datePickerDialog = new DatePickerDialog(NoteDetailActivity.this, new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                monthOfYear+=1;
+                                monthOfYear += 1;
                                 String day = dayOfMonth < 10 ? ("0" + dayOfMonth) : dayOfMonth + "";
                                 String month = monthOfYear < 10 ? ("0" + monthOfYear) : monthOfYear + "";
                                 setDate.setText(day + "/" + month + "/" + year);

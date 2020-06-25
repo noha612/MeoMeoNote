@@ -9,9 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service
-            android:name=".NotifyService"
-            android:exported="false"></service>
 
         <activity
             android:name=".CalendarInfoActivity"
