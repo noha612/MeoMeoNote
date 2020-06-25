@@ -32,7 +32,7 @@ public class ReminderService extends Service {
         Log.v("ac", "ab");
         String title = intent.getStringExtra("title");
         String content = intent.getStringExtra("content");
-        Log.v("service", title);
+        Log.v("service", title != null ? title : "");
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_launcher)

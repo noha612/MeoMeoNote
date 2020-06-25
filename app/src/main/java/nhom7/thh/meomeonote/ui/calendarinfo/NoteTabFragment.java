@@ -42,14 +42,9 @@ public class NoteTabFragment extends Fragment {
                 Intent i = new Intent(getActivity(), NoteDetailActivity.class);
                 i.putExtra("note", notes.get(position));
                 startActivityForResult(i, 0);
-
             }
         });
         return root;
-    }
-
-    public String getDate() {
-        return date;
     }
 
     public void setDate(String date) {
