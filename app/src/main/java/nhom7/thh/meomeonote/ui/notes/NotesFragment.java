@@ -1,17 +1,22 @@
 package nhom7.thh.meomeonote.ui.notes;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
@@ -79,10 +84,48 @@ public class NotesFragment extends Fragment {
 
         listNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(getActivity(), NoteDetailActivity.class);
-                i.putExtra("note", notes.get(position));
-                startActivityForResult(i, 0);
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                final String password = notes.get(position).getPassword();
+                if (password != null) {
+
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Please enter password");
+
+// Set up the input
+                    final EditText input = new EditText(getContext());
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                    input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    builder.setView(input);
+
+// Set up the buttons
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (input.getText().toString() != null && input.getText().toString().equals(password)) {
+                                Intent i = new Intent(getActivity(), NoteDetailActivity.class);
+                                i.putExtra("note", notes.get(position));
+                                startActivityForResult(i, 0);
+                            }
+                            else{
+                                Toast.makeText(getContext(), "Wrong password!", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(getContext(), "Locked!", Toast.LENGTH_LONG).show();
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                } else {
+                    Intent i = new Intent(getActivity(), NoteDetailActivity.class);
+                    i.putExtra("note", notes.get(position));
+                    startActivityForResult(i, 0);
+                }
+
             }
         });
         return root;

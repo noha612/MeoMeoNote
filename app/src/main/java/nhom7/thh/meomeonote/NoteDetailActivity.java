@@ -4,15 +4,26 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.text.InputType;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +31,15 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,6 +50,7 @@ import java.util.Locale;
 
 import nhom7.thh.meomeonote.adapter.GridViewICatIconAdapter;
 import nhom7.thh.meomeonote.dbhelper.DbHelper;
+import nhom7.thh.meomeonote.entity.Attachment;
 import nhom7.thh.meomeonote.entity.Note;
 import nhom7.thh.meomeonote.util.BaseUtil;
 
@@ -42,16 +58,27 @@ public class NoteDetailActivity extends AppCompatActivity {
     Button btnBack;
     Button btnAvtChooser;
     Button btnReminder;
+    Button btnAttach;
+    Button btnLock;
     TextView pageName;
     Button btnEditable;
+    ImageView attachImage;
     EditText title;
     EditText content;
+    FrameLayout frameLayout;
+
     Note note;
+    Attachment attachment;
+
+    Bitmap bitmap;
 
     String timerDate;
     String timerTime;
 
     DbHelper dbHelper;
+
+    static final int CAPTURE_IMAGE_REQUEST_CODE = 69;
+    static final int GALLERY_IMAGE_REQUEST_CODE = 70;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,16 +92,26 @@ public class NoteDetailActivity extends AppCompatActivity {
         btnAvtChooser = findViewById(R.id.btn_avt_chooser);
         btnEditable = findViewById(R.id.btn_editable);
         btnReminder = findViewById(R.id.btn_reminder);
+        btnAttach = findViewById(R.id.btn_attach);
+        btnLock = findViewById(R.id.btn_lock);
+        attachImage = findViewById(R.id.attach_image);
         pageName = findViewById(R.id.page_name);
+        frameLayout = findViewById(R.id.attach_image_layout);
 
         dbHelper = new DbHelper(getApplicationContext());
 
 //        int noteId = getIntent().getIntExtra("note_ID",-1);
         note = (Note) getIntent().getSerializableExtra("note");
+        attachment = new Attachment();
+
+
+        frameLayout.setVisibility(View.INVISIBLE);
+        frameLayout.setEnabled(false);
 
         if (note == null) {
             btnEditable.setVisibility(View.INVISIBLE);
             btnEditable.setEnabled(false);
+
             note = new Note();
             note.setId(-1);
             note.setUser_id(9999);
@@ -88,6 +125,16 @@ public class NoteDetailActivity extends AppCompatActivity {
             title.setEnabled(false);
             content.setEnabled(false);
             btnAvtChooser.setEnabled(false);
+
+            if (note.getCreated() != null) {
+                attachment.setLink(note.getCreated());
+                frameLayout.setVisibility(View.VISIBLE);
+                frameLayout.setEnabled(true);
+
+                byte[] byteArray = Base64.decode(note.getCreated(), Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                attachImage.setImageBitmap(bitmap);
+            }
         }
         btnEditable.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +155,7 @@ public class NoteDetailActivity extends AppCompatActivity {
                     note.setTitle(strTitle);
                     note.setContent(strContent);
                     note.setLast_modified(BaseUtil.getCurrentTime());
+                    note.setCreated(attachment.getLink());
                     if (timerDate != null || timerTime != null) {
                         note.setTimer(timerTime + " " + timerDate);
 
@@ -121,8 +169,8 @@ public class NoteDetailActivity extends AppCompatActivity {
 
                             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                             Intent i = new Intent(NoteDetailActivity.this, ReminderReceiver.class);
-                            i.putExtra("title",note.getTitle());
-                            i.putExtra("content",note.getContent());
+                            i.putExtra("title", note.getTitle());
+                            i.putExtra("content", note.getContent());
                             PendingIntent pendingIntent = PendingIntent.getBroadcast(NoteDetailActivity.this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
                             alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
                         } catch (ParseException e) {
@@ -131,7 +179,8 @@ public class NoteDetailActivity extends AppCompatActivity {
                     }
 
                     if (note.getId() == -1) {
-                        note.setCreated(BaseUtil.getCurrentTime());
+                        //TODO fake image
+//                        note.setCreated(BaseUtil.getCurrentTime());
                         dbHelper.addNote(note);
                     } else {
                         dbHelper.updateNote(note);
@@ -244,12 +293,170 @@ public class NoteDetailActivity extends AppCompatActivity {
 
             }
         });
+
+        btnAttach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(NoteDetailActivity.this);
+                builder.setTitle("Choose your profile picture");
+
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+
+                        if (options[item].equals("Take Photo")) {
+                            Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(takePicture, CAPTURE_IMAGE_REQUEST_CODE);
+
+                        } else if (options[item].equals("Choose from Gallery")) {
+                            Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(pickPhoto, GALLERY_IMAGE_REQUEST_CODE);
+
+                        } else if (options[item].equals("Cancel")) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                builder.show();
+
+            }
+        });
+
+        attachImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(NoteDetailActivity.this, FullAttachImageView.class);
+                byte[] byteArray = Base64.decode(attachment.getLink(), Base64.DEFAULT);
+
+                i.putExtra("image", byteArray);
+
+                startActivity(i);
+            }
+        });
+
+        btnLock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (note.getPassword() == null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(NoteDetailActivity.this);
+                    builder.setTitle("Please enter password");
+
+// Set up the input
+                    final EditText input = new EditText(NoteDetailActivity.this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                    input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    builder.setView(input);
+
+// Set up the buttons
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (input.getText().toString() != null && !input.getText().toString().trim().equals("")) {
+                                note.setPassword(input.getText().toString());
+                                Toast.makeText(NoteDetailActivity.this, "Set password success!", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                } else {
+                    note.setPassword(null);
+                    Toast.makeText(NoteDetailActivity.this, "Unlocked!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.note_detail_activity, menu);
-//        return true;
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_CANCELED) {
+            switch (requestCode) {
+                case CAPTURE_IMAGE_REQUEST_CODE:
+                    if (resultCode == RESULT_OK && data != null) {
+                        bitmap = (Bitmap) data.getExtras().get("data");
+                        Log.v("rc0", bitmap.toString());
+                    }
+
+                    frameLayout.setVisibility(View.VISIBLE);
+                    frameLayout.setEnabled(true);
+                    attachImage.setImageBitmap(bitmap);
+
+                    break;
+                case GALLERY_IMAGE_REQUEST_CODE:
+                    if (resultCode == RESULT_OK && data != null) {
+                        Uri selectedImage = data.getData();
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        if (selectedImage != null) {
+                            Cursor cursor = getContentResolver().query(selectedImage,
+                                    filePathColumn, null, null, null);
+                            if (cursor != null) {
+                                cursor.moveToFirst();
+
+                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                                String picturePath = cursor.getString(columnIndex);
+                                Log.v("rc0", picturePath);
+
+
+                                checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, 101);
+                                BitmapFactory.Options options = new BitmapFactory.Options();
+                                options.inSampleSize = 2;
+//                                Log.v("rc0", BitmapFactory.decodeFile(picturePath, options).toString());
+                                bitmap = BitmapFactory.decodeFile(picturePath, options);
+                                bitmap = Bitmap.createScaledBitmap(bitmap, 500, 500, false);
+                                cursor.close();
+
+                                frameLayout.setVisibility(View.VISIBLE);
+                                frameLayout.setEnabled(true);
+                                attachImage.setImageBitmap(bitmap);
+                            }
+                        }
+
+                    }
+                    break;
+            }
+        }
+
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        try {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        } catch (Exception e) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
+        }
+        byte[] byteArray = stream.toByteArray();
+        String temp = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        attachment.setLink(temp);
+    }
+
+    // Function to check and request permission
+    public void checkPermission(String permission, int requestCode) {
+
+        // Checking if permission is not granted
+        if (ContextCompat.checkSelfPermission(
+                NoteDetailActivity.this,
+                permission)
+                == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat
+                    .requestPermissions(
+                            NoteDetailActivity.this,
+                            new String[]{permission},
+                            requestCode);
+        } else {
+            Toast
+                    .makeText(NoteDetailActivity.this,
+                            "Permission already granted",
+                            Toast.LENGTH_SHORT)
+                    .show();
+        }
+    }
 }

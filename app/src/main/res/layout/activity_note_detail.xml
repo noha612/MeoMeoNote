@@ -38,11 +38,25 @@
                 android:textStyle="bold" />
 
             <Button
+                android:id="@+id/btn_lock"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_toLeftOf="@id/btn_attach"
+                android:background="@android:drawable/ic_lock_lock" />
+
+            <Button
+                android:id="@+id/btn_attach"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_toLeftOf="@id/btn_reminder"
+                android:background="@android:drawable/ic_menu_gallery" />
+
+            <Button
                 android:id="@+id/btn_reminder"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
-                android:background="@android:drawable/ic_lock_idle_alarm" />
+                android:background="@android:drawable/ic_menu_recent_history" />
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
@@ -60,12 +74,24 @@
 
         <EditText
             android:id="@+id/note_title"
-            android:layout_width="240dp"
+            android:layout_width="200dp"
             android:layout_height="85dp"
             android:hint="Title..."
             android:textColor="@android:color/background_dark"
             android:textSize="24sp"
             android:textStyle="bold" />
+
+        <FrameLayout
+            android:id="@+id/attach_image_layout"
+            android:layout_width="49dp"
+            android:layout_height="match_parent"
+            android:background="?attr/actionBarDivider">
+
+            <ImageView
+                android:id="@+id/attach_image"
+                android:layout_width="50dp"
+                android:layout_height="match_parent" />
+        </FrameLayout>
 
 
         <Button
@@ -78,7 +104,7 @@
     <EditText
         android:id="@+id/note_content"
         android:layout_width="match_parent"
-        android:layout_height="676dp"
+        android:layout_height="619dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="@null"
