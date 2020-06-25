@@ -35,38 +35,5 @@ public class CalendarInfoActivity extends AppCompatActivity {
         adapter.addFragment(checklistTabFragment, "Checklist");
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
-
-
-        tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
-                int index = tabs.getSelectedTabPosition();
-//                if (index == 0) {
-//                    final ListView listView = findViewById(R.id.lstViewCalendar);
-//                    List<LineNote> lineNotes = new ArrayList<>();
-//                    List<Note> notes = dbHelper.getNodeByUserIdAndDate(9999, date);
-//                    for (Note i : notes) {
-//                        lineNotes.add(Mapper.mapNoteEntityToLineNote(i, CalendarInfoActivity.this));
-//                    }
-//                    LineNoteAdapter lineNoteAdapter = new LineNoteAdapter(lineNotes, CalendarInfoActivity.this);
-//                    listView.setAdapter(lineNoteAdapter);
-//                }
-//                if (index == 1) {
-//                    final ListView listView = findViewById(R.id.lstViewCalendar);
-//                    List<LineNote> lineNotes = new ArrayList<>();
-//                    LineNoteAdapter lineNoteAdapter = new LineNoteAdapter(lineNotes, CalendarInfoActivity.this);
-//                    listView.setAdapter(lineNoteAdapter);
-//                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
     }
 }
