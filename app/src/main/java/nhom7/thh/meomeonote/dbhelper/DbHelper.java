@@ -331,7 +331,7 @@ public class DbHelper extends SQLiteOpenHelper {
         return listReturn;
     }
 
-    public HashSet<CalendarDay> getNodeByUserIdAndMonth(int userId, String date)  {
+    public HashSet<CalendarDay> getNodeByUserIdAndMonth(int userId, String date) {
         HashSet<CalendarDay> set = new HashSet<>();
         List<Note> list = getNodeByUserId(userId);
         List<Note> listReturn = new ArrayList<>();
@@ -342,7 +342,7 @@ public class DbHelper extends SQLiteOpenHelper {
         }
         for (Note note : listReturn) {
             String d = note.getTimer();
-            Date date1= null;
+            Date date1 = null;
             try {
                 date1 = new SimpleDateFormat("dd/MM/yyyy").parse(d.split("\\s+")[1]);
             } catch (ParseException e) {

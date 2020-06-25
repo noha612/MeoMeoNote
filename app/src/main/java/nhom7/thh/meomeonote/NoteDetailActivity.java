@@ -1,19 +1,12 @@
 package nhom7.thh.meomeonote;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,7 +16,11 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -121,8 +118,8 @@ public class NoteDetailActivity extends AppCompatActivity {
 
                             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                             Intent i = new Intent(NoteDetailActivity.this, ReminderReceiver.class);
-                            i.putExtra("title",note.getTitle());
-                            i.putExtra("content",note.getContent());
+                            i.putExtra("title", note.getTitle());
+                            i.putExtra("content", note.getContent());
                             PendingIntent pendingIntent = PendingIntent.getBroadcast(NoteDetailActivity.this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
                             alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
                         } catch (ParseException e) {

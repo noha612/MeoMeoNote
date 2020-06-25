@@ -17,7 +17,7 @@
         app:mcv_selectionColor="#00F"
         app:mcv_showOtherDates="all"
         tools:ignore="MissingConstraints" />
-<!--    <CalendarView-->
+    <!--    <CalendarView-->
     <!--        android:id="@+id/calendarView"-->
     <!--        android:layout_width="match_parent"-->
     <!--        android:layout_height="match_parent"-->
