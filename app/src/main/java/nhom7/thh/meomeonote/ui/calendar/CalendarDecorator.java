@@ -1,0 +1,38 @@
+package nhom7.thh.meomeonote.ui.calendar;
+
+import android.graphics.Color;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
+
+import androidx.core.content.ContextCompat;
+
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
+
+import java.util.HashSet;
+
+import nhom7.thh.meomeonote.R;
+
+public class CalendarDecorator implements DayViewDecorator {
+    private int mColor;
+    private HashSet<CalendarDay> mCalendarDayCollection;
+
+    public CalendarDecorator(int color, HashSet<CalendarDay> calendarDayCollection) {
+        mColor = color;
+        mCalendarDayCollection = calendarDayCollection;
+    }
+
+    @Override
+    public boolean shouldDecorate(CalendarDay day) {
+        return mCalendarDayCollection.contains(day);
+    }
+
+    @Override
+    public void decorate(DayViewFacade view) {
+        view.addSpan(new ForegroundColorSpan(mColor));
+        view.addSpan(new BackgroundColorSpan(Color.GREEN));
+//        view.setBackgroundDrawable(R.drawable.);
+
+    }
+}

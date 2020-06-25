@@ -1,18 +1,27 @@
 package nhom7.thh.meomeonote.ui.calendar;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateLongClickListener;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
+
+import java.util.HashSet;
+
 import nhom7.thh.meomeonote.CalendarInfoActivity;
 import nhom7.thh.meomeonote.R;
+import nhom7.thh.meomeonote.dbhelper.DbHelper;
 
 public class CalendarFragment extends Fragment {
 
@@ -23,19 +32,40 @@ public class CalendarFragment extends Fragment {
         calendarViewModel =
                 ViewModelProviders.of(this).get(CalendarViewModel.class);
         View root = inflater.inflate(R.layout.fragment_calendar, container, false);
-        CalendarView calendarView = root.findViewById(R.id.calendarView);
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        final MaterialCalendarView materialCalendarView = root.findViewById(R.id.calendarView);
+        materialCalendarView.state().edit().setCalendarDisplayMode(CalendarMode.MONTHS).commit();
+        materialCalendarView.setSelectionColor(Color.GRAY);
+
+
+        final CalendarDay currentDate = materialCalendarView.getCurrentDate();
+        String month = (currentDate.getMonth() + 1) + "/" + currentDate.getYear();
+        DbHelper db = new DbHelper(getContext());
+        HashSet<CalendarDay> setDays = db.getNodeByUserIdAndMonth(9999, month);
+        materialCalendarView.addDecorator(new CalendarDecorator(Color.RED, setDays));
+
+
+        materialCalendarView.setOnDateLongClickListener(new OnDateLongClickListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+            public void onDateLongClick(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date) {
                 Intent intent = new Intent(getActivity(), CalendarInfoActivity.class);
-                month++;
+                int month = date.getMonth() + 1;
                 String m = month > 10 ? month + "" : ("0" + month);
-                String date = dayOfMonth + "/" + m + "/" + year;
-                intent.putExtra("date", date);
+                String d = date.getDay() + "/" + m + "/" + date.getYear();
+                intent.putExtra("date", d);
                 startActivity(intent);
             }
         });
-
+        materialCalendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
+            @Override
+            public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+                String month = (date.getMonth() + 1) + "/" + date.getYear();
+                DbHelper db = new DbHelper(getContext());
+                HashSet<CalendarDay> setDays = db.getNodeByUserIdAndMonth(9999, month);
+                materialCalendarView.addDecorator(new CalendarDecorator(Color.RED, setDays));
+            }
+        });
         return root;
     }
+
+
 }
