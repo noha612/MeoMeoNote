@@ -21,14 +21,12 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import nhom7.thh.meomeonote.MainActivity;
 import nhom7.thh.meomeonote.NoteDetailActivity;
 import nhom7.thh.meomeonote.R;
 import nhom7.thh.meomeonote.adapter.LineNoteAdapter;
 import nhom7.thh.meomeonote.dbhelper.DbHelper;
 import nhom7.thh.meomeonote.entity.Note;
 import nhom7.thh.meomeonote.model.LineNote;
-import nhom7.thh.meomeonote.util.BaseUtil;
 import nhom7.thh.meomeonote.util.Mapper;
 
 public class NotesFragment extends Fragment {
@@ -53,22 +51,26 @@ public class NotesFragment extends Fragment {
         listNotes.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                final Note temp = notes.get(position);
+                final DbHelper dbHelper = new DbHelper(getActivity().getApplicationContext());
                 final Snackbar snackbar = Snackbar.make(view, "Deleted.", Snackbar.LENGTH_LONG);
-                snackbar.setAction("redo(not release...)", new View.OnClickListener() {
+                snackbar.setAction("redo", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        temp.setStatus(1);
+                        dbHelper.updateNote(temp);
                         snackbar.dismiss();
+
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.detach(NotesFragment.this).attach(NotesFragment.this).commit();
                     }
                 });
                 snackbar.show();
-                DbHelper dbHelper = new DbHelper(getActivity().getApplicationContext());
-                Note temp = new Note();
-                temp.setId(lineNotes.get(position).getId());
                 dbHelper.deleteNote(temp);
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.detach(NotesFragment.this).attach(NotesFragment.this).commit();
-
 
 
                 return true;

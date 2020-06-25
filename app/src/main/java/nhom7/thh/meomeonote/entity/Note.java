@@ -27,7 +27,10 @@ public class Note implements Serializable {
         this.timer = timer;
         this.status = status;
         this.user_id = user_id;
-        this.catName=catName;
+        this.catName = catName;
+    }
+
+    public Note() {
     }
 
     public String getCatName() {
@@ -36,9 +39,6 @@ public class Note implements Serializable {
 
     public void setCatName(String catName) {
         this.catName = catName;
-    }
-
-    public Note() {
     }
 
     public int getId() {

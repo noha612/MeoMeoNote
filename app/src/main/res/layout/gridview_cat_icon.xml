@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -9,12 +7,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Icon Picker"
         android:gravity="center"
-        />
+        android:text="Icon Picker" />
+
     <GridView
         android:id="@+id/cat_avt_chooser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:numColumns="6"/>
+        android:numColumns="6" />
 </LinearLayout>

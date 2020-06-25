@@ -9,6 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver
+            android:name=".ReminderReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
+        <service
+            android:name=".ReminderService"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity
             android:name=".CalendarInfoActivity"
             android:label="@string/title_activity_calendar_info"

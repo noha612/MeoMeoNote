@@ -14,9 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import nhom7.thh.meomeonote.entity.Attachment;
@@ -167,7 +173,6 @@ public class DbHelper extends SQLiteOpenHelper {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public int deleteUser(User user) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -324,6 +329,29 @@ public class DbHelper extends SQLiteOpenHelper {
             }
         }
         return listReturn;
+    }
+
+    public HashSet<CalendarDay> getNodeByUserIdAndMonth(int userId, String date)  {
+        HashSet<CalendarDay> set = new HashSet<>();
+        List<Note> list = getNodeByUserId(userId);
+        List<Note> listReturn = new ArrayList<>();
+        for (Note note : list) {
+            if (BaseUtil.compareDate(date, note.getTimer())) {
+                listReturn.add(note);
+            }
+        }
+        for (Note note : listReturn) {
+            String d = note.getTimer();
+            Date date1= null;
+            try {
+                date1 = new SimpleDateFormat("dd/MM/yyyy").parse(d.split("\\s+")[1]);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            CalendarDay calDay = CalendarDay.from(date1);
+            set.add(calDay);
+        }
+        return set;
     }
 
     public List<Note> getNodeByUserId(int userId) {
