@@ -23,10 +23,15 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import nhom7.thh.meomeonote.adapter.GridViewICatIconAdapter;
 import nhom7.thh.meomeonote.dbhelper.DbHelper;
@@ -105,6 +110,24 @@ public class NoteDetailActivity extends AppCompatActivity {
                     note.setLast_modified(BaseUtil.getCurrentTime());
                     if (timerDate != null || timerTime != null) {
                         note.setTimer(timerTime + " " + timerDate);
+
+                        Calendar cal = Calendar.getInstance();
+                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.ENGLISH);
+                        try {
+                            cal.setTime(sdf.parse(note.getTimer()));// all done
+                            Date date = cal.getTime();
+
+//                            Toast.makeText(NoteDetailActivity.this, note.toString(), Toast.LENGTH_SHORT).show();
+
+                            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                            Intent i = new Intent(NoteDetailActivity.this, ReminderReceiver.class);
+                            i.putExtra("title",note.getTitle());
+                            i.putExtra("content",note.getContent());
+                            PendingIntent pendingIntent = PendingIntent.getBroadcast(NoteDetailActivity.this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     if (note.getId() == -1) {

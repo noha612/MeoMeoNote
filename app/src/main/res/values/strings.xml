@@ -21,7 +21,7 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="about_version"><b>1.0</b></string>
+    <string name="about_version"><b>1.1(Beta)</b></string>
     <string name="about_author">hoa, hoang, thang</string>
     <string name="about_contact_fb"><u>fb.com/noha612</u></string>
 
