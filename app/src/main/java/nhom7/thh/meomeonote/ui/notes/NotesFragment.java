@@ -94,7 +94,7 @@ public class NotesFragment extends Fragment {
             }
             LineNoteAdapter lineNoteAdapter = new LineNoteAdapter(lineNotes, getActivity());
             listNotes.setAdapter(lineNoteAdapter);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
     }
