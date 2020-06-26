@@ -1,15 +1,14 @@
 package nhom7.thh.meomeonote;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class FullAttachImageView extends AppCompatActivity {
 
-    ImageView fullImage;
+    ozaydin.serkan.com.image_zoom_view.ImageViewZoom fullImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

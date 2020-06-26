@@ -2,7 +2,6 @@ package nhom7.thh.meomeonote;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -10,12 +9,8 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
-
-import nhom7.thh.meomeonote.entity.Note;
-import nhom7.thh.meomeonote.util.BaseUtil;
 
 public class ReminderService extends Service {
     MediaPlayer mediaPlayer;
@@ -37,7 +32,7 @@ public class ReminderService extends Service {
         Log.v("ac", "ab");
         String title = intent.getStringExtra("title");
         String content = intent.getStringExtra("content");
-        Log.v("service",title);
+        Log.v("service", title);
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_launcher)
@@ -46,12 +41,11 @@ public class ReminderService extends Service {
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-        {
-            String channelId = startId+"";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = startId + "";
             NotificationChannel channel = new NotificationChannel(
                     channelId,
-                    startId+"",
+                    startId + "",
                     NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
             mBuilder.setChannelId(channelId);

@@ -47,7 +47,12 @@ public class LineNoteAdapter extends BaseAdapter {
         ImageView catAvt = convertView.findViewById(R.id.line_cat_avt);
 
         title.setText(lineNotes.get(position).getTitle());
-        shortContent.setText(lineNotes.get(position).getShortContent());
+        if(lineNotes.get(position).isLocked()){
+            shortContent.setText("****************************");
+        }
+        else {
+            shortContent.setText(lineNotes.get(position).getShortContent());
+        }
         lastModified.setText(lineNotes.get(position).getLastModified());
         catAvt.setImageResource(lineNotes.get(position).getCatAvt());
 
