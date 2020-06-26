@@ -16,12 +16,9 @@ import nhom7.thh.meomeonote.R;
 
 public class AboutFragment extends Fragment {
 
-    private AboutViewModel aboutViewModel;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        aboutViewModel =
-                ViewModelProviders.of(this).get(AboutViewModel.class);
+        AboutViewModel aboutViewModel = ViewModelProviders.of(this).get(AboutViewModel.class);
         View root = inflater.inflate(R.layout.fragment_about, container, false);
         final TextView textView = root.findViewById(R.id.about_contact_fb);
         textView.setOnClickListener(new View.OnClickListener() {

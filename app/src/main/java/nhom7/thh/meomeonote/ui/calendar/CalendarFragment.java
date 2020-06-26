@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
@@ -25,25 +24,17 @@ import nhom7.thh.meomeonote.dbhelper.DbHelper;
 
 public class CalendarFragment extends Fragment {
 
-    private CalendarViewModel calendarViewModel;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        calendarViewModel =
-                ViewModelProviders.of(this).get(CalendarViewModel.class);
         View root = inflater.inflate(R.layout.fragment_calendar, container, false);
         final MaterialCalendarView materialCalendarView = root.findViewById(R.id.calendarView);
         materialCalendarView.state().edit().setCalendarDisplayMode(CalendarMode.MONTHS).commit();
         materialCalendarView.setSelectionColor(Color.GRAY);
-
-
         final CalendarDay currentDate = materialCalendarView.getCurrentDate();
         String month = (currentDate.getMonth() + 1) + "/" + currentDate.getYear();
         DbHelper db = new DbHelper(getContext());
         HashSet<CalendarDay> setDays = db.getNodeByUserIdAndMonth(9999, month);
         materialCalendarView.addDecorator(new CalendarDecorator(Color.RED, setDays));
-
-
         materialCalendarView.setOnDateLongClickListener(new OnDateLongClickListener() {
             @Override
             public void onDateLongClick(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date) {
