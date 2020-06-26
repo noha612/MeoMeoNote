@@ -22,7 +22,6 @@ public class BaseUtil {
     public static String getCurrentTime() {
         Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
-        String strDate = dateFormat.format(date);
-        return strDate;
+        return dateFormat.format(date);
     }
 }

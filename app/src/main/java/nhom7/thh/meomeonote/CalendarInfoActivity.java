@@ -13,20 +13,17 @@ import nhom7.thh.meomeonote.ui.calendarinfo.ChecklistTabFragment;
 import nhom7.thh.meomeonote.ui.calendarinfo.NoteTabFragment;
 
 public class CalendarInfoActivity extends AppCompatActivity {
-    private TabAdapter adapter;
-    private TabLayout tabs;
-    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_info);
-        viewPager = findViewById(R.id.view_pager);
-        tabs = findViewById(R.id.tabs);
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
         Intent intent = getIntent();
         final String date = intent.getStringExtra("date");
-        adapter = new TabAdapter(getSupportFragmentManager());
+        TabAdapter adapter = new TabAdapter(getSupportFragmentManager());
         NoteTabFragment noteTabFragment = new NoteTabFragment();
         noteTabFragment.setDate(date);
         adapter.addFragment(noteTabFragment, "Note");
@@ -35,38 +32,5 @@ public class CalendarInfoActivity extends AppCompatActivity {
         adapter.addFragment(checklistTabFragment, "Checklist");
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
-
-
-        tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
-                int index = tabs.getSelectedTabPosition();
-//                if (index == 0) {
-//                    final ListView listView = findViewById(R.id.lstViewCalendar);
-//                    List<LineNote> lineNotes = new ArrayList<>();
-//                    List<Note> notes = dbHelper.getNodeByUserIdAndDate(9999, date);
-//                    for (Note i : notes) {
-//                        lineNotes.add(Mapper.mapNoteEntityToLineNote(i, CalendarInfoActivity.this));
-//                    }
-//                    LineNoteAdapter lineNoteAdapter = new LineNoteAdapter(lineNotes, CalendarInfoActivity.this);
-//                    listView.setAdapter(lineNoteAdapter);
-//                }
-//                if (index == 1) {
-//                    final ListView listView = findViewById(R.id.lstViewCalendar);
-//                    List<LineNote> lineNotes = new ArrayList<>();
-//                    LineNoteAdapter lineNoteAdapter = new LineNoteAdapter(lineNotes, CalendarInfoActivity.this);
-//                    listView.setAdapter(lineNoteAdapter);
-//                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
     }
 }

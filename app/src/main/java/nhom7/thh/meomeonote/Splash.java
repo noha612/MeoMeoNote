@@ -2,6 +2,7 @@ package nhom7.thh.meomeonote;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,9 +21,8 @@ public class Splash extends AppCompatActivity {
                     super.run();
                     sleep(1000);  //Delay of 3 seconds
                 } catch (Exception e) {
-
+                    Log.v("error", e.toString());
                 } finally {
-
                     Intent i = new Intent(Splash.this,
                             MainActivity.class);
 //                    Intent i = new Intent(Splash.this,
