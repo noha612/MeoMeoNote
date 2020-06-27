@@ -35,6 +35,11 @@ public class CalendarFragment extends Fragment {
         DbHelper db = new DbHelper(getContext());
         HashSet<CalendarDay> setDays = db.getNodeByUserIdAndMonth(9999, month);
         materialCalendarView.addDecorator(new CalendarDecorator(Color.RED, setDays));
+
+        HashSet<CalendarDay> setDaysChecklist = db.getNodeByUserIdAndMonth(9999, month);
+        materialCalendarView.addDecorator(new CalendarDecorator(Color.GREEN, setDaysChecklist));
+
+
         materialCalendarView.setOnDateLongClickListener(new OnDateLongClickListener() {
             @Override
             public void onDateLongClick(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date) {
@@ -53,6 +58,9 @@ public class CalendarFragment extends Fragment {
                 DbHelper db = new DbHelper(getContext());
                 HashSet<CalendarDay> setDays = db.getNodeByUserIdAndMonth(9999, month);
                 materialCalendarView.addDecorator(new CalendarDecorator(Color.RED, setDays));
+
+                HashSet<CalendarDay> setDaysChecklist = db.getNodeByUserIdAndMonth(9999, month);
+                materialCalendarView.addDecorator(new CalendarDecorator(Color.GREEN, setDaysChecklist));
             }
         });
         return root;

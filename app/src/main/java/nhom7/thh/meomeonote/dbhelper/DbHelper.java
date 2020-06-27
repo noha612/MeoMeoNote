@@ -517,7 +517,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
 
-    public List<Checklist> getNodeByUserIdOrderByCreaded(int userId) {
+    public List<Checklist> getChecklistByUserIdOrderByCreaded(int userId) {
         List<Checklist> checklists = getChecklistByUserId(userId);
         Collections.sort(checklists, new Comparator<Checklist>() {
             @Override
@@ -528,6 +528,40 @@ public class DbHelper extends SQLiteOpenHelper {
             }
         });
         return checklists;
+    }
+
+    public HashSet<CalendarDay> getChecklistByUserIdAndMonth(int userId, String date) {
+        HashSet<CalendarDay> set = new HashSet<>();
+        List<Checklist> list = getChecklistByUserId(userId);
+        List<Checklist> listReturn = new ArrayList<>();
+        for (Checklist checklist : list) {
+            if (BaseUtil.compareDate(date, checklist.getCreated())) {
+                listReturn.add(checklist);
+            }
+        }
+        for (Checklist checklist : listReturn) {
+            String d = checklist.getCreated();
+            Date date1 = null;
+            try {
+                date1 = new SimpleDateFormat("dd/MM/yyyy").parse(d.split("\\s+")[1]);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            CalendarDay calDay = CalendarDay.from(date1);
+            set.add(calDay);
+        }
+        return set;
+    }
+
+    public List<Checklist> getChecklistByUserIdAndDate(int userId, String date) {
+        List<Checklist> list = getChecklistByUserId(userId);
+        List<Checklist> listReturn = new ArrayList<>();
+        for (Checklist checklist : list) {
+            if (BaseUtil.compareDate(date, checklist.getCreated())) {
+                listReturn.add(checklist);
+            }
+        }
+        return listReturn;
     }
 
     public void addAttachment(Attachment attachment) {
