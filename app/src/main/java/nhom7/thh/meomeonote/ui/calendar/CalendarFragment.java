@@ -33,8 +33,24 @@ public class CalendarFragment extends Fragment {
         final CalendarDay currentDate = materialCalendarView.getCurrentDate();
         String month = (currentDate.getMonth() + 1) + "/" + currentDate.getYear();
         DbHelper db = new DbHelper(getContext());
-        HashSet<CalendarDay> setDays = db.getNodeByUserIdAndMonth(9999, month);
-        materialCalendarView.addDecorator(new CalendarDecorator(Color.RED, setDays));
+        final HashSet<CalendarDay> setDayNote = db.getNodeByUserIdAndMonth(9999, month);
+        materialCalendarView.addDecorator(new CalendarDecorator(Color.RED, setDayNote));
+
+        HashSet<CalendarDay> setDaysChecklist = db.getChecklistByUserIdAndMonth(9999, month);
+        materialCalendarView.addDecorator(new CalendarDecorator(Color.GREEN, setDaysChecklist));
+
+        HashSet<String> set1 = new HashSet<>();
+        for (CalendarDay c : setDaysChecklist) {
+            set1.add(c.getDate().toString());
+        }
+        HashSet<CalendarDay> calendarDayHashSet = new HashSet<>();
+        for (CalendarDay calendarDay : setDayNote) {
+            if (set1.contains(calendarDay.getDate().toString())) {
+                calendarDayHashSet.add(calendarDay);
+            }
+        }
+        materialCalendarView.addDecorator(new CalendarDecorator(Color.YELLOW, calendarDayHashSet));
+
         materialCalendarView.setOnDateLongClickListener(new OnDateLongClickListener() {
             @Override
             public void onDateLongClick(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date) {
@@ -51,8 +67,23 @@ public class CalendarFragment extends Fragment {
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
                 String month = (date.getMonth() + 1) + "/" + date.getYear();
                 DbHelper db = new DbHelper(getContext());
-                HashSet<CalendarDay> setDays = db.getNodeByUserIdAndMonth(9999, month);
-                materialCalendarView.addDecorator(new CalendarDecorator(Color.RED, setDays));
+                HashSet<CalendarDay> setDaysNote = db.getNodeByUserIdAndMonth(9999, month);
+                materialCalendarView.addDecorator(new CalendarDecorator(Color.RED, setDaysNote));
+
+                HashSet<CalendarDay> setDaysChecklist = db.getChecklistByUserIdAndMonth(9999, month);
+                materialCalendarView.addDecorator(new CalendarDecorator(Color.GREEN, setDaysChecklist));
+
+                HashSet<String> set1 = new HashSet<>();
+                for (CalendarDay c : setDaysChecklist) {
+                    set1.add(c.getDate().toString());
+                }
+                HashSet<CalendarDay> calendarDayHashSet = new HashSet<>();
+                for (CalendarDay calendarDay : setDayNote) {
+                    if (set1.contains(calendarDay.getDate().toString())) {
+                        calendarDayHashSet.add(calendarDay);
+                    }
+                }
+                materialCalendarView.addDecorator(new CalendarDecorator(Color.YELLOW, calendarDayHashSet));
             }
         });
         return root;

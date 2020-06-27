@@ -1,18 +1,18 @@
 package nhom7.thh.meomeonote.entity;
 
 public class Checklist {
-    private String checklist;
-    private String id;
+    private int id;
     private String password;
+    private String title;
     private String content;
     private String created;
     private String last_modified;
-    private String status;
-    private String user_id;
+    private int status;
+    private int user_id;
+    private String dateRemove;
 
-    public Checklist(String checklist, String id, String password,
-                     String content, String created, String last_modified, String status, String user_id) {
-        this.checklist = checklist;
+    public Checklist(int id, String password,
+                     String content, String created, String last_modified, int status, int user_id, String dateRemove) {
         this.id = id;
         this.password = password;
         this.content = content;
@@ -20,25 +20,18 @@ public class Checklist {
         this.last_modified = last_modified;
         this.status = status;
         this.user_id = user_id;
+        this.dateRemove = dateRemove;
     }
 
     public Checklist() {
     }
 
-    public String getChecklist() {
-        return checklist;
+    public String getDateRemove() {
+        return dateRemove;
     }
 
-    public void setChecklist(String checklist) {
-        this.checklist = checklist;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public void setDateRemove(String dateRemove) {
+        this.dateRemove = dateRemove;
     }
 
     public String getPassword() {
@@ -73,19 +66,27 @@ public class Checklist {
         this.last_modified = last_modified;
     }
 
-    public String getStatus() {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public String getUser_id() {
+    public int getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(String user_id) {
+    public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
 }
