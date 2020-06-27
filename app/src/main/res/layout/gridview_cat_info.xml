@@ -11,14 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        app:srcCompat="@drawable/album_apricot" />
+        app:srcCompat="@color/ic_launcher_background" />
 
     <TextView
         android:id="@+id/cat_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="TextView"
+        android:text="Not owned yet!"
         android:textSize="18sp"
         android:textStyle="bold" />
 </LinearLayout>

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import nhom7.thh.meomeonote.entity.Note;
+
 public class ReminderReceiver extends BroadcastReceiver {
 
     @Override
@@ -13,11 +15,9 @@ public class ReminderReceiver extends BroadcastReceiver {
         // an Intent broadcast.
         Intent i = new Intent(context, ReminderService.class);
 //        Toast.makeText(context, "haaaaa", Toast.LENGTH_LONG).show();
-        String title = intent.getStringExtra("title");
-        String content = intent.getStringExtra("content");
-        Log.v("receiver", title);
-        i.putExtra("title", title);
-        i.putExtra("content", content);
+        int id = intent.getIntExtra("id", -1);
+        Log.v("receiver", id + "");
+        i.putExtra("id", id);
         context.startService(i);
     }
 }

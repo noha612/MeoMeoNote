@@ -22,13 +22,68 @@
 
     <include layout="@layout/main_layout_content" />
 
+
+    <TextView
+        android:id="@+id/tvNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="80dp"
+        android:layout_marginBottom="145dp"
+        android:fontFamily="@font/patrick_hand"
+        android:text="New note"
+        app:backgroundTint="@color/ic_launcher_background"
+        app:fabSize="mini"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/memento_willie" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="135dp"
+        app:backgroundTint="@color/ic_launcher_background"
+        app:fabSize="mini"
+        android:visibility="gone"
+        app:srcCompat="@drawable/memento_willie" />
+
+    <TextView
+        android:id="@+id/tvChecklist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="80dp"
+        android:layout_marginBottom="95dp"
+        android:fontFamily="@font/patrick_hand"
+        android:text="New checklist"
+        app:backgroundTint="@color/ic_launcher_background"
+        app:fabSize="mini"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/memento_princess" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_checklist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="85dp"
+        app:backgroundTint="@color/ic_launcher_background"
+        app:fabSize="mini"
+        android:visibility="gone"
+        app:srcCompat="@drawable/memento_princess" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@color/add_button_cat_foot_background"
-        app:srcCompat="@drawable/memento_kathmandu" />
+        app:backgroundTint="@color/colorAccent"
+        app:srcCompat="@drawable/ic_baseline_add_24"
+        tools:ignore="VectorDrawableCompat" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

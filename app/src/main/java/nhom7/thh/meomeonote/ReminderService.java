@@ -2,7 +2,9 @@ package nhom7.thh.meomeonote;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -11,6 +13,9 @@ import android.os.IBinder;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+
+import nhom7.thh.meomeonote.dbhelper.DbHelper;
+import nhom7.thh.meomeonote.entity.Note;
 
 public class ReminderService extends Service {
     MediaPlayer mediaPlayer;
@@ -30,14 +35,15 @@ public class ReminderService extends Service {
         mediaPlayer.start();
 //        Toast.makeText(getApplicationContext(), "hihihihi", Toast.LENGTH_LONG).show();
         Log.v("ac", "ab");
-        String title = intent.getStringExtra("title");
-        String content = intent.getStringExtra("content");
-        Log.v("service", title);
+        int id = intent.getIntExtra("id", -1);
+        Log.v("service", id+"");
+        DbHelper dbHelper = new DbHelper(this);
+        Note note = dbHelper.getNoteById(id);
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle(title)
-                        .setContentText(content);
+                        .setContentTitle(note.getTitle())
+                        .setContentText(note.getContent());
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -51,6 +57,13 @@ public class ReminderService extends Service {
             mBuilder.setChannelId(channelId);
         }
 
+        Intent resultIntent = new Intent(this, NoteDetailActivity.class);
+        resultIntent.putExtra("id",note.getId());
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntentWithParentStack(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(resultPendingIntent);
         notificationManager.notify(startId, mBuilder.build());
 
         return START_NOT_STICKY;
