@@ -6,11 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.List;
 
 import nhom7.thh.meomeonote.R;
+import nhom7.thh.meomeonote.dbhelper.DbHelper;
 import nhom7.thh.meomeonote.entity.Checklist;
 
 public class ChecklistAdapter extends BaseAdapter {
@@ -47,6 +50,23 @@ public class ChecklistAdapter extends BaseAdapter {
         TextView created = convertView.findViewById(R.id.checklistDatecreated);
         created.setText((checklistList.get(position).getCreated().split("\\s+"))[1]);
         created.setTextColor(Color.RED);
+        CheckBox checkBox = convertView.findViewById(R.id.checkBoxChecklist);
+        if (1 == checklistList.get(position).getStatus()) {
+            checkBox.setChecked(false);
+        } else if (checklistList.get(position).getStatus() == 2) {
+            checkBox.setChecked(true);
+        }
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    checklistList.get(position).setStatus(2);
+                } else {
+                    checklistList.get(position).setStatus(1);
+                }
+                new DbHelper(activity).updateChecklist(checklistList.get(position));
+            }
+        });
         return convertView;
     }
 }

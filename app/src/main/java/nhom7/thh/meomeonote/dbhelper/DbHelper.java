@@ -489,7 +489,7 @@ public class DbHelper extends SQLiteOpenHelper {
             Cursor cursor = db.query(CHECKLIST_TABLE_NAME, new String[]{CHECKLIST_ID,
                             CHECKLIST_PASSWORD, CHECKLIST_CONTENT, CHECKLIST_CREATED,
                             CHECKLIST_LAST_MODIFIED, CHECKLIST_STATUS, CHECKLIST_USER_ID, CHECKLIST_DATE_REMOVE},
-                    CHECKLIST_USER_ID + "=?" + " AND " + CHECKLIST_STATUS + "= 1 ",
+                    CHECKLIST_USER_ID + "=?" + " AND " + CHECKLIST_STATUS + "!= 0 ",
                     new String[]{String.valueOf(userId)}, null, null, null, null);
             if (cursor != null)
                 cursor.moveToFirst();
