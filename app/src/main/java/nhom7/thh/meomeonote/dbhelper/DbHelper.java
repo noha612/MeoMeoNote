@@ -211,7 +211,7 @@ public class DbHelper extends SQLiteOpenHelper {
             return listUser;
         } catch (Exception e) {
             Log.v("error", e.toString());
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -372,7 +372,7 @@ public class DbHelper extends SQLiteOpenHelper {
             if (cursor != null)
                 cursor.moveToFirst();
             else
-                return null;
+                return new ArrayList<>();
             do {
                 Note note = new Note();
                 note.setId(cursor.getInt(0));
@@ -392,7 +392,7 @@ public class DbHelper extends SQLiteOpenHelper {
             return nodes;
         } catch (Exception e) {
             Log.v("error", e.toString());
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -494,7 +494,7 @@ public class DbHelper extends SQLiteOpenHelper {
             if (cursor != null)
                 cursor.moveToFirst();
             else
-                return null;
+                return new ArrayList<>();
             do {
                 Checklist checklist = new Checklist();
                 checklist.setId(cursor.getInt(0));
@@ -512,7 +512,7 @@ public class DbHelper extends SQLiteOpenHelper {
             return checklists;
         } catch (Exception e) {
             Log.v("error", e.toString());
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -533,6 +533,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public HashSet<CalendarDay> getChecklistByUserIdAndMonth(int userId, String date) {
         HashSet<CalendarDay> set = new HashSet<>();
         List<Checklist> list = getChecklistByUserId(userId);
+
         List<Checklist> listReturn = new ArrayList<>();
         for (Checklist checklist : list) {
             if (BaseUtil.compareDate(date, checklist.getCreated())) {
@@ -652,7 +653,7 @@ public class DbHelper extends SQLiteOpenHelper {
             if (cursor != null)
                 cursor.moveToFirst();
             else
-                return null;
+                return new ArrayList<>();
             do {
                 Attachment attachment = new Attachment();
                 attachment.setId(cursor.getInt(0));
@@ -669,7 +670,7 @@ public class DbHelper extends SQLiteOpenHelper {
             return attachments;
         } catch (Exception e) {
             Log.v("error", e.toString());
-            return null;
+            return new ArrayList<>();
         }
     }
 }
