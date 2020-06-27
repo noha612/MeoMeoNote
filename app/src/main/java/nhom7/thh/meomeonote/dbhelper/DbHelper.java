@@ -368,7 +368,7 @@ public class DbHelper extends SQLiteOpenHelper {
                             NOTE_PASSWORD, NOTE_TITLE, NOTE_CONTENT, NOTE_CREATED,
                             NOTE_LAST_MODIFIED, NOTE_TIMER, NOTE_STATUS, NOTE_USER_ID, NOTE_CAT_NAME},
                     NOTE_USER_ID + "=?" + " AND " + NOTE_STATUS + "= 1 ",
-                    new String[]{String.valueOf(userId)}, null, null, null, null);
+                    new String[]{String.valueOf(userId)}, null, null,  NOTE_LAST_MODIFIED + " DESC", null);
             if (cursor != null)
                 cursor.moveToFirst();
             else
