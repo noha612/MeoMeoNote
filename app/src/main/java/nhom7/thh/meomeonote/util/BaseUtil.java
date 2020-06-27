@@ -28,8 +28,7 @@ public class BaseUtil {
     }
 
 
-
-    public static Date StringTimeToDate(String time){
+    public static Date StringTimeToDate(String time) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.ENGLISH);
         try {
             return sdf.parse(time);

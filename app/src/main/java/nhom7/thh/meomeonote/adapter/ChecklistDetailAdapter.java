@@ -14,25 +14,25 @@ import java.util.List;
 
 import nhom7.thh.meomeonote.R;
 import nhom7.thh.meomeonote.dbhelper.DbHelper;
-import nhom7.thh.meomeonote.entity.Checklist;
+import nhom7.thh.meomeonote.entity.ChecklistDetail;
 
-public class ChecklistAdapter extends BaseAdapter {
-    List<Checklist> checklistList;
+public class ChecklistDetailAdapter extends BaseAdapter {
+    List<ChecklistDetail> checklistDetailList;
     Activity activity;
 
-    public ChecklistAdapter(List<Checklist> checklistList, Activity activity) {
-        this.checklistList = checklistList;
+    public ChecklistDetailAdapter(List<ChecklistDetail> checklistDetailList, Activity activity) {
+        this.checklistDetailList = checklistDetailList;
         this.activity = activity;
     }
 
     @Override
     public int getCount() {
-        return checklistList.size();
+        return checklistDetailList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return checklistList.get(position);
+        return checklistDetailList.get(position);
     }
 
     @Override
@@ -45,26 +45,26 @@ public class ChecklistAdapter extends BaseAdapter {
         LayoutInflater layoutInflater = activity.getLayoutInflater();
         convertView = layoutInflater.inflate(R.layout.list_view_checklist, null);
         TextView content = convertView.findViewById(R.id.checklistContent);
-        content.setText(checklistList.get(position).getContent());
+        content.setText(checklistDetailList.get(position).getContent());
         content.setTextColor(Color.BLACK);
         TextView created = convertView.findViewById(R.id.checklistDatecreated);
-        created.setText((checklistList.get(position).getCreated().split("\\s+"))[1]);
+        created.setText((checklistDetailList.get(position).getCreated().split("\\s+"))[1]);
         created.setTextColor(Color.RED);
         CheckBox checkBox = convertView.findViewById(R.id.checkBoxChecklist);
-        if (1 == checklistList.get(position).getStatus()) {
+        if (1 == checklistDetailList.get(position).getStatus()) {
             checkBox.setChecked(false);
-        } else if (checklistList.get(position).getStatus() == 2) {
+        } else if (checklistDetailList.get(position).getStatus() == 2) {
             checkBox.setChecked(true);
         }
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    checklistList.get(position).setStatus(2);
+                    checklistDetailList.get(position).setStatus(2);
                 } else {
-                    checklistList.get(position).setStatus(1);
+                    checklistDetailList.get(position).setStatus(1);
                 }
-                new DbHelper(activity).updateChecklist(checklistList.get(position));
+                new DbHelper(activity).updateChecklistDetail(checklistDetailList.get(position));
             }
         });
         return convertView;

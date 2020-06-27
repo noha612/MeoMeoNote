@@ -1,33 +1,37 @@
 package nhom7.thh.meomeonote.entity;
 
-public class Checklist {
+public class ChecklistDetail {
     private int id;
     private String password;
+    private String title;
+    private String content;
     private String created;
     private String last_modified;
     private int status;
     private int user_id;
-    private String date_remove;
+    private String dateRemove;
 
-    public Checklist(int id, String password, String created, String last_modified, int status, int user_id, String date_remove) {
+    public ChecklistDetail(int id, String password,
+                           String content, String created, String last_modified, int status, int user_id, String dateRemove) {
         this.id = id;
         this.password = password;
+        this.content = content;
         this.created = created;
         this.last_modified = last_modified;
         this.status = status;
         this.user_id = user_id;
-        this.date_remove = date_remove;
+        this.dateRemove = dateRemove;
     }
 
-    public Checklist() {
+    public ChecklistDetail() {
     }
 
-    public int getId() {
-        return id;
+    public String getDateRemove() {
+        return dateRemove;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setDateRemove(String dateRemove) {
+        this.dateRemove = dateRemove;
     }
 
     public String getPassword() {
@@ -36,6 +40,14 @@ public class Checklist {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getCreated() {
@@ -54,6 +66,14 @@ public class Checklist {
         this.last_modified = last_modified;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getStatus() {
         return status;
     }
@@ -68,13 +88,5 @@ public class Checklist {
 
     public void setUser_id(int user_id) {
         this.user_id = user_id;
-    }
-
-    public String getDate_remove() {
-        return date_remove;
-    }
-
-    public void setDate_remove(String date_remove) {
-        this.date_remove = date_remove;
     }
 }
