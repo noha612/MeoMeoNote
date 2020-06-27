@@ -262,10 +262,12 @@ public class DbHelper extends SQLiteOpenHelper {
     public Note getNoteById(int id) {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
-            Cursor cursor = db.query(NOTE_TABLE_NAME, new String[]{NOTE_ID,
-                            NOTE_TITLE, NOTE_CREATED, NOTE_CONTENT
-                            , NOTE_STATUS, NOTE_USER_ID, NOTE_LAST_MODIFIED
-                            , NOTE_PASSWORD, NOTE_TIMER, NOTE_CAT_NAME}, NOTE_ID + "=?",
+            Cursor cursor = db.query(NOTE_TABLE_NAME, new String[]{NOTE_ID, NOTE_PASSWORD,
+                            NOTE_CONTENT, NOTE_CREATED,
+                            NOTE_LAST_MODIFIED, NOTE_STATUS, NOTE_TIMER,
+                            NOTE_TITLE
+                            , NOTE_USER_ID
+                            , NOTE_CAT_NAME}, NOTE_ID + "=?",
                     new String[]{String.valueOf(id)}, null, null, null, null);
             if (cursor != null)
                 cursor.moveToFirst();
@@ -368,7 +370,7 @@ public class DbHelper extends SQLiteOpenHelper {
                             NOTE_PASSWORD, NOTE_TITLE, NOTE_CONTENT, NOTE_CREATED,
                             NOTE_LAST_MODIFIED, NOTE_TIMER, NOTE_STATUS, NOTE_USER_ID, NOTE_CAT_NAME},
                     NOTE_USER_ID + "=?" + " AND " + NOTE_STATUS + "= 1 ",
-                    new String[]{String.valueOf(userId)}, null, null,  NOTE_LAST_MODIFIED + " DESC", null);
+                    new String[]{String.valueOf(userId)}, null, null, NOTE_LAST_MODIFIED + " DESC", null);
             if (cursor != null)
                 cursor.moveToFirst();
             else

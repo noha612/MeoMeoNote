@@ -95,6 +95,10 @@ public class NoteDetailActivity extends AppCompatActivity {
 
 //        int noteId = getIntent().getIntExtra("note_ID",-1);
         note = (Note) getIntent().getSerializableExtra("note");
+        int id = getIntent().getIntExtra("id", -1);
+        if(id!=-1){
+            note = dbHelper.getNoteById(id);
+        }
 
 
         frameLayout.setVisibility(View.INVISIBLE);
@@ -113,6 +117,7 @@ public class NoteDetailActivity extends AppCompatActivity {
             attachment = new Attachment();
             attachment.setId(-1);
         } else {
+
             pageName.setText(" View Note");
             if (note.getPassword() != null) {
                 btnLock.setBackgroundResource(android.R.drawable.ic_lock_idle_lock);
@@ -139,6 +144,10 @@ public class NoteDetailActivity extends AppCompatActivity {
                 attachment.setId(-1);
                 attachment.setNote_id(note.getId());
             }
+            if (note.getTimer() != null) {
+                timerTime = note.getTimer().split(" ")[0];
+                timerDate = note.getTimer().split(" ")[1];
+            }
         }
         btnEditable.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,29 +170,12 @@ public class NoteDetailActivity extends AppCompatActivity {
                     note.setLast_modified(BaseUtil.getCurrentTime());
                     if (timerDate != null || timerTime != null) {
                         note.setTimer(timerTime + " " + timerDate);
-
-                        Calendar cal = Calendar.getInstance();
-                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.ENGLISH);
-                        try {
-                            cal.setTime(Objects.requireNonNull(sdf.parse(note.getTimer())));// all done
-//                            Date date = cal.getTime();
-
-//                            Toast.makeText(NoteDetailActivity.this, note.toString(), Toast.LENGTH_SHORT).show();
-
-                            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                            Intent i = new Intent(NoteDetailActivity.this, ReminderReceiver.class);
-                            i.putExtra("title", note.getTitle());
-                            i.putExtra("content", note.getContent() == null ? " " : note.getContent());
-                            PendingIntent pendingIntent = PendingIntent.getBroadcast(NoteDetailActivity.this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-                            Objects.requireNonNull(alarmManager).set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
                     }
 
                     if (note.getId() == -1) {
                         note.setCreated(BaseUtil.getCurrentTime());
                         int nodeId = (int) dbHelper.addNote(note);
+                        note.setId(nodeId);
                         attachment.setNote_id(nodeId);
                     } else {
                         dbHelper.updateNote(note);
@@ -194,6 +186,21 @@ public class NoteDetailActivity extends AppCompatActivity {
                     } else {
                         dbHelper.updateAttachment(attachment);
                     }
+
+                    if (note.getTimer() != null && Calendar.getInstance().getTime().compareTo(BaseUtil.StringTimeToDate(note.getTimer())) <= 0) {
+
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(Objects.requireNonNull(BaseUtil.StringTimeToDate(note.getTimer())));
+
+                        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                        Intent i = new Intent(NoteDetailActivity.this, ReminderReceiver.class);
+                        i.putExtra("id", note.getId());
+//                        i.putExtra("title", note.getTitle());
+//                        i.putExtra("content", note.getContent() == null ? " " : note.getContent());
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(NoteDetailActivity.this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+                        Objects.requireNonNull(alarmManager).set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+                    }
+
                 }
                 finish();
             }
