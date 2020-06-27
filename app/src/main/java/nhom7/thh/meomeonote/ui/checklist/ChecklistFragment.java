@@ -74,7 +74,7 @@ public class ChecklistFragment extends Fragment {
                         if (content.getText().toString() != null) {
                             ChecklistDetail c = new ChecklistDetail();
                             c.setStatus(1);
-                            c.setUser_id(9999);
+                            c.setChecklist_id(9999);
                             c.setContent(content.getText().toString());
                             c.setCreated(BaseUtil.getCurrentTime());
                             c.setLast_modified(BaseUtil.getCurrentTime());

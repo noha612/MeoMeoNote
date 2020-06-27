@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import nhom7.thh.meomeonote.entity.Attachment;
+import nhom7.thh.meomeonote.entity.Checklist;
 import nhom7.thh.meomeonote.entity.ChecklistDetail;
 import nhom7.thh.meomeonote.entity.Note;
 import nhom7.thh.meomeonote.entity.User;
@@ -416,6 +417,173 @@ public class DbHelper extends SQLiteOpenHelper {
         }
     }
 
+
+    public long addChecklist(Checklist checklist) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(CHECKLIST_PASSWORD, checklist.getPassword());
+            values.put(CHECKLIST_CREATED, checklist.getCreated());
+            values.put(CHECKLIST_LAST_MODIFIED, checklist.getLast_modified());
+            values.put(CHECKLIST_STATUS, checklist.getStatus());
+            values.put(CHECKLIST_USER_ID, checklist.getUser_id());
+            values.put(CHECKLIST_DATE_REMOVE, checklist.getDate_remove());
+            long id = db.insert(CHECKLIST_TABLE_NAME, null, values);
+            db.close();
+            return id;
+        } catch (Exception e) {
+            Log.v("error", e.toString());
+            return 0;
+        }
+    }
+
+    public Checklist getChecklistById(int id) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.query(CHECKLIST_TABLE_NAME, new String[]{CHECKLIST_ID,
+                            CHECKLIST_PASSWORD, CHECKLIST_LAST_MODIFIED,
+                            CHECKLIST_CREATED, CHECKLIST_STATUS, CHECKLIST_USER_ID, CHECKLIST_DATE_REMOVE},
+                    CHECKLIST_ID + "=?",
+                    new String[]{String.valueOf(id)}, null, null, null, null);
+            if (cursor != null)
+                cursor.moveToFirst();
+            else
+                return null;
+            Checklist checklist = new Checklist();
+            checklist.setId(cursor.getInt(0));
+            checklist.setPassword(cursor.getString(1));
+            checklist.setCreated(cursor.getString(3));
+            checklist.setLast_modified(cursor.getString(2));
+            checklist.setStatus(cursor.getInt(4));
+            checklist.setUser_id(cursor.getInt(5));
+            checklist.setDate_remove(cursor.getString(6));
+            cursor.close();
+            db.close();
+            return checklist;
+        } catch (Exception e) {
+            Log.v("error", e.toString());
+            return null;
+        }
+
+    }
+
+    public int updateChecklist(Checklist checklist) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(CHECKLIST_ID, checklist.getId());
+            values.put(CHECKLIST_PASSWORD, checklist.getPassword());
+            values.put(CHECKLIST_CREATED, checklist.getCreated());
+            values.put(CHECKLIST_LAST_MODIFIED, checklist.getLast_modified());
+            values.put(CHECKLIST_STATUS, checklist.getStatus());
+            values.put(CHECKLIST_DATE_REMOVE, checklist.getDate_remove());
+            values.put(CHECKLIST_USER_ID, checklist.getUser_id());
+            return db.update(CHECKLIST_TABLE_NAME, values, CHECKLIST_ID + "=?",
+                    new String[]{String.valueOf(checklist.getId())});
+        } catch (Exception e) {
+            Log.v("error", e.toString());
+            return 0;
+        }
+    }
+
+    public int deleteChecklist(Checklist checklist) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(CHECKLIST_ID, checklist.getId());
+            values.put(CHECKLIST_DATE_REMOVE, checklist.getDate_remove());
+            values.put(CHECKLIST_STATUS, 0);
+            return db.update(CHECKLIST_TABLE_NAME, values, CHECKLIST_ID + "=?",
+                    new String[]{String.valueOf(checklist.getId())});
+        } catch (Exception e) {
+            Log.v("error", e.toString());
+            return 0;
+        }
+    }
+
+    public List<Checklist> getChecklistByUserId(int userId) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            List<Checklist> checklists = new ArrayList<>();
+            Cursor cursor = db.query(CHECKLIST_TABLE_NAME, new String[]{CHECKLIST_ID,
+                            CHECKLIST_PASSWORD, CHECKLIST_CREATED,
+                            CHECKLIST_LAST_MODIFIED, CHECKLIST_STATUS, CHECKLIST_USER_ID, CHECKLIST_DATE_REMOVE},
+                    CHECKLIST_ID + "=?" + " AND " + CHECKLIST_STATUS + "!= 0 ",
+                    new String[]{String.valueOf(userId)}, null, null, null, null);
+            if (cursor != null)
+                cursor.moveToFirst();
+            else
+                return new ArrayList<>();
+            do {
+                Checklist checklist = new Checklist();
+                checklist.setId(cursor.getInt(0));
+                checklist.setPassword(cursor.getString(1));
+                checklist.setCreated(cursor.getString(2));
+                checklist.setLast_modified(cursor.getString(3));
+                checklist.setStatus(cursor.getInt(4));
+                checklist.setUser_id(cursor.getInt(5));
+                checklist.setDate_remove(cursor.getString(6));
+                checklists.add(checklist);
+            } while (cursor.moveToNext());
+            cursor.close();
+            db.close();
+            return checklists;
+        } catch (Exception e) {
+            Log.v("error", e.toString());
+            return new ArrayList<>();
+        }
+    }
+
+
+    public List<Checklist> getChecklistByUserIdOrderByCreaded(int userId) {
+        List<Checklist> checklists = getChecklistByUserId(userId);
+        Collections.sort(checklists, new Comparator<Checklist>() {
+            @Override
+            public int compare(Checklist o1, Checklist o2) {
+                int time1 = parseInt(o1.getCreated());
+                int time2 = parseInt(o2.getCreated());
+                return time2 - time1;
+            }
+        });
+        return checklists;
+    }
+
+    public HashSet<CalendarDay> getChecklistByUserIdAndMonth(int userId, String date) {
+        HashSet<CalendarDay> set = new HashSet<>();
+        List<Checklist> list = getChecklistByUserId(userId);
+
+        List<Checklist> listReturn = new ArrayList<>();
+        for (Checklist checklist : list) {
+            if (BaseUtil.compareDate(date, checklist.getCreated())) {
+                listReturn.add(checklist);
+            }
+        }
+        for (Checklist checklist : listReturn) {
+            String d = checklist.getCreated();
+            Date date1 = null;
+            try {
+                date1 = new SimpleDateFormat("dd/MM/yyyy").parse(d.split("\\s+")[1]);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            CalendarDay calDay = CalendarDay.from(date1);
+            set.add(calDay);
+        }
+        return set;
+    }
+
+    public List<Checklist> getChecklistByUserIdAndDate(int userId, String date) {
+        List<Checklist> list = getChecklistByUserId(userId);
+        List<Checklist> listReturn = new ArrayList<>();
+        for (Checklist checklist : list) {
+            if (BaseUtil.compareDate(date, checklist.getCreated())) {
+                listReturn.add(checklist);
+            }
+        }
+        return listReturn;
+    }
+
+
     public long addChecklistDetail(ChecklistDetail checklistDetail) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -423,9 +591,9 @@ public class DbHelper extends SQLiteOpenHelper {
             values.put(CHECKLIST_DETAIL_PASSWORD, checklistDetail.getPassword());
             values.put(CHECKLIST_DETAIL_CONTENT, checklistDetail.getContent());
             values.put(CHECKLIST_DETAIL_CREATED, checklistDetail.getCreated());
-            values.put(CHECKLIST_DETAIL_LAST_MODIFIED, checklistDetail.getLast_modified());
+            values.put(CHECKLIST_LAST_MODIFIED, checklistDetail.getLast_modified());
             values.put(CHECKLIST_DETAIL_STATUS, checklistDetail.getStatus());
-            values.put(CHECKLIST_DETAIL_CHECKLIST_ID, checklistDetail.getUser_id());
+            values.put(CHECKLIST_DETAIL_CHECKLIST_ID, checklistDetail.getChecklist_id());
             values.put(CHECKLIST_DETAIL_DATE_REMOVE, checklistDetail.getDateRemove());
             long id = db.insert(CHECKLIST_DETAIL_TABLE_NAME, null, values);
             db.close();
@@ -455,7 +623,7 @@ public class DbHelper extends SQLiteOpenHelper {
             checklistDetail.setCreated(cursor.getString(4));
             checklistDetail.setLast_modified(cursor.getString(3));
             checklistDetail.setStatus(cursor.getInt(5));
-            checklistDetail.setUser_id(cursor.getInt(6));
+            checklistDetail.setChecklist_id(cursor.getInt(6));
             checklistDetail.setDateRemove(cursor.getString(7));
             cursor.close();
             db.close();
@@ -477,7 +645,7 @@ public class DbHelper extends SQLiteOpenHelper {
             values.put(CHECKLIST_DETAIL_CREATED, checklistDetail.getCreated());
             values.put(CHECKLIST_DETAIL_LAST_MODIFIED, checklistDetail.getLast_modified());
             values.put(CHECKLIST_DETAIL_STATUS, checklistDetail.getStatus());
-            values.put(CHECKLIST_DETAIL_CHECKLIST_ID, checklistDetail.getUser_id());
+            values.put(CHECKLIST_DETAIL_CHECKLIST_ID, checklistDetail.getChecklist_id());
             values.put(CHECKLIST_DETAIL_DATE_REMOVE, checklistDetail.getDateRemove());
             return db.update(CHECKLIST_DETAIL_TABLE_NAME, values, CHECKLIST_DETAIL_ID + "=?",
                     new String[]{String.valueOf(checklistDetail.getId())});
@@ -523,7 +691,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 checklistDetail.setCreated(cursor.getString(3));
                 checklistDetail.setLast_modified(cursor.getString(4));
                 checklistDetail.setStatus(cursor.getInt(5));
-                checklistDetail.setUser_id(cursor.getInt(6));
+                checklistDetail.setChecklist_id(cursor.getInt(6));
                 checklistDetail.setDateRemove(cursor.getString(7));
                 checklistDetails.add(checklistDetail);
             } while (cursor.moveToNext());
@@ -537,8 +705,8 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
 
-    public List<ChecklistDetail> getChecklistDetailByChecklistIdOrderByCreaded(int userId) {
-        List<ChecklistDetail> checklistDetails = getChecklistDetailByChecklist(userId);
+    public List<ChecklistDetail> getChecklistDetailByChecklistIdOrderByCreaded(int checklistId) {
+        List<ChecklistDetail> checklistDetails = getChecklistDetailByChecklist(checklistId);
         Collections.sort(checklistDetails, new Comparator<ChecklistDetail>() {
             @Override
             public int compare(ChecklistDetail o1, ChecklistDetail o2) {
@@ -550,9 +718,9 @@ public class DbHelper extends SQLiteOpenHelper {
         return checklistDetails;
     }
 
-    public HashSet<CalendarDay> getChecklistDetailByChecklistIdAndMonth(int userId, String date) {
+    public HashSet<CalendarDay> getChecklistDetailByChecklistIdAndMonth(int checklistId, String date) {
         HashSet<CalendarDay> set = new HashSet<>();
-        List<ChecklistDetail> list = getChecklistDetailByChecklist(userId);
+        List<ChecklistDetail> list = getChecklistDetailByChecklist(checklistId);
 
         List<ChecklistDetail> listReturn = new ArrayList<>();
         for (ChecklistDetail checklistDetail : list) {
@@ -574,8 +742,8 @@ public class DbHelper extends SQLiteOpenHelper {
         return set;
     }
 
-    public List<ChecklistDetail> getChecklistDetailByChecklistIdAndDate(int userId, String date) {
-        List<ChecklistDetail> list = getChecklistDetailByChecklist(userId);
+    public List<ChecklistDetail> getChecklistDetailByChecklistIdAndDate(int checklistId, String date) {
+        List<ChecklistDetail> list = getChecklistDetailByChecklist(checklistId);
         List<ChecklistDetail> listReturn = new ArrayList<>();
         for (ChecklistDetail checklistDetail : list) {
             if (BaseUtil.compareDate(date, checklistDetail.getCreated())) {

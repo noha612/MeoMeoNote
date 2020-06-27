@@ -3,23 +3,22 @@ package nhom7.thh.meomeonote.entity;
 public class ChecklistDetail {
     private int id;
     private String password;
-    private String title;
     private String content;
     private String created;
     private String last_modified;
     private int status;
-    private int user_id;
+    private int checklist_id;
     private String dateRemove;
 
     public ChecklistDetail(int id, String password,
-                           String content, String created, String last_modified, int status, int user_id, String dateRemove) {
+                           String content, String created, String last_modified, int status, int checklist_id, String dateRemove) {
         this.id = id;
         this.password = password;
         this.content = content;
         this.created = created;
         this.last_modified = last_modified;
         this.status = status;
-        this.user_id = user_id;
+        this.checklist_id = checklist_id;
         this.dateRemove = dateRemove;
     }
 
@@ -82,11 +81,11 @@ public class ChecklistDetail {
         this.status = status;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getChecklist_id() {
+        return checklist_id;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setChecklist_id(int checklist_id) {
+        this.checklist_id = checklist_id;
     }
 }
