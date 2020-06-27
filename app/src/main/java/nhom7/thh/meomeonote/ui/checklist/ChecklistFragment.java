@@ -47,7 +47,7 @@ public class ChecklistFragment extends Fragment {
         checklistDetails = new ArrayList<>();
         try {
             dbHelper = new DbHelper(getActivity().getApplicationContext());
-            checklistDetails = dbHelper.getChecklistDetailByUserId(9999);
+            checklistDetails = dbHelper.getChecklistDetailByChecklist(9999);
             Log.v("size", checklistDetails.size() + "");
             checklistDetailAdapter = new ChecklistDetailAdapter(checklistDetails, getActivity());
             listChecklist.setAdapter(checklistDetailAdapter);

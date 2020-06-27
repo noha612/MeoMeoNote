@@ -38,7 +38,7 @@ public class ChecklistTabFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_two, container, false);
         ListView listChecklist = root.findViewById(R.id.checklistFragmentListview);
         final DbHelper dbHelper = new DbHelper(getContext());
-        final List<ChecklistDetail> checklistDetails = dbHelper.getChecklistDetailByUserIdAndDate(9999, date);
+        final List<ChecklistDetail> checklistDetails = dbHelper.getChecklistDetailByChecklistIdAndDate(9999, date);
         ChecklistDetailAdapter checklistDetailAdapter = new ChecklistDetailAdapter(checklistDetails, getActivity());
         listChecklist.setAdapter(checklistDetailAdapter);
         listChecklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {

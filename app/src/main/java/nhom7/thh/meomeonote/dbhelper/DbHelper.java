@@ -502,7 +502,7 @@ public class DbHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<ChecklistDetail> getChecklistDetailByUserId(int userId) {
+    public List<ChecklistDetail> getChecklistDetailByChecklist(int checklist) {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
             List<ChecklistDetail> checklistDetails = new ArrayList<>();
@@ -510,7 +510,7 @@ public class DbHelper extends SQLiteOpenHelper {
                             CHECKLIST_DETAIL_PASSWORD, CHECKLIST_DETAIL_CONTENT, CHECKLIST_DETAIL_CREATED,
                             CHECKLIST_DETAIL_LAST_MODIFIED, CHECKLIST_DETAIL_STATUS, CHECKLIST_DETAIL_CHECKLIST_ID, CHECKLIST_DETAIL_DATE_REMOVE},
                     CHECKLIST_DETAIL_CHECKLIST_ID + "=?" + " AND " + CHECKLIST_DETAIL_STATUS + "!= 0 ",
-                    new String[]{String.valueOf(userId)}, null, null, null, null);
+                    new String[]{String.valueOf(checklist)}, null, null, null, null);
             if (cursor != null)
                 cursor.moveToFirst();
             else
@@ -537,8 +537,8 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
 
-    public List<ChecklistDetail> getChecklistDetailByUserIdOrderByCreaded(int userId) {
-        List<ChecklistDetail> checklistDetails = getChecklistDetailByUserId(userId);
+    public List<ChecklistDetail> getChecklistDetailByChecklistIdOrderByCreaded(int userId) {
+        List<ChecklistDetail> checklistDetails = getChecklistDetailByChecklist(userId);
         Collections.sort(checklistDetails, new Comparator<ChecklistDetail>() {
             @Override
             public int compare(ChecklistDetail o1, ChecklistDetail o2) {
@@ -550,9 +550,9 @@ public class DbHelper extends SQLiteOpenHelper {
         return checklistDetails;
     }
 
-    public HashSet<CalendarDay> getChecklistDetailByUserIdAndMonth(int userId, String date) {
+    public HashSet<CalendarDay> getChecklistDetailByChecklistIdAndMonth(int userId, String date) {
         HashSet<CalendarDay> set = new HashSet<>();
-        List<ChecklistDetail> list = getChecklistDetailByUserId(userId);
+        List<ChecklistDetail> list = getChecklistDetailByChecklist(userId);
 
         List<ChecklistDetail> listReturn = new ArrayList<>();
         for (ChecklistDetail checklistDetail : list) {
@@ -574,8 +574,8 @@ public class DbHelper extends SQLiteOpenHelper {
         return set;
     }
 
-    public List<ChecklistDetail> getChecklistDetailByUserIdAndDate(int userId, String date) {
-        List<ChecklistDetail> list = getChecklistDetailByUserId(userId);
+    public List<ChecklistDetail> getChecklistDetailByChecklistIdAndDate(int userId, String date) {
+        List<ChecklistDetail> list = getChecklistDetailByChecklist(userId);
         List<ChecklistDetail> listReturn = new ArrayList<>();
         for (ChecklistDetail checklistDetail : list) {
             if (BaseUtil.compareDate(date, checklistDetail.getCreated())) {
