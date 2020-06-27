@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import com.google.android.material.navigation.NavigationView;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    boolean flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +29,51 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab);
+        final FloatingActionButton fabNote = findViewById(R.id.fab_note);
+        final FloatingActionButton fabChecklist = findViewById(R.id.fab_checklist);
+        final TextView tvNote = findViewById(R.id.tvNote);
+        final TextView tvChecklist = findViewById(R.id.tvChecklist);
+        flag = true;
         fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (flag) {
+                    fabNote.show();
+                    tvNote.setVisibility(View.VISIBLE);
+                    fabChecklist.show();
+                    tvChecklist.setVisibility(View.VISIBLE);
+
+                    fabNote.animate().translationY(-(fabChecklist.getCustomSize() + fab.getCustomSize()));
+                    fabChecklist.animate().translationY(-(fab.getCustomSize()));
+
+                    fab.animate().rotation(180f);
+                    fab.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
+                    flag = false;
+
+                } else {
+                    fabNote.hide();
+                    tvNote.setVisibility(View.INVISIBLE);
+                    fabChecklist.hide();
+                    tvChecklist.setVisibility(View.INVISIBLE);
+
+                    fabNote.animate().translationY(0);
+                    fabChecklist.animate().translationY(0);
+
+                    fab.animate().rotation(360f);
+                    fab.setImageResource(R.drawable.ic_baseline_add_24);
+                    flag = true;
+
+                }
+            }
+        });
+        fabNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(MainActivity.this, NoteDetailActivity.class), 0);
+            }
+        });
+        fabChecklist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivityForResult(new Intent(MainActivity.this, NoteDetailActivity.class), 0);

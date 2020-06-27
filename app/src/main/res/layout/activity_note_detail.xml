@@ -81,7 +81,6 @@
             android:layout_height="85dp"
             android:fontFamily="@font/patrick_hand"
             android:hint="Title..."
-            android:text="ầkjfhak"
             android:textColor="@color/cardview_dark_background"
             android:textSize="24sp"
             android:textStyle="bold" />
