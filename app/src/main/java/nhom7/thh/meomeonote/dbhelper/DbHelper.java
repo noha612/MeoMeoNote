@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import nhom7.thh.meomeonote.entity.Attachment;
+import nhom7.thh.meomeonote.entity.Checklist;
 import nhom7.thh.meomeonote.entity.Note;
 import nhom7.thh.meomeonote.entity.User;
 import nhom7.thh.meomeonote.util.BaseUtil;
@@ -55,6 +56,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String CHECKLIST_LAST_MODIFIED = "last_modified";
     private static final String CHECKLIST_STATUS = "status";
     private static final String CHECKLIST_USER_ID = "user_id";
+    private static final String CHECKLIST_DATE_REMOVE = "date_remove";
 
     private static final String ATTACHMENT_TABLE_NAME = "attachment";
     private static final String ATTACHMENT_ID = "id";
@@ -100,6 +102,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 CHECKLIST_CREATED + " TEXT," +
                 CHECKLIST_LAST_MODIFIED + " TEXT," +
                 CHECKLIST_PASSWORD + " TEXT," +
+                CHECKLIST_DATE_REMOVE + " TEXT," +
                 CHECKLIST_STATUS + " integer," +
                 CHECKLIST_USER_ID + " integer)";
         db.execSQL(sqlQueryChecklist);
@@ -321,7 +324,6 @@ public class DbHelper extends SQLiteOpenHelper {
             Log.v("error", e.toString());
             return 0;
         }
-
     }
 
     public List<Note> getNodeByUserIdAndDate(int userId, String date) {
@@ -385,7 +387,6 @@ public class DbHelper extends SQLiteOpenHelper {
                 note.setCatName(cursor.getString(9));
                 nodes.add(note);
             } while (cursor.moveToNext());
-
             cursor.close();
             db.close();
             return nodes;
@@ -395,30 +396,138 @@ public class DbHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<Note> getNodeByUserIdOrderByCreaded(int userId) {
-        List<Note> noteList = getNodeByUserId(userId);
-        Collections.sort(noteList, new Comparator<Note>() {
-            @Override
-            public int compare(Note o1, Note o2) {
-                int time1 = parseInt(o1.getCreated());
-                int time2 = parseInt(o2.getCreated());
-                return time1 - time2;
-            }
-        });
-        return noteList;
+    public long addChecklist(Checklist checklist) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(CHECKLIST_PASSWORD, checklist.getPassword());
+            values.put(CHECKLIST_CONTENT, checklist.getContent());
+            values.put(CHECKLIST_CREATED, checklist.getCreated());
+            values.put(CHECKLIST_LAST_MODIFIED, checklist.getLast_modified());
+            values.put(CHECKLIST_STATUS, checklist.getStatus());
+            values.put(CHECKLIST_USER_ID, checklist.getUser_id());
+            values.put(CHECKLIST_DATE_REMOVE, checklist.getDateRemove());
+            long id = db.insert(CHECKLIST_TABLE_NAME, null, values);
+            db.close();
+            return id;
+        } catch (Exception e) {
+            Log.v("error", e.toString());
+            return 0;
+        }
     }
 
-    public List<Note> getNodeByUserIdOrderByTimer(int userId) {
-        List<Note> noteList = getNodeByUserId(userId);
-        Collections.sort(noteList, new Comparator<Note>() {
+    public Checklist getChecklistById(int id) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.query(CHECKLIST_TABLE_NAME, new String[]{CHECKLIST_ID,
+                            CHECKLIST_CONTENT, CHECKLIST_PASSWORD, CHECKLIST_LAST_MODIFIED,
+                            CHECKLIST_CREATED, CHECKLIST_STATUS, CHECKLIST_USER_ID, CHECKLIST_DATE_REMOVE},
+                    CHECKLIST_ID + "=?",
+                    new String[]{String.valueOf(id)}, null, null, null, null);
+            if (cursor != null)
+                cursor.moveToFirst();
+            else
+                return null;
+            Checklist checklist = new Checklist();
+            checklist.setId(cursor.getInt(0));
+            checklist.setPassword(cursor.getString(2));
+            checklist.setContent(cursor.getString(1));
+            checklist.setCreated(cursor.getString(4));
+            checklist.setLast_modified(cursor.getString(3));
+            checklist.setStatus(cursor.getInt(5));
+            checklist.setUser_id(cursor.getInt(6));
+            checklist.setDateRemove(cursor.getString(7));
+            cursor.close();
+            db.close();
+            return checklist;
+        } catch (Exception e) {
+            Log.v("error", e.toString());
+            return null;
+        }
+
+    }
+
+    public int updateChecklist(Checklist checklist) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(CHECKLIST_USER_ID, checklist.getId());
+            values.put(CHECKLIST_PASSWORD, checklist.getPassword());
+            values.put(CHECKLIST_CONTENT, checklist.getContent());
+            values.put(CHECKLIST_CREATED, checklist.getCreated());
+            values.put(CHECKLIST_LAST_MODIFIED, checklist.getLast_modified());
+            values.put(CHECKLIST_STATUS, checklist.getStatus());
+            values.put(CHECKLIST_USER_ID, checklist.getUser_id());
+            values.put(CHECKLIST_DATE_REMOVE, checklist.getDateRemove());
+            return db.update(CHECKLIST_TABLE_NAME, values, CHECKLIST_ID + "=?",
+                    new String[]{String.valueOf(checklist.getId())});
+        } catch (Exception e) {
+            Log.v("error", e.toString());
+            return 0;
+        }
+    }
+
+    public int deleteChecklist(Checklist checklist) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(CHECKLIST_ID, checklist.getId());
+            values.put(CHECKLIST_DATE_REMOVE, checklist.getDateRemove());
+            values.put(CHECKLIST_STATUS, 0);
+            return db.update(CHECKLIST_TABLE_NAME, values, CHECKLIST_ID + "=?",
+                    new String[]{String.valueOf(checklist.getId())});
+        } catch (Exception e) {
+            Log.v("error", e.toString());
+            return 0;
+        }
+    }
+
+    public List<Checklist> getChecklistByUserId(int userId) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            List<Checklist> checklists = new ArrayList<>();
+            Cursor cursor = db.query(CHECKLIST_TABLE_NAME, new String[]{CHECKLIST_ID,
+                            CHECKLIST_PASSWORD, CHECKLIST_CONTENT, CHECKLIST_CREATED,
+                            CHECKLIST_LAST_MODIFIED, CHECKLIST_STATUS, CHECKLIST_USER_ID, CHECKLIST_DATE_REMOVE},
+                    CHECKLIST_USER_ID + "=?" + " AND " + CHECKLIST_STATUS + "= 1 ",
+                    new String[]{String.valueOf(userId)}, null, null, null, null);
+            if (cursor != null)
+                cursor.moveToFirst();
+            else
+                return null;
+            do {
+                Checklist checklist = new Checklist();
+                checklist.setId(cursor.getInt(0));
+                checklist.setPassword(cursor.getString(1));
+                checklist.setContent(cursor.getString(2));
+                checklist.setCreated(cursor.getString(3));
+                checklist.setLast_modified(cursor.getString(4));
+                checklist.setStatus(cursor.getInt(5));
+                checklist.setUser_id(cursor.getInt(6));
+                checklist.setDateRemove(cursor.getString(7));
+                checklists.add(checklist);
+            } while (cursor.moveToNext());
+            cursor.close();
+            db.close();
+            return checklists;
+        } catch (Exception e) {
+            Log.v("error", e.toString());
+            return null;
+        }
+    }
+
+
+    public List<Checklist> getNodeByUserIdOrderByCreaded(int userId) {
+        List<Checklist> checklists = getChecklistByUserId(userId);
+        Collections.sort(checklists, new Comparator<Checklist>() {
             @Override
-            public int compare(Note o1, Note o2) {
-                int time1 = parseInt(o1.getTimer());
-                int time2 = parseInt(o2.getTimer());
-                return time1 - time2;
+            public int compare(Checklist o1, Checklist o2) {
+                int time1 = parseInt(o1.getCreated());
+                int time2 = parseInt(o2.getCreated());
+                return time2 - time1;
             }
         });
-        return noteList;
+        return checklists;
     }
 
     public void addAttachment(Attachment attachment) {
