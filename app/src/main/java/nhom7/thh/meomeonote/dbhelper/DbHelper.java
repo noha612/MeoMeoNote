@@ -412,6 +412,78 @@ public class DbHelper extends SQLiteOpenHelper {
         }
     }
 
+    public List<Note> getNodeByTitle(String title) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            List<Note> nodes = new ArrayList<>();
+            Cursor cursor = db.query(NOTE_TABLE_NAME, new String[]{NOTE_ID,
+                            NOTE_PASSWORD, NOTE_TITLE, NOTE_CONTENT, NOTE_CREATED,
+                            NOTE_LAST_MODIFIED, NOTE_TIMER, NOTE_STATUS, NOTE_USER_ID, NOTE_CAT_NAME},
+                    NOTE_TITLE + " LIKE ?" + " AND " + NOTE_STATUS + "= 1 ",
+                    new String[]{"%" + String.valueOf(title) + "%"}, null, null, NOTE_LAST_MODIFIED + " DESC", null);
+            if (cursor != null)
+                cursor.moveToFirst();
+            else
+                return new ArrayList<>();
+            do {
+                Note note = new Note();
+                note.setId(cursor.getInt(0));
+                note.setPassword(cursor.getString(1));
+                note.setTitle(cursor.getString(2));
+                note.setContent(cursor.getString(3));
+                note.setCreated(cursor.getString(4));
+                note.setLast_modified(cursor.getString(5));
+                note.setTimer(cursor.getString(6));
+                note.setStatus(cursor.getInt(7));
+                note.setUser_id(cursor.getInt(8));
+                note.setCatName(cursor.getString(9));
+                nodes.add(note);
+            } while (cursor.moveToNext());
+            cursor.close();
+            db.close();
+            return nodes;
+        } catch (Exception e) {
+            Log.v("error", e.toString());
+            return new ArrayList<>();
+        }
+    }
+
+    public List<Note> getNodeByCat(String catShortName) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            List<Note> nodes = new ArrayList<>();
+            Cursor cursor = db.query(NOTE_TABLE_NAME, new String[]{NOTE_ID,
+                            NOTE_PASSWORD, NOTE_TITLE, NOTE_CONTENT, NOTE_CREATED,
+                            NOTE_LAST_MODIFIED, NOTE_TIMER, NOTE_STATUS, NOTE_USER_ID, NOTE_CAT_NAME},
+                    NOTE_CAT_NAME + "=?" + " AND " + NOTE_STATUS + "= 1 ",
+                    new String[]{String.valueOf(catShortName)}, null, null, NOTE_LAST_MODIFIED + " DESC", null);
+            if (cursor != null)
+                cursor.moveToFirst();
+            else
+                return new ArrayList<>();
+            do {
+                Note note = new Note();
+                note.setId(cursor.getInt(0));
+                note.setPassword(cursor.getString(1));
+                note.setTitle(cursor.getString(2));
+                note.setContent(cursor.getString(3));
+                note.setCreated(cursor.getString(4));
+                note.setLast_modified(cursor.getString(5));
+                note.setTimer(cursor.getString(6));
+                note.setStatus(cursor.getInt(7));
+                note.setUser_id(cursor.getInt(8));
+                note.setCatName(cursor.getString(9));
+                nodes.add(note);
+            } while (cursor.moveToNext());
+            cursor.close();
+            db.close();
+            return nodes;
+        } catch (Exception e) {
+            Log.v("error", e.toString());
+            return new ArrayList<>();
+        }
+    }
+
     public long addChecklist(Checklist checklist) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
