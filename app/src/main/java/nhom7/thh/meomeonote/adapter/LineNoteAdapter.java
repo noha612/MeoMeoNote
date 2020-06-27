@@ -8,10 +8,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Calendar;
 import java.util.List;
 
 import nhom7.thh.meomeonote.R;
 import nhom7.thh.meomeonote.model.LineNote;
+import nhom7.thh.meomeonote.util.BaseUtil;
 
 public class LineNoteAdapter extends BaseAdapter {
     List<LineNote> lineNotes;
@@ -45,16 +47,21 @@ public class LineNoteAdapter extends BaseAdapter {
         TextView shortContent = convertView.findViewById(R.id.line_short_content);
         TextView lastModified = convertView.findViewById(R.id.line_last_modified);
         ImageView catAvt = convertView.findViewById(R.id.line_cat_avt);
+        ImageView reminderEnable = convertView.findViewById(R.id.line_reminder_enable);
 
         title.setText(lineNotes.get(position).getTitle());
-        if(lineNotes.get(position).isLocked()){
+        if (lineNotes.get(position).isLocked()) {
             shortContent.setText("****************************");
-        }
-        else {
+        } else {
             shortContent.setText(lineNotes.get(position).getShortContent());
         }
         lastModified.setText(lineNotes.get(position).getLastModified());
         catAvt.setImageResource(lineNotes.get(position).getCatAvt());
+        reminderEnable.setVisibility(View.INVISIBLE);
+        if (lineNotes.get(position).getTimer() != null
+                && Calendar.getInstance().getTime().compareTo(BaseUtil.StringTimeToDate(lineNotes.get(position).getTimer())) <= 0) {
+            reminderEnable.setVisibility(View.VISIBLE);
+        }
 
         return convertView;
     }

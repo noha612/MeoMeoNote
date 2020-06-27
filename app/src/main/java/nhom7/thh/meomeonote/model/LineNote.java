@@ -6,6 +6,7 @@ public class LineNote {
     private String shortContent;
     private String lastModified;
     private boolean isLocked;
+    private String timer;
 
     public boolean isLocked() {
         return isLocked;
@@ -17,12 +18,13 @@ public class LineNote {
 
     private int catAvt;
 
-    public LineNote(int id, String title, String shortContent, String lastModified, boolean isLocked, int catAvt) {
+    public LineNote(int id, String title, String shortContent, String lastModified, boolean isLocked, String timer, int catAvt) {
         this.id = id;
         this.title = title;
         this.shortContent = shortContent;
         this.lastModified = lastModified;
         this.isLocked = isLocked;
+        this.timer = timer;
         this.catAvt = catAvt;
     }
 
@@ -78,5 +80,13 @@ public class LineNote {
                 ", lastModified='" + lastModified + '\'' +
                 ", catAvt=" + catAvt +
                 '}';
+    }
+
+    public String getTimer() {
+        return timer;
+    }
+
+    public void setTimer(String timer) {
+        this.timer = timer;
     }
 }
