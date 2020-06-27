@@ -23,6 +23,7 @@ import nhom7.thh.meomeonote.entity.Attachment;
 import nhom7.thh.meomeonote.entity.Checklist;
 import nhom7.thh.meomeonote.entity.Note;
 import nhom7.thh.meomeonote.entity.User;
+import nhom7.thh.meomeonote.entity.Cat;
 import nhom7.thh.meomeonote.util.BaseUtil;
 
 import static java.lang.Integer.parseInt;
@@ -66,6 +67,12 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String ATTACHMENT_LAST_MODIFIED = "last_modified";
     private static final String ATTACHMENT_STATUS = "status";
     private static final String ATTACHMENT_NOTE_ID = "note_id";
+
+    private static final String CAT_TABLE_NAME = "cat_collection";
+    private static final String CAT_ID = "id";
+    private static final String CAT_SHORT_NAME = "cat_short_name";
+    private static final String CAT_NAME = "cat_name";
+    private static final String CAT_STATUS = "status";
     private Context context;
 
     public DbHelper(Context context) {
@@ -116,6 +123,13 @@ public class DbHelper extends SQLiteOpenHelper {
                 ATTACHMENT_TYPE + " TEXT," +
                 ATTACHMENT_NOTE_ID + " integer)";
         db.execSQL(sqlQueryAtt);
+
+        String sqlQueryCat = "CREATE TABLE " + CAT_TABLE_NAME + " (" +
+                CAT_ID + " integer primary key AUTOINCREMENT, " +
+                CAT_SHORT_NAME + " TEXT," +
+                CAT_NAME + " TEXT," +
+                CAT_STATUS + " integer)";
+        db.execSQL(sqlQueryCat);
 
     }
 
@@ -673,6 +687,57 @@ public class DbHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             Log.v("error", e.toString());
             return new ArrayList<>();
+        }
+    }
+
+    public void addCat(String catShortName, String catName, int catStatus) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(CAT_SHORT_NAME, catShortName);
+            values.put(CAT_NAME, catName);
+            values.put(CAT_STATUS, catStatus);
+            db.insert(CAT_TABLE_NAME, null, values);
+            db.close();
+        } catch (Exception e) {
+            Log.v("error", e.toString());
+        }
+    }
+
+    public List<Cat> getAllCat() {
+        try {
+            List<Cat> listCat = new ArrayList<>();
+            String selectQuery = "SELECT  * FROM " + CAT_TABLE_NAME;
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    Cat cat = new Cat();
+                    cat.setId(cursor.getInt(0));
+                    cat.setCatShortName(cursor.getString(1));
+                    cat.setCatname(cursor.getString(2));
+                    cat.setStatus(cursor.getInt(3));
+                    listCat.add(cat);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return listCat;
+        } catch (Exception e) {
+            Log.v("error", e.toString());
+            return new ArrayList<>();
+        }
+    }
+
+    public int updateCat(String catShortName) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(CAT_STATUS, 1);
+            return db.update(CAT_TABLE_NAME, values, CAT_SHORT_NAME + "=?", new String[]{catShortName});
+        } catch (Exception e) {
+            Log.v("error", e.toString());
+            return 0;
         }
     }
 }

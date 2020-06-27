@@ -49,6 +49,7 @@ import java.util.Objects;
 import nhom7.thh.meomeonote.adapter.GridViewICatIconAdapter;
 import nhom7.thh.meomeonote.dbhelper.DbHelper;
 import nhom7.thh.meomeonote.entity.Attachment;
+import nhom7.thh.meomeonote.entity.Cat;
 import nhom7.thh.meomeonote.entity.Note;
 import nhom7.thh.meomeonote.util.BaseUtil;
 
@@ -96,7 +97,7 @@ public class NoteDetailActivity extends AppCompatActivity {
 //        int noteId = getIntent().getIntExtra("note_ID",-1);
         note = (Note) getIntent().getSerializableExtra("note");
         int id = getIntent().getIntExtra("id", -1);
-        if(id!=-1){
+        if (id != -1) {
             note = dbHelper.getNoteById(id);
         }
 
@@ -213,9 +214,12 @@ public class NoteDetailActivity extends AppCompatActivity {
                 View view1 = layoutInflater.inflate(R.layout.gridview_cat_icon, null);
                 GridView gridView = view1.findViewById(R.id.cat_avt_chooser);
                 final List<Integer> avts = new ArrayList<>();
-                String[] catNames = getResources().getStringArray(R.array.cat_short_name);
-                for (String i : catNames) {
-                    avts.add(BaseUtil.getIdResource(NoteDetailActivity.this, "cat_avt_" + i, "drawable", getPackageName()));
+                DbHelper dbHelper = new DbHelper(NoteDetailActivity.this);
+                final List<Cat> allCats = dbHelper.getAllCat();
+                for (Cat i : allCats) {
+                    if (i.getStatus() == 1) {
+                        avts.add(BaseUtil.getIdResource(NoteDetailActivity.this, "cat_avt_" + i.getCatShortName(), "drawable", NoteDetailActivity.this.getPackageName()));
+                    }
                 }
                 GridViewICatIconAdapter adapter = new GridViewICatIconAdapter(avts, NoteDetailActivity.this);
                 gridView.setAdapter(adapter);

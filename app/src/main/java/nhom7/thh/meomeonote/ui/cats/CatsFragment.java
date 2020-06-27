@@ -19,6 +19,8 @@ import java.util.List;
 
 import nhom7.thh.meomeonote.R;
 import nhom7.thh.meomeonote.adapter.GridViewICatIconAdapter;
+import nhom7.thh.meomeonote.dbhelper.DbHelper;
+import nhom7.thh.meomeonote.entity.Cat;
 import nhom7.thh.meomeonote.util.BaseUtil;
 
 public class CatsFragment extends Fragment {
@@ -38,10 +40,15 @@ public class CatsFragment extends Fragment {
 //            }
 //        });
         final List<Integer> avts = new ArrayList<>();
-        final String[] catShortNames = getResources().getStringArray(R.array.cat_short_name);
-        final String[] catFullNames = getResources().getStringArray(R.array.cat_full_name);
-        for (String i : catShortNames) {
-            avts.add(BaseUtil.getIdResource(getActivity(), "cat_avt_" + i, "drawable", getActivity().getPackageName()));
+        DbHelper dbHelper = new DbHelper(getContext());
+        final List<Cat> allCats = dbHelper.getAllCat();
+        for (Cat i : allCats) {
+            if (i.getStatus() == 1) {
+                avts.add(BaseUtil.getIdResource(getActivity(), "cat_avt_" + i.getCatShortName(), "drawable", getActivity().getPackageName()));
+            }
+            else{
+                avts.add(R.drawable.notowned);
+            }
         }
         final GridViewICatIconAdapter adapter = new GridViewICatIconAdapter(avts, getActivity());
         gridView.setAdapter(adapter);
@@ -53,13 +60,15 @@ public class CatsFragment extends Fragment {
                 View view1 = layoutInflater.inflate(R.layout.gridview_cat_info, null);
                 ImageView catAlbum = view1.findViewById(R.id.cat_album);
                 TextView catName = view1.findViewById(R.id.cat_name);
-                int temp = BaseUtil.getIdResource(getActivity(), "album_" + catShortNames[position], "drawable", getActivity().getPackageName());
-                catAlbum.setImageResource(temp);
-                catName.setText(catFullNames[position]);
+                if(allCats.get(position).getStatus()==1) {
+                    int temp = BaseUtil.getIdResource(getActivity(), "album_" + allCats.get(position).getCatShortName(), "drawable", getActivity().getPackageName());
+                    catAlbum.setImageResource(temp);
+                    catName.setText(allCats.get(position).getCatname());
+                }
                 final AlertDialog alertDialog = builder.create();
                 alertDialog.setView(view1);
                 alertDialog.show();
-                alertDialog.getWindow().setLayout(800, 700);
+                alertDialog.getWindow().setLayout(800, 660);
             }
         });
         return root;
