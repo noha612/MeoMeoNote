@@ -484,12 +484,6 @@ public class NoteDetailActivity extends AppCompatActivity {
                             NoteDetailActivity.this,
                             new String[]{permission},
                             requestCode);
-        } else {
-            Toast
-                    .makeText(NoteDetailActivity.this,
-                            "Permission already granted",
-                            Toast.LENGTH_SHORT)
-                    .show();
         }
     }
 }

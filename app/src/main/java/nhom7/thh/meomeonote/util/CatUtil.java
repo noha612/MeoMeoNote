@@ -27,7 +27,7 @@ public class CatUtil {
             TextView catName = view1.findViewById(R.id.cat_name);
             int temp = BaseUtil.getIdResource(activity, "album_" + catShortName, "drawable", activity.getPackageName());
             catAlbum.setImageResource(temp);
-            catName.setText("You found " + catFullName + "!!!");
+            catName.setText("Found " + catFullName + "!!!");
             final AlertDialog alertDialog = builder.create();
             alertDialog.setView(view1);
             alertDialog.show();
