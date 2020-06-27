@@ -282,7 +282,7 @@ public class NoteDetailActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Calendar calendar = Calendar.getInstance();
-                        int h = calendar.get(Calendar.HOUR);
+                        int h = calendar.get(Calendar.HOUR_OF_DAY);
                         int m = calendar.get(Calendar.MINUTE);
                         TimePickerDialog timePickerDialog = new TimePickerDialog(NoteDetailActivity.this, new TimePickerDialog.OnTimeSetListener() {
                             @Override
