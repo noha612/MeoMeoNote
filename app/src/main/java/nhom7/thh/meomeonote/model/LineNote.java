@@ -5,13 +5,24 @@ public class LineNote {
     private String title;
     private String shortContent;
     private String lastModified;
+    private boolean isLocked;
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
+    }
+
     private int catAvt;
 
-    public LineNote(int id, String title, String shortContent, String lastModified, int catAvt) {
+    public LineNote(int id, String title, String shortContent, String lastModified, boolean isLocked, int catAvt) {
         this.id = id;
         this.title = title;
         this.shortContent = shortContent;
         this.lastModified = lastModified;
+        this.isLocked = isLocked;
         this.catAvt = catAvt;
     }
 

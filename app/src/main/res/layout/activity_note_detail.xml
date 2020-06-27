@@ -25,16 +25,18 @@
                 android:id="@+id/btn_back"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/abc_vector_test" />
+                android:background="@drawable/ic_check_pro" />
 
             <TextView
                 android:id="@+id/page_name"
                 android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/btn_back"
                 android:text=" New Note"
                 android:textColor="@android:color/white"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <Button
@@ -61,6 +63,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -96,6 +99,7 @@
 
         <Button
             android:id="@+id/btn_editable"
+            android:layout_marginLeft="5dp"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@android:drawable/ic_menu_edit" />
@@ -103,10 +107,12 @@
 
     <EditText
         android:id="@+id/note_content"
-        android:layout_width="match_parent"
-        android:layout_height="619dp"
+        android:layout_width="305dp"
+        android:layout_height="548dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="20dp"
+        android:layout_marginBottom="30dp"
         android:background="@null"
         android:ems="10"
         android:gravity="start|top"

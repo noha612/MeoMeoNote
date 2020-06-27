@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -82,38 +84,45 @@ public class NotesFragment extends Fragment {
                 final String password = notes.get(position).getPassword();
                 if (password != null) {
 
-
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setTitle("Please enter password");
+                    LayoutInflater inflaterPw = getLayoutInflater();
+                    View v = inflaterPw.inflate(R.layout.dialog_password, null);
+                    builder.setView(v);
 
-// Set up the input
-                    final EditText input = new EditText(getContext());
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                    input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    builder.setView(input);
+                    TextView title = v.findViewById(R.id.dialog_password_title);
+                    final EditText pw = v.findViewById(R.id.dialog_password_password);
+                    Button ok = v.findViewById(R.id.dialog_password_ok);
+                    Button cancel = v.findViewById(R.id.dialog_password_cancel);
 
-// Set up the buttons
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    final AlertDialog dialog = builder.create();
+                    title.setText("Please enter password");
+
+
+                    ok.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (input.getText().toString() != null && input.getText().toString().equals(password)) {
+                        public void onClick(View v) {
+                            if (pw.getText().toString() != null && pw.getText().toString().equals(password)) {
                                 Intent i = new Intent(getActivity(), NoteDetailActivity.class);
                                 i.putExtra("note", notes.get(position));
                                 startActivityForResult(i, 0);
-                            }
-                            else{
+                            } else {
                                 Toast.makeText(getContext(), "Wrong password!", Toast.LENGTH_LONG).show();
                             }
+                            dialog.cancel();
                         }
                     });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                    cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(View v) {
                             Toast.makeText(getContext(), "Locked!", Toast.LENGTH_LONG).show();
                             dialog.cancel();
                         }
                     });
-                    builder.show();
+
+
+                    dialog.show();
+                    dialog.getWindow().setLayout(900, 1000);
                 } else {
                     Intent i = new Intent(getActivity(), NoteDetailActivity.class);
                     i.putExtra("note", notes.get(position));

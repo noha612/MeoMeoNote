@@ -1,12 +1,5 @@
 package nhom7.thh.meomeonote;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -38,15 +31,21 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import java.io.ByteArrayOutputStream;
-import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import nhom7.thh.meomeonote.adapter.GridViewICatIconAdapter;
 import nhom7.thh.meomeonote.dbhelper.DbHelper;
@@ -55,6 +54,8 @@ import nhom7.thh.meomeonote.entity.Note;
 import nhom7.thh.meomeonote.util.BaseUtil;
 
 public class NoteDetailActivity extends AppCompatActivity {
+    static final int CAPTURE_IMAGE_REQUEST_CODE = 69;
+    static final int GALLERY_IMAGE_REQUEST_CODE = 70;
     Button btnBack;
     Button btnAvtChooser;
     Button btnReminder;
@@ -66,19 +67,12 @@ public class NoteDetailActivity extends AppCompatActivity {
     EditText title;
     EditText content;
     FrameLayout frameLayout;
-
     Note note;
     Attachment attachment;
-
     Bitmap bitmap;
-
     String timerDate;
     String timerTime;
-
     DbHelper dbHelper;
-
-    static final int CAPTURE_IMAGE_REQUEST_CODE = 69;
-    static final int GALLERY_IMAGE_REQUEST_CODE = 70;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +96,6 @@ public class NoteDetailActivity extends AppCompatActivity {
 
 //        int noteId = getIntent().getIntExtra("note_ID",-1);
         note = (Note) getIntent().getSerializableExtra("note");
-        attachment = new Attachment();
 
 
         frameLayout.setVisibility(View.INVISIBLE);
@@ -117,8 +110,14 @@ public class NoteDetailActivity extends AppCompatActivity {
             note.setUser_id(9999);
             note.setCatName("snowball");
             note.setStatus(1);
+
+            attachment = new Attachment();
+            attachment.setId(-1);
         } else {
             pageName.setText(" View Note");
+            if (note.getPassword() != null) {
+                btnLock.setBackgroundResource(android.R.drawable.ic_lock_idle_lock);
+            }
             title.setText(note.getTitle());
             content.setText(note.getContent());
             btnAvtChooser.setBackgroundResource(BaseUtil.getIdResource(NoteDetailActivity.this, "cat_avt_" + note.getCatName(), "drawable", getPackageName()));
@@ -126,14 +125,20 @@ public class NoteDetailActivity extends AppCompatActivity {
             content.setEnabled(false);
             btnAvtChooser.setEnabled(false);
 
-            if (note.getCreated() != null) {
-                attachment.setLink(note.getCreated());
-                frameLayout.setVisibility(View.VISIBLE);
-                frameLayout.setEnabled(true);
-
-                byte[] byteArray = Base64.decode(note.getCreated(), Base64.DEFAULT);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-                attachImage.setImageBitmap(bitmap);
+            List<Attachment> attachments = dbHelper.getAttachmentByNoteId(note.getId());
+            if (attachments != null && attachments.size() >= 1) {
+                attachment = attachments.get(0);
+                if (attachments.get(0).getLink() != null) {
+                    frameLayout.setVisibility(View.VISIBLE);
+                    frameLayout.setEnabled(true);
+                    byte[] byteArray = Base64.decode(attachment.getLink(), Base64.DEFAULT);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                    attachImage.setImageBitmap(bitmap);
+                }
+            } else {
+                attachment = new Attachment();
+                attachment.setId(-1);
+                attachment.setNote_id(note.getId());
             }
         }
         btnEditable.setOnClickListener(new View.OnClickListener() {
@@ -151,39 +156,44 @@ public class NoteDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String strTitle = title.getText().toString().trim();
                 String strContent = content.getText().toString().trim();
-                if (strTitle != null && !strTitle.equals("")) {
+                if (!strTitle.equals("")) {
                     note.setTitle(strTitle);
                     note.setContent(strContent);
                     note.setLast_modified(BaseUtil.getCurrentTime());
-                    note.setCreated(attachment.getLink());
                     if (timerDate != null || timerTime != null) {
                         note.setTimer(timerTime + " " + timerDate);
 
                         Calendar cal = Calendar.getInstance();
                         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.ENGLISH);
                         try {
-                            cal.setTime(sdf.parse(note.getTimer()));// all done
-                            Date date = cal.getTime();
+                            cal.setTime(Objects.requireNonNull(sdf.parse(note.getTimer())));// all done
+//                            Date date = cal.getTime();
 
 //                            Toast.makeText(NoteDetailActivity.this, note.toString(), Toast.LENGTH_SHORT).show();
 
                             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                             Intent i = new Intent(NoteDetailActivity.this, ReminderReceiver.class);
                             i.putExtra("title", note.getTitle());
-                            i.putExtra("content", note.getContent());
+                            i.putExtra("content", note.getContent() == null ? " " : note.getContent());
                             PendingIntent pendingIntent = PendingIntent.getBroadcast(NoteDetailActivity.this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-                            alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+                            Objects.requireNonNull(alarmManager).set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
                     }
 
                     if (note.getId() == -1) {
-                        //TODO fake image
-//                        note.setCreated(BaseUtil.getCurrentTime());
-                        dbHelper.addNote(note);
+                        note.setCreated(BaseUtil.getCurrentTime());
+                        int nodeId = (int) dbHelper.addNote(note);
+                        attachment.setNote_id(nodeId);
                     } else {
                         dbHelper.updateNote(note);
+                    }
+
+                    if (attachment.getId() == -1) {
+                        dbHelper.addAttachment(attachment);
+                    } else {
+                        dbHelper.updateAttachment(attachment);
                     }
                 }
                 finish();
@@ -206,7 +216,7 @@ public class NoteDetailActivity extends AppCompatActivity {
                 final AlertDialog alertDialog = builder.create();
                 alertDialog.setView(view1);
                 alertDialog.show();
-                alertDialog.getWindow().setLayout(1000, 800);
+                alertDialog.getWindow().setLayout(1000, 400);
 
                 gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -301,7 +311,7 @@ public class NoteDetailActivity extends AppCompatActivity {
                 final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(NoteDetailActivity.this);
-                builder.setTitle("Choose your profile picture");
+                builder.setTitle("Choose picture to attach");
 
                 builder.setItems(options, new DialogInterface.OnClickListener() {
 
@@ -342,34 +352,47 @@ public class NoteDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (note.getPassword() == null) {
+
                     AlertDialog.Builder builder = new AlertDialog.Builder(NoteDetailActivity.this);
-                    builder.setTitle("Please enter password");
+                    LayoutInflater inflaterPw = getLayoutInflater();
+                    View v1 = inflaterPw.inflate(R.layout.dialog_password, null);
+                    builder.setView(v1);
 
-// Set up the input
-                    final EditText input = new EditText(NoteDetailActivity.this);
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                    input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    builder.setView(input);
+                    TextView title = v1.findViewById(R.id.dialog_password_title);
+                    final EditText pw = v1.findViewById(R.id.dialog_password_password);
+                    Button ok = v1.findViewById(R.id.dialog_password_ok);
+                    Button cancel = v1.findViewById(R.id.dialog_password_cancel);
 
-// Set up the buttons
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    final AlertDialog dialog = builder.create();
+                    title.setText("Set password");
+
+
+                    ok.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (input.getText().toString() != null && !input.getText().toString().trim().equals("")) {
-                                note.setPassword(input.getText().toString());
+                        public void onClick(View v) {
+                            if (!pw.getText().toString().trim().equals("")) {
+                                note.setPassword(pw.getText().toString());
+                                btnLock.setBackgroundResource(android.R.drawable.ic_lock_idle_lock);
                                 Toast.makeText(NoteDetailActivity.this, "Set password success!", Toast.LENGTH_LONG).show();
+                                dialog.cancel();
                             }
                         }
                     });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                    cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(View v) {
                             dialog.cancel();
                         }
                     });
-                    builder.show();
+
+
+                    dialog.show();
+                    dialog.getWindow().setLayout(900, 1000);
+
                 } else {
                     note.setPassword(null);
+                    btnLock.setBackgroundResource(android.R.drawable.ic_lock_lock);
                     Toast.makeText(NoteDetailActivity.this, "Unlocked!", Toast.LENGTH_LONG).show();
                 }
             }
@@ -412,7 +435,7 @@ public class NoteDetailActivity extends AppCompatActivity {
                                 options.inSampleSize = 2;
 //                                Log.v("rc0", BitmapFactory.decodeFile(picturePath, options).toString());
                                 bitmap = BitmapFactory.decodeFile(picturePath, options);
-                                bitmap = Bitmap.createScaledBitmap(bitmap, 500, 500, false);
+                                bitmap = Bitmap.createScaledBitmap(bitmap, 600, 600, false);
                                 cursor.close();
 
                                 frameLayout.setVisibility(View.VISIBLE);
@@ -431,7 +454,7 @@ public class NoteDetailActivity extends AppCompatActivity {
         try {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         } catch (Exception e) {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
         }
         byte[] byteArray = stream.toByteArray();
         String temp = Base64.encodeToString(byteArray, Base64.DEFAULT);
