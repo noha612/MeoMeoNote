@@ -1,5 +1,6 @@
 package nhom7.thh.meomeonote.ui.calendar;
 
+import android.graphics.Color;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 
@@ -25,9 +26,8 @@ public class CalendarDecorator implements DayViewDecorator {
 
     @Override
     public void decorate(DayViewFacade view) {
-//        view.addSpan(new ForegroundColorSpan(mColor));
+        view.addSpan(new ForegroundColorSpan(Color.BLACK));
         view.addSpan(new BackgroundColorSpan(mColor));
-
 //        view.setBackgroundDrawable(R.drawable.);
 
     }
