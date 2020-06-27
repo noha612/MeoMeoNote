@@ -1,18 +1,28 @@
 package nhom7.thh.meomeonote.ui.about;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import nhom7.thh.meomeonote.R;
+import nhom7.thh.meomeonote.dbhelper.DbHelper;
+import nhom7.thh.meomeonote.util.BaseUtil;
+import nhom7.thh.meomeonote.util.CatUtil;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class AboutFragment extends Fragment {
 
@@ -21,6 +31,7 @@ public class AboutFragment extends Fragment {
         AboutViewModel aboutViewModel = ViewModelProviders.of(this).get(AboutViewModel.class);
         View root = inflater.inflate(R.layout.fragment_about, container, false);
         final TextView textView = root.findViewById(R.id.about_contact_fb);
+        TextView getReward = root.findViewById(R.id.reward);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -30,6 +41,14 @@ public class AboutFragment extends Fragment {
                 } catch (Exception e) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/noha612")));
                 }
+            }
+        });
+        getReward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String catShortName = "ms_fortune";
+                String catName = "Ms. Fortune";
+                CatUtil.getCatOnwed(getActivity(), catShortName, catName);
             }
         });
 //        aboutViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {

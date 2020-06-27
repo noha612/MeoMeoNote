@@ -1,10 +1,14 @@
 package nhom7.thh.meomeonote;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import nhom7.thh.meomeonote.dbhelper.DbHelper;
+import nhom7.thh.meomeonote.model.Cat;
 
 public class Splash extends AppCompatActivity {
 
@@ -12,6 +16,39 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("bt1", MODE_PRIVATE);
+        boolean isInit = sharedPreferences.getBoolean("init", true);
+        if (isInit) {
+            DbHelper dbHelper = new DbHelper(this);
+            dbHelper.addCat("snowball", "Snowball", 1);
+            dbHelper.addCat("shadow", "Shadow", 1);
+            dbHelper.addCat("ms_fortune", "Ms. Fortune", 0);
+            dbHelper.addCat("bengal_jack", "Bengal Jack", 1);
+            dbHelper.addCat("bob_the_cat", "Bob The Cat", 1);
+            dbHelper.addCat("chair", "Chairman meow", 1);
+            dbHelper.addCat("great", "Ramses the Great", 1);
+            dbHelper.addCat("guy", "Guy Furry", 1);
+            dbHelper.addCat("hermeowne", "Hermeowne", 1);
+            dbHelper.addCat("jeeves", "Jeeves", 0);
+            dbHelper.addCat("joe_dimeowgio", "Joe DiMeowgio", 0);
+            dbHelper.addCat("kathmandu", "Kathmandu", 0);
+            dbHelper.addCat("meow", "Lady Meow-Meow", 0);
+            dbHelper.addCat("meowgi", "Mr. Meowgi", 0);
+            dbHelper.addCat("princess", "Princess", 0);
+            dbHelper.addCat("pumpkin", "Pumpkin", 0);
+            dbHelper.addCat("saint", "Saint Purrtrick", 0);
+            dbHelper.addCat("sapphire", "Sapphire", 0);
+            dbHelper.addCat("sassy_fran", "Sassy Fran", 0);
+            dbHelper.addCat("senor_don_gato", "Senor Don Gato", 0);
+            dbHelper.addCat("tubbs", "Tubbs", 0);
+            dbHelper.addCat("whiskers", "Conductor Whiskers", 0);
+            dbHelper.addCat("whiteshadow", "Whiteshadow", 0);
+            dbHelper.addCat("xerxes", "Xerxes IX", 0);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("init", false);
+            editor.apply();
+        }
 
         Thread welcomeThread = new Thread() {
 
