@@ -17,9 +17,9 @@ import androidx.fragment.app.FragmentTransaction;
 import java.util.List;
 
 import nhom7.thh.meomeonote.R;
-import nhom7.thh.meomeonote.adapter.ChecklistAdapter;
+import nhom7.thh.meomeonote.adapter.ChecklistDetailAdapter;
 import nhom7.thh.meomeonote.dbhelper.DbHelper;
-import nhom7.thh.meomeonote.entity.Checklist;
+import nhom7.thh.meomeonote.entity.ChecklistDetail;
 import nhom7.thh.meomeonote.util.BaseUtil;
 
 public class ChecklistTabFragment extends Fragment {
@@ -38,9 +38,9 @@ public class ChecklistTabFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_two, container, false);
         ListView listChecklist = root.findViewById(R.id.checklistFragmentListview);
         final DbHelper dbHelper = new DbHelper(getContext());
-        final List<Checklist> checklists = dbHelper.getChecklistByUserIdAndDate(9999, date);
-        ChecklistAdapter checklistAdapter = new ChecklistAdapter(checklists, getActivity());
-        listChecklist.setAdapter(checklistAdapter);
+        final List<ChecklistDetail> checklistDetails = dbHelper.getChecklistDetailByChecklistIdAndDate(9999, date);
+        ChecklistDetailAdapter checklistDetailAdapter = new ChecklistDetailAdapter(checklistDetails, getActivity());
+        listChecklist.setAdapter(checklistDetailAdapter);
         listChecklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -49,7 +49,7 @@ public class ChecklistTabFragment extends Fragment {
                 View v = inflaterPw.inflate(R.layout.dialog_add_checklist, null);
                 builder.setView(v);
                 final EditText content = v.findViewById(R.id.add_checklist_edt);
-                content.setText(checklists.get(position).getContent());
+                content.setText(checklistDetails.get(position).getContent());
                 Button ok = v.findViewById(R.id.add_checklist_ok_btn);
                 Button cancel = v.findViewById(R.id.add_checklist_cancel_btn);
                 TextView name = v.findViewById(R.id.textView2);
@@ -59,9 +59,9 @@ public class ChecklistTabFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         if (content.getText().toString() != null) {
-                            Checklist c = checklists.get(position);
+                            ChecklistDetail c = checklistDetails.get(position);
                             c.setContent(content.getText().toString());
-                            dbHelper.updateChecklist(c);
+                            dbHelper.updateChecklistDetail(c);
                             FragmentTransaction ft = getFragmentManager().beginTransaction();
                             ft.detach(ChecklistTabFragment.this).attach(ChecklistTabFragment.this).commit();
                         }
@@ -81,9 +81,9 @@ public class ChecklistTabFragment extends Fragment {
         listChecklist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Checklist c = checklists.get(position);
+                ChecklistDetail c = checklistDetails.get(position);
                 c.setDateRemove(BaseUtil.getCurrentTime());
-                dbHelper.deleteChecklist(c);
+                dbHelper.deleteChecklistDetail(c);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.detach(ChecklistTabFragment.this).attach(ChecklistTabFragment.this).commit();
                 return true;

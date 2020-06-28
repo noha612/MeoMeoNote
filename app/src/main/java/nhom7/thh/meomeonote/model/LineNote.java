@@ -7,15 +7,6 @@ public class LineNote {
     private String lastModified;
     private boolean isLocked;
     private String timer;
-
-    public boolean isLocked() {
-        return isLocked;
-    }
-
-    public void setLocked(boolean locked) {
-        isLocked = locked;
-    }
-
     private int catAvt;
 
     public LineNote(int id, String title, String shortContent, String lastModified, boolean isLocked, String timer, int catAvt) {
@@ -29,6 +20,14 @@ public class LineNote {
     }
 
     public LineNote() {
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
     }
 
     public String getTitle() {
