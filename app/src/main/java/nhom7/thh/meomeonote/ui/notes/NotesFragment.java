@@ -245,10 +245,12 @@ public class NotesFragment extends Fragment {
         lineNotes = new ArrayList<>();
         try {
             notes = dbHelper.getNodeByUserId(9999);
+            Log.v("size", notes.toString());
             Log.v("size", notes.size() + "");
             for (Note i : notes) {
                 lineNotes.add(Mapper.mapNoteEntityToLineNote(i, getActivity()));
             }
+            Log.v("size", lineNotes.toString());
             LineNoteAdapter lineNoteAdapter = new LineNoteAdapter(lineNotes, getActivity());
             listNotes.setAdapter(lineNoteAdapter);
         } catch (Exception ignored) {

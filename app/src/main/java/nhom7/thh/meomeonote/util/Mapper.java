@@ -12,7 +12,7 @@ public class Mapper {
                         note.getId(),
                         note.getTitle(),
                         note.getContent().length() > 30 ? note.getContent().substring(0, 30) + "..." : note.getContent(),
-                        note.getLast_modified().substring(9),
+                        note.getLastModified().substring(9),
                         note.getPassword() == null ? false : true,
                         note.getTimer(), BaseUtil.getIdResource(activity, "cat_avt_" + note.getCatName(), "drawable", activity.getPackageName())
                 );

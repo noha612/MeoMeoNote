@@ -38,12 +38,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.io.ByteArrayOutputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 import nhom7.thh.meomeonote.adapter.GridViewICatIconAdapter;
@@ -111,7 +108,7 @@ public class NoteDetailActivity extends AppCompatActivity {
 
             note = new Note();
             note.setId(-1);
-            note.setUser_id(9999);
+            note.setUserId(9999);
             note.setCatName("snowball");
             note.setStatus(1);
 
@@ -168,7 +165,7 @@ public class NoteDetailActivity extends AppCompatActivity {
                 if (!strTitle.equals("")) {
                     note.setTitle(strTitle);
                     note.setContent(strContent);
-                    note.setLast_modified(BaseUtil.getCurrentTime());
+                    note.setLastModified(BaseUtil.getCurrentTime());
                     if (timerDate != null || timerTime != null) {
                         note.setTimer(timerTime + " " + timerDate);
                     }
