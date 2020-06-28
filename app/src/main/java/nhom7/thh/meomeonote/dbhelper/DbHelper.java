@@ -642,12 +642,12 @@ public class DbHelper extends SQLiteOpenHelper {
 
         List<Checklist> listReturn = new ArrayList<>();
         for (Checklist checklist : list) {
-            if (BaseUtil.compareDate(date, checklist.getCreated())) {
+            if (BaseUtil.compareDate(date, checklist.getLast_modified())) {
                 listReturn.add(checklist);
             }
         }
         for (Checklist checklist : listReturn) {
-            String d = checklist.getCreated();
+            String d = checklist.getLast_modified();
             Date date1 = null;
             try {
                 date1 = new SimpleDateFormat("dd/MM/yyyy").parse(d.split("\\s+")[1]);
@@ -664,7 +664,7 @@ public class DbHelper extends SQLiteOpenHelper {
         List<Checklist> list = getChecklistByUserId(userId);
         List<Checklist> listReturn = new ArrayList<>();
         for (Checklist checklist : list) {
-            if (BaseUtil.compareDate(date, checklist.getCreated())) {
+            if (BaseUtil.compareDate(date, checklist.getLast_modified())) {
                 listReturn.add(checklist);
             }
         }
@@ -834,7 +834,7 @@ public class DbHelper extends SQLiteOpenHelper {
         List<ChecklistDetail> list = getChecklistDetailByChecklist(checklistId);
         List<ChecklistDetail> listReturn = new ArrayList<>();
         for (ChecklistDetail checklistDetail : list) {
-            if (BaseUtil.compareDate(date, checklistDetail.getCreated())) {
+            if (BaseUtil.compareDate(date, checklistDetail.getLast_modified())) {
                 listReturn.add(checklistDetail);
             }
         }

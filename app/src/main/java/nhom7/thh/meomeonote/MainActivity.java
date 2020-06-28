@@ -20,6 +20,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import nhom7.thh.meomeonote.dbhelper.DbHelper;
 import nhom7.thh.meomeonote.entity.Checklist;
+import nhom7.thh.meomeonote.util.BaseUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -79,13 +80,13 @@ public class MainActivity extends AppCompatActivity {
         fabChecklist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Checklist c=new Checklist();
-                c = new Checklist();
+                Checklist c = new Checklist();
                 c.setUser_id(9999);
                 c.setStatus(1);
+                c.setCreated(BaseUtil.getCurrentTime());
                 int checklistId = (int) new DbHelper(getApplicationContext()).addChecklist(c);
-                Intent intent=new Intent(MainActivity.this, ChecklistActivity.class);
-                intent.putExtra("checklistId",checklistId);
+                Intent intent = new Intent(MainActivity.this, ChecklistActivity.class);
+                intent.putExtra("checklistId", checklistId);
                 startActivityForResult(intent, 0);
             }
         });
