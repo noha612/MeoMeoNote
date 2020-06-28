@@ -95,7 +95,7 @@ public class ChecklistActivity extends AppCompatActivity {
     }
 
     public void reloadDB() {
-        final List<ChecklistDetail> checklistDetailList = dbHelper.getChecklistDetailByChecklist(checklistId);
+        final List<ChecklistDetail> checklistDetailList = dbHelper.getChecklistDetailByChecklistId(checklistId);
         checklistDetailAdapter = new ChecklistDetailAdapter(checklistDetailList, this);
         listViewChecklistDetail.setAdapter(checklistDetailAdapter);
     }

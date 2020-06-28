@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import nhom7.thh.meomeonote.R;
+import nhom7.thh.meomeonote.dbhelper.DbHelper;
 import nhom7.thh.meomeonote.entity.Checklist;
 
 public class ChecklistAdapter extends BaseAdapter {
@@ -41,6 +42,9 @@ public class ChecklistAdapter extends BaseAdapter {
         LayoutInflater layoutInflater = activity.getLayoutInflater();
         convertView = layoutInflater.inflate(R.layout.list_view_checklist, null);
         TextView title = convertView.findViewById(R.id.checklist_title);
+        TextView number = convertView.findViewById(R.id.numberChecklistUndone);
+        int num = new DbHelper(activity).getChecklistDetailUndoneByChecklistId(checklists.get(position).getId());
+        number.setText(num + "");
         TextView created = convertView.findViewById(R.id.checklist_created);
         title.setText(checklists.get(position).getTitle());
         created.setText(checklists.get(position).getCreated());
