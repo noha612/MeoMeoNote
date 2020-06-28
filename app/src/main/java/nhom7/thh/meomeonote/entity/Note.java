@@ -8,25 +8,25 @@ public class Note implements Serializable {
     private String title;
     private String content;
     private String created;
-    private String last_modified;
+    private String lastModified;
     private String timer;
     private String catName;
     private int status;
-    private int user_id;
+    private int userId;
 
     public Note(int id, String password,
                 String title, String content, String created,
-                String last_modified, String timer, int status, int user_id, String catName) {
+                String lastModified, String timer, int status, int userId, String catName) {
 
         this.id = id;
         this.password = password;
         this.title = title;
         this.content = content;
         this.created = created;
-        this.last_modified = last_modified;
+        this.lastModified = lastModified;
         this.timer = timer;
         this.status = status;
-        this.user_id = user_id;
+        this.userId = userId;
         this.catName = catName;
     }
 
@@ -81,12 +81,12 @@ public class Note implements Serializable {
         this.created = created;
     }
 
-    public String getLast_modified() {
-        return last_modified;
+    public String getLastModified() {
+        return lastModified;
     }
 
-    public void setLast_modified(String last_modified) {
-        this.last_modified = last_modified;
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
     }
 
     public String getTimer() {
@@ -105,12 +105,12 @@ public class Note implements Serializable {
         this.status = status;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -121,11 +121,11 @@ public class Note implements Serializable {
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", created='" + created + '\'' +
-                ", last_modified='" + last_modified + '\'' +
+                ", last_modified='" + lastModified + '\'' +
                 ", timer='" + timer + '\'' +
                 ", catName='" + catName + '\'' +
                 ", status=" + status +
-                ", user_id=" + user_id +
+                ", user_id=" + userId +
                 '}';
     }
 }
