@@ -36,7 +36,7 @@ public class CalendarFragment extends Fragment {
         final HashSet<CalendarDay> setDayNote = db.getNodeByUserIdAndMonth(9999, month);
         materialCalendarView.addDecorator(new CalendarDecorator(Color.RED, setDayNote));
 
-        HashSet<CalendarDay> setDaysChecklist = db.getChecklistDetailByChecklistIdAndMonth(9999, month);
+        HashSet<CalendarDay> setDaysChecklist = db.getChecklistByUserIdAndMonth(9999, month);
         materialCalendarView.addDecorator(new CalendarDecorator(Color.GREEN, setDaysChecklist));
 
         HashSet<String> set1 = new HashSet<>();
@@ -70,7 +70,7 @@ public class CalendarFragment extends Fragment {
                 HashSet<CalendarDay> setDaysNote = db.getNodeByUserIdAndMonth(9999, month);
                 materialCalendarView.addDecorator(new CalendarDecorator(Color.RED, setDaysNote));
 
-                HashSet<CalendarDay> setDaysChecklist = db.getChecklistDetailByChecklistIdAndMonth(9999, month);
+                HashSet<CalendarDay> setDaysChecklist = db.getChecklistByUserIdAndMonth(9999, month);
                 materialCalendarView.addDecorator(new CalendarDecorator(Color.GREEN, setDaysChecklist));
 
                 HashSet<String> set1 = new HashSet<>();

@@ -67,8 +67,6 @@ public class ChecklistFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), ChecklistActivity.class);
                 intent.putExtra("checklist", checklists.get(position));
                 startActivityForResult(intent, 0);
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.detach(ChecklistFragment.this).attach(ChecklistFragment.this).commit();
             }
         });
 
