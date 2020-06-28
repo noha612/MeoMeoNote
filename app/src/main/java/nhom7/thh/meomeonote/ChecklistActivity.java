@@ -23,32 +23,31 @@ import nhom7.thh.meomeonote.util.BaseUtil;
 
 public class ChecklistActivity extends AppCompatActivity {
     Button addChecklistDetail;
-    ListView listView;
+    ListView listViewChecklistDetail;
     EditText editText;
     Checklist c;
     DbHelper dbHelper;
     int checklistId;
+    ChecklistDetailAdapter checklistDetailAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checklist);
         addChecklistDetail = findViewById(R.id.btnSaveChecklistActivity);
-        listView = findViewById(R.id.listviewChecklistActivity);
+        listViewChecklistDetail = findViewById(R.id.listviewChecklistActivity);
         editText = findViewById(R.id.titleChecklistActivity);
         dbHelper = new DbHelper(ChecklistActivity.this);
         Intent intent = getIntent();
         c = (Checklist) intent.getSerializableExtra("checklist");
-        if (c == null || c.getId() < 0) {
+        checklistId = intent.getIntExtra("checklistId", -1);
+        if (checklistId >= 0) {
             editText.setText("Fill content checklist here");
-            c = new Checklist();
-            checklistId = (int) dbHelper.addChecklist(c);
         } else {
+            checklistId = c.getId();
             editText.setText(c.getTitle());
-            List<ChecklistDetail> checklistDetailList = dbHelper.getChecklistDetailByChecklist(c.getId());
-            ChecklistDetailAdapter checklistDetailAdapter = new ChecklistDetailAdapter(checklistDetailList, this);
-            listView.setAdapter(checklistDetailAdapter);
         }
+        reloadDB();
 
         addChecklistDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +76,7 @@ public class ChecklistActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(getApplicationContext(), "No content", Toast.LENGTH_LONG).show();
                         }
-                        ChecklistActivity.this.recreate();
+                        reloadDB();
                         dialog.cancel();
                     }
                 });
@@ -93,5 +92,24 @@ public class ChecklistActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void reloadDB() {
+        final List<ChecklistDetail> checklistDetailList = dbHelper.getChecklistDetailByChecklist(checklistId);
+        checklistDetailAdapter = new ChecklistDetailAdapter(checklistDetailList, this);
+        listViewChecklistDetail.setAdapter(checklistDetailAdapter);
+    }
+
+
+    @Override
+    protected void onPause() {
+        editText = findViewById(R.id.titleChecklistActivity);
+        dbHelper = new DbHelper(this);
+        Checklist c = dbHelper.getChecklistById(checklistId);
+        c.setStatus(1);
+        c.setLast_modified(BaseUtil.getCurrentTime());
+        c.setTitle(editText.getText().toString());
+        dbHelper.updateChecklist(c);
+        super.onPause();
     }
 }

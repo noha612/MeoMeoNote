@@ -15,6 +15,7 @@ import java.util.List;
 import nhom7.thh.meomeonote.R;
 import nhom7.thh.meomeonote.dbhelper.DbHelper;
 import nhom7.thh.meomeonote.entity.ChecklistDetail;
+import nhom7.thh.meomeonote.util.BaseUtil;
 
 public class ChecklistDetailAdapter extends BaseAdapter {
     List<ChecklistDetail> checklistDetailList;
@@ -45,7 +46,8 @@ public class ChecklistDetailAdapter extends BaseAdapter {
         LayoutInflater layoutInflater = activity.getLayoutInflater();
         convertView = layoutInflater.inflate(R.layout.list_view_checklist_detail, null);
         TextView content = convertView.findViewById(R.id.checklistContent);
-        content.setText(checklistDetailList.get(position).getContent());
+        String contentText=checklistDetailList.get(position).getContent()==null?"null":checklistDetailList.get(position).getContent();
+        content.setText(contentText);
         content.setTextColor(Color.BLACK);
         TextView created = convertView.findViewById(R.id.checklistDatecreated);
         created.setText((checklistDetailList.get(position).getCreated().split("\\s+"))[1]);
@@ -65,6 +67,18 @@ public class ChecklistDetailAdapter extends BaseAdapter {
                     checklistDetailList.get(position).setStatus(1);
                 }
                 new DbHelper(activity).updateChecklistDetail(checklistDetailList.get(position));
+            }
+        });
+        content.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ChecklistDetail checklistDetail = checklistDetailList.get(position);
+                checklistDetail.setLast_modified(BaseUtil.getCurrentTime());
+                checklistDetail.setDateRemove(BaseUtil.getCurrentTime());
+                checklistDetail.setStatus(0);
+                new DbHelper(activity).deleteChecklistDetail(checklistDetail);
+                activity.recreate();
+                return true;
             }
         });
         return convertView;

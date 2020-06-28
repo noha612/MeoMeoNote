@@ -39,7 +39,6 @@ public class ChecklistFragment extends Fragment {
     ListView listView;
     DbHelper dbHelper;
     List<Checklist> checklists;
-    ChecklistAdapter checklistAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -51,7 +50,7 @@ public class ChecklistFragment extends Fragment {
         checklists = new ArrayList<>();
         checklists = dbHelper.getChecklistByUserId(9999);
         Log.v("size", checklists.size() + "");
-        checklistAdapter = new ChecklistAdapter(checklists, getActivity());
+        ChecklistAdapter checklistAdapter = new ChecklistAdapter(checklists, getActivity());
         listView.setAdapter(checklistAdapter);
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -94,6 +93,8 @@ public class ChecklistFragment extends Fragment {
         });
         return root;
     }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

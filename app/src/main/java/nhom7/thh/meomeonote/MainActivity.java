@@ -18,6 +18,9 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import nhom7.thh.meomeonote.dbhelper.DbHelper;
+import nhom7.thh.meomeonote.entity.Checklist;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -76,7 +79,14 @@ public class MainActivity extends AppCompatActivity {
         fabChecklist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this, ChecklistActivity.class), 0);
+                Checklist c=new Checklist();
+                c = new Checklist();
+                c.setUser_id(9999);
+                c.setStatus(1);
+                int checklistId = (int) new DbHelper(getApplicationContext()).addChecklist(c);
+                Intent intent=new Intent(MainActivity.this, ChecklistActivity.class);
+                intent.putExtra("checklistId",checklistId);
+                startActivityForResult(intent, 0);
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

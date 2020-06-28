@@ -66,7 +66,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String CHECKLIST_DETAIL_CREATED = "created";
     private static final String CHECKLIST_DETAIL_LAST_MODIFIED = "last_modified";
     private static final String CHECKLIST_DETAIL_STATUS = "status";
-    private static final String CHECKLIST_DETAIL_CHECKLIST_ID = "user_id";
+    private static final String CHECKLIST_DETAIL_CHECKLIST_ID = "checklist_id";
     private static final String CHECKLIST_DETAIL_DATE_REMOVE = "date_remove";
 
     private static final String ATTACHMENT_TABLE_NAME = "attachment";
@@ -596,7 +596,7 @@ public class DbHelper extends SQLiteOpenHelper {
             Cursor cursor = db.query(CHECKLIST_TABLE_NAME, new String[]{CHECKLIST_ID,
                             CHECKLIST_PASSWORD, CHECKLIST_CREATED,
                             CHECKLIST_LAST_MODIFIED, CHECKLIST_STATUS, CHECKLIST_USER_ID, CHECKLIST_TITLE},
-                    CHECKLIST_ID + "=?" + " AND " + CHECKLIST_STATUS + "!= 0 ",
+                    CHECKLIST_USER_ID + "=?" + " AND " + CHECKLIST_STATUS + "> 0 ",
                     new String[]{String.valueOf(userId)}, null, null, null, null);
             if (cursor != null)
                 cursor.moveToFirst();
@@ -765,7 +765,7 @@ public class DbHelper extends SQLiteOpenHelper {
             Cursor cursor = db.query(CHECKLIST_DETAIL_TABLE_NAME, new String[]{CHECKLIST_DETAIL_ID,
                             CHECKLIST_DETAIL_PASSWORD, CHECKLIST_DETAIL_CONTENT, CHECKLIST_DETAIL_CREATED,
                             CHECKLIST_DETAIL_LAST_MODIFIED, CHECKLIST_DETAIL_STATUS, CHECKLIST_DETAIL_CHECKLIST_ID, CHECKLIST_DETAIL_DATE_REMOVE},
-                    CHECKLIST_DETAIL_CHECKLIST_ID + "=?" + " AND " + CHECKLIST_DETAIL_STATUS + "!= 0 ",
+                    CHECKLIST_DETAIL_CHECKLIST_ID + "=?" + " AND " + CHECKLIST_DETAIL_STATUS + "> 0 ",
                     new String[]{String.valueOf(checklist)}, null, null, null, null);
             if (cursor != null)
                 cursor.moveToFirst();
