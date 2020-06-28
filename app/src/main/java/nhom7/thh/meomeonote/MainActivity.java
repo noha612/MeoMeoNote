@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         fabChecklist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this, NoteDetailActivity.class), 0);
+                startActivityForResult(new Intent(MainActivity.this, ChecklistActivity.class), 0);
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

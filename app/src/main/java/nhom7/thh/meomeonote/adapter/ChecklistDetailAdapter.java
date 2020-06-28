@@ -43,7 +43,7 @@ public class ChecklistDetailAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater = activity.getLayoutInflater();
-        convertView = layoutInflater.inflate(R.layout.list_view_checklist, null);
+        convertView = layoutInflater.inflate(R.layout.list_view_checklist_detail, null);
         TextView content = convertView.findViewById(R.id.checklistContent);
         content.setText(checklistDetailList.get(position).getContent());
         content.setTextColor(Color.BLACK);

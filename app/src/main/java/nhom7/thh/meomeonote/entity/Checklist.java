@@ -1,25 +1,35 @@
 package nhom7.thh.meomeonote.entity;
 
-public class Checklist {
+import java.io.Serializable;
+
+public class Checklist implements Serializable {
     private int id;
     private String password;
+    private String title;
     private String created;
     private String last_modified;
     private int status;
     private int user_id;
-    private String date_remove;
 
-    public Checklist(int id, String password, String created, String last_modified, int status, int user_id, String date_remove) {
+    public Checklist(int id, String password, String created, String last_modified, int status, int user_id, String title) {
         this.id = id;
         this.password = password;
+        this.title = title;
         this.created = created;
         this.last_modified = last_modified;
         this.status = status;
         this.user_id = user_id;
-        this.date_remove = date_remove;
     }
 
     public Checklist() {
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getId() {
@@ -70,11 +80,5 @@ public class Checklist {
         this.user_id = user_id;
     }
 
-    public String getDate_remove() {
-        return date_remove;
-    }
 
-    public void setDate_remove(String date_remove) {
-        this.date_remove = date_remove;
-    }
 }

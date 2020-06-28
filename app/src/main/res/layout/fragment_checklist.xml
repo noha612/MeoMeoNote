@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background2"
     android:orientation="vertical"
-    tools:context=".ui.about.AboutFragment">
+    tools:context=".ui.checklist.ChecklistFragment">
 
     <LinearLayout
         android:layout_width="422dp"
@@ -20,12 +20,5 @@
             android:divider="@null"
             android:dividerHeight="0dp" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/addChecklistBtn"
-        android:layout_width="50dp"
-        android:layout_height="55dp"
-        android:background="@drawable/add_checklist_24"
-        android:gravity="right" />
 
 </LinearLayout>

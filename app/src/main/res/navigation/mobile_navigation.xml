@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/nav_checklist"
-        android:name="nhom7.thh.meomeonote.ui.checklistDetail.ChecklistFragment"
+        android:name="nhom7.thh.meomeonote.ui.checklist.ChecklistFragment"
         android:label="@string/menu_checklist"
         tools:layout="@layout/fragment_checklist" />
 
