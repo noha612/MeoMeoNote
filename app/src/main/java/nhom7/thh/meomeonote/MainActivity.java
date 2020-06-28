@@ -26,8 +26,8 @@ import nhom7.thh.meomeonote.util.BaseUtil;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AppBarConfiguration mAppBarConfiguration;
     boolean flag;
+    private AppBarConfiguration mAppBarConfiguration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 c.setUser_id(9999);
                 c.setStatus(1);
                 c.setCreated(BaseUtil.getCurrentTime());
+                c.setLast_modified(BaseUtil.getCurrentTime());
                 int checklistId = (int) new DbHelper(getApplicationContext()).addChecklist(c);
                 Intent intent = new Intent(MainActivity.this, ChecklistActivity.class);
                 intent.putExtra("checklistId", checklistId);
@@ -116,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                startActivityForResult(new Intent(this,Sync.class),0);
+                startActivityForResult(new Intent(this, Sync.class), 0);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

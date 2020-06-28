@@ -45,8 +45,7 @@ public class CatsFragment extends Fragment {
         for (Cat i : allCats) {
             if (i.getStatus() == 1) {
                 avts.add(BaseUtil.getIdResource(getActivity(), "cat_avt_" + i.getCatShortName(), "drawable", getActivity().getPackageName()));
-            }
-            else{
+            } else {
                 avts.add(R.drawable.notowned);
             }
         }
@@ -60,7 +59,7 @@ public class CatsFragment extends Fragment {
                 View view1 = layoutInflater.inflate(R.layout.gridview_cat_info, null);
                 ImageView catAlbum = view1.findViewById(R.id.cat_album);
                 TextView catName = view1.findViewById(R.id.cat_name);
-                if(allCats.get(position).getStatus()==1) {
+                if (allCats.get(position).getStatus() == 1) {
                     int temp = BaseUtil.getIdResource(getActivity(), "album_" + allCats.get(position).getCatShortName(), "drawable", getActivity().getPackageName());
                     catAlbum.setImageResource(temp);
                     catName.setText(allCats.get(position).getCatname());

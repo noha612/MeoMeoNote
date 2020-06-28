@@ -46,7 +46,7 @@ public class ChecklistDetailAdapter extends BaseAdapter {
         LayoutInflater layoutInflater = activity.getLayoutInflater();
         convertView = layoutInflater.inflate(R.layout.list_view_checklist_detail, null);
         TextView content = convertView.findViewById(R.id.checklistContent);
-        String contentText=checklistDetailList.get(position).getContent()==null?"null":checklistDetailList.get(position).getContent();
+        String contentText = checklistDetailList.get(position).getContent() == null ? "null" : checklistDetailList.get(position).getContent();
         content.setText(contentText);
         content.setTextColor(Color.BLACK);
         TextView created = convertView.findViewById(R.id.checklistDatecreated);

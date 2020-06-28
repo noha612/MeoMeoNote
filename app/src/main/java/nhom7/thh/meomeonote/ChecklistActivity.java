@@ -23,6 +23,7 @@ import nhom7.thh.meomeonote.util.BaseUtil;
 
 public class ChecklistActivity extends AppCompatActivity {
     Button addChecklistDetail;
+    Button back;
     ListView listViewChecklistDetail;
     EditText editText;
     Checklist c;
@@ -37,13 +38,12 @@ public class ChecklistActivity extends AppCompatActivity {
         addChecklistDetail = findViewById(R.id.btnSaveChecklistActivity);
         listViewChecklistDetail = findViewById(R.id.listviewChecklistActivity);
         editText = findViewById(R.id.titleChecklistActivity);
+        back = findViewById(R.id.btn_back_checklist);
         dbHelper = new DbHelper(ChecklistActivity.this);
         Intent intent = getIntent();
         c = (Checklist) intent.getSerializableExtra("checklist");
         checklistId = intent.getIntExtra("checklistId", -1);
-        if (checklistId >= 0) {
-            editText.setText("Fill content checklist here");
-        } else {
+        if (checklistId < 0) {
             checklistId = c.getId();
             editText.setText(c.getTitle());
         }
@@ -92,24 +92,28 @@ public class ChecklistActivity extends AppCompatActivity {
             }
         });
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Checklist c = dbHelper.getChecklistById(checklistId);
+                if (!editText.getText().toString().trim().equals("")) {
+                    dbHelper = new DbHelper(ChecklistActivity.this);
+                    c.setStatus(1);
+                    c.setLast_modified(BaseUtil.getCurrentTime());
+                    c.setTitle(editText.getText().toString());
+                    dbHelper.updateChecklist(c);
+                } else {
+                    dbHelper.deleteChecklist(c);
+                }
+                finish();
+            }
+        });
+
     }
 
     public void reloadDB() {
         final List<ChecklistDetail> checklistDetailList = dbHelper.getChecklistDetailByChecklistId(checklistId);
         checklistDetailAdapter = new ChecklistDetailAdapter(checklistDetailList, this);
         listViewChecklistDetail.setAdapter(checklistDetailAdapter);
-    }
-
-
-    @Override
-    protected void onPause() {
-        editText = findViewById(R.id.titleChecklistActivity);
-        dbHelper = new DbHelper(this);
-        Checklist c = dbHelper.getChecklistById(checklistId);
-        c.setStatus(1);
-        c.setLast_modified(BaseUtil.getCurrentTime());
-        c.setTitle(editText.getText().toString());
-        dbHelper.updateChecklist(c);
-        super.onPause();
     }
 }

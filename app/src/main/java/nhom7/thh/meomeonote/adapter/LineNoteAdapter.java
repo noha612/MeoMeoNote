@@ -59,8 +59,7 @@ public class LineNoteAdapter extends BaseAdapter {
         catAvt.setImageResource(lineNotes.get(position).getCatAvt());
         reminderEnable.setVisibility(View.INVISIBLE);
         if (lineNotes.get(position).getTimer() != null
-                && Calendar.getInstance().getTime().compareTo(BaseUtil.StringTimeToDate(lineNotes.get(position).getTimer())) <= 0)
-        {
+                && Calendar.getInstance().getTime().compareTo(BaseUtil.StringTimeToDate(lineNotes.get(position).getTimer())) <= 0) {
             reminderEnable.setVisibility(View.VISIBLE);
         }
 

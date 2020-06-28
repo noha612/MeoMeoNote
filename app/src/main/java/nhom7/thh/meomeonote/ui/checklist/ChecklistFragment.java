@@ -28,6 +28,10 @@ import nhom7.thh.meomeonote.util.BaseUtil;
 
 public class ChecklistFragment extends Fragment {
 
+    View root;
+    ListView listView;
+    DbHelper dbHelper;
+    List<Checklist> checklists;
     //    DbHelper dbHelper;
 //    List<ChecklistDetail> checklistDetails;
 //    ListView listChecklist;
@@ -35,10 +39,6 @@ public class ChecklistFragment extends Fragment {
 //    Button button;
 //    ChecklistDetailAdapter checklistDetailAdapter;
     private ChecklistViewModel checklistViewModel;
-    View root;
-    ListView listView;
-    DbHelper dbHelper;
-    List<Checklist> checklists;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -91,7 +91,6 @@ public class ChecklistFragment extends Fragment {
         });
         return root;
     }
-
 
 
     @Override

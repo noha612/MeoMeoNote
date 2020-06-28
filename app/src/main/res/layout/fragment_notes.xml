@@ -20,16 +20,16 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_marginTop="5dp"
         android:layout_marginRight="5dp"
-        android:background="@drawable/notowned"
-        android:layout_alignParentRight="true" />
+        android:background="@drawable/notowned" />
 
     <ListView
-        android:layout_below="@+id/note_filter"
-        android:layout_width="match_parent"
         android:id="@+id/list_notes"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/note_filter"
         android:divider="@null"
         android:dividerHeight="0dp"
         app:layout_constraintEnd_toEndOf="parent"

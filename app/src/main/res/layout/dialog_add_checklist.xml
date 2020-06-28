@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/dialog1"
     android:orientation="vertical">
 
     <TextView
@@ -10,7 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="Add checklistDetail" />
+        android:text="Add Item"
+        android:visibility="gone" />
 
     <EditText
         android:id="@+id/add_checklist_edt"
@@ -20,8 +22,10 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
         android:ems="10"
+        android:fontFamily="@font/patrick_hand"
+        android:hint="Add Item"
         android:inputType="textPersonName"
-        android:text="Content" />
+        android:textSize="24sp" />
 
     <LinearLayout
         android:layout_width="120dp"
@@ -35,7 +39,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:drawable/ic_menu_add" />
+            android:background="?attr/dividerVertical"
+            android:foreground="@drawable/ic_baseline_add_24" />
 
         <TextView
             android:layout_width="50dp"
@@ -47,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:drawable/ic_menu_close_clear_cancel" />
+            android:background="?attr/dividerHorizontal"
+            android:foreground="@drawable/ic_baseline_close_24" />
     </LinearLayout>
 </LinearLayout>
