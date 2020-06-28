@@ -18,6 +18,13 @@
             android:text="TextView" />
 
         <TextView
+            android:id="@+id/numberChecklistUndone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TextView" />
+
+        <TextView
             android:id="@+id/checklist_created"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

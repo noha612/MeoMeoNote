@@ -76,7 +76,7 @@ public class ChecklistFragment extends Fragment {
                 Checklist c = checklists.get(position);
                 int idChecklist = c.getId();
                 c.setStatus(0);
-                List<ChecklistDetail> checklistDetails = dbHelper.getChecklistDetailByChecklist(idChecklist);
+                List<ChecklistDetail> checklistDetails = dbHelper.getChecklistDetailByChecklistId(idChecklist);
                 for (ChecklistDetail dt : checklistDetails) {
                     dt.setStatus(0);
                     dt.setDateRemove(BaseUtil.getCurrentTime());
