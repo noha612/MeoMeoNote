@@ -32,9 +32,9 @@
         android:layout_marginBottom="145dp"
         android:fontFamily="@font/patrick_hand"
         android:text="New note"
+        android:visibility="invisible"
         app:backgroundTint="@color/ic_launcher_background"
         app:fabSize="mini"
-        android:visibility="invisible"
         app:srcCompat="@drawable/memento_willie" />
 
 
@@ -45,9 +45,9 @@
         android:layout_gravity="bottom|end"
         android:layout_marginRight="25dp"
         android:layout_marginBottom="135dp"
+        android:visibility="gone"
         app:backgroundTint="@color/ic_launcher_background"
         app:fabSize="mini"
-        android:visibility="gone"
         app:srcCompat="@drawable/memento_willie" />
 
     <TextView
@@ -59,9 +59,9 @@
         android:layout_marginBottom="95dp"
         android:fontFamily="@font/patrick_hand"
         android:text="New checklist"
+        android:visibility="invisible"
         app:backgroundTint="@color/ic_launcher_background"
         app:fabSize="mini"
-        android:visibility="invisible"
         app:srcCompat="@drawable/memento_princess" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -71,9 +71,9 @@
         android:layout_gravity="bottom|end"
         android:layout_marginRight="25dp"
         android:layout_marginBottom="85dp"
+        android:visibility="gone"
         app:backgroundTint="@color/ic_launcher_background"
         app:fabSize="mini"
-        android:visibility="gone"
         app:srcCompat="@drawable/memento_princess" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

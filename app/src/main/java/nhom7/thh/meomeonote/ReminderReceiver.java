@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import nhom7.thh.meomeonote.entity.Note;
-
 public class ReminderReceiver extends BroadcastReceiver {
 
     @Override

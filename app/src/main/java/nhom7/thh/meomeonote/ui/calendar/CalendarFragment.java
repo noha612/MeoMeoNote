@@ -34,10 +34,10 @@ public class CalendarFragment extends Fragment {
         String month = (currentDate.getMonth() + 1) + "/" + currentDate.getYear();
         DbHelper db = new DbHelper(getContext());
         final HashSet<CalendarDay> setDayNote = db.getNodeByUserIdAndMonth(9999, month);
-        materialCalendarView.addDecorator(new CalendarDecorator(Color.RED, setDayNote));
+        materialCalendarView.addDecorator(new CalendarDecorator(getResources().getColor(R.color.calendar_note), setDayNote));
 
         HashSet<CalendarDay> setDaysChecklist = db.getChecklistByUserIdAndMonth(9999, month);
-        materialCalendarView.addDecorator(new CalendarDecorator(Color.GREEN, setDaysChecklist));
+        materialCalendarView.addDecorator(new CalendarDecorator(getResources().getColor(R.color.calendar_checklist), setDaysChecklist));
 
         HashSet<String> set1 = new HashSet<>();
         for (CalendarDay c : setDaysChecklist) {
@@ -49,7 +49,7 @@ public class CalendarFragment extends Fragment {
                 calendarDayHashSet.add(calendarDay);
             }
         }
-        materialCalendarView.addDecorator(new CalendarDecorator(Color.YELLOW, calendarDayHashSet));
+        materialCalendarView.addDecorator(new CalendarDecorator(getResources().getColor(R.color.calendar_both), calendarDayHashSet));
 
         materialCalendarView.setOnDateLongClickListener(new OnDateLongClickListener() {
             @Override
@@ -68,10 +68,10 @@ public class CalendarFragment extends Fragment {
                 String month = (date.getMonth() + 1) + "/" + date.getYear();
                 DbHelper db = new DbHelper(getContext());
                 HashSet<CalendarDay> setDaysNote = db.getNodeByUserIdAndMonth(9999, month);
-                materialCalendarView.addDecorator(new CalendarDecorator(Color.RED, setDaysNote));
+                materialCalendarView.addDecorator(new CalendarDecorator(getResources().getColor(R.color.calendar_note), setDaysNote));
 
                 HashSet<CalendarDay> setDaysChecklist = db.getChecklistByUserIdAndMonth(9999, month);
-                materialCalendarView.addDecorator(new CalendarDecorator(Color.GREEN, setDaysChecklist));
+                materialCalendarView.addDecorator(new CalendarDecorator(getResources().getColor(R.color.calendar_checklist), setDaysChecklist));
 
                 HashSet<String> set1 = new HashSet<>();
                 for (CalendarDay c : setDaysChecklist) {
@@ -83,7 +83,7 @@ public class CalendarFragment extends Fragment {
                         calendarDayHashSet.add(calendarDay);
                     }
                 }
-                materialCalendarView.addDecorator(new CalendarDecorator(Color.YELLOW, calendarDayHashSet));
+                materialCalendarView.addDecorator(new CalendarDecorator(getResources().getColor(R.color.calendar_both), calendarDayHashSet));
             }
         });
         return root;

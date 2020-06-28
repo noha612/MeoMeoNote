@@ -36,7 +36,7 @@ public class ReminderService extends Service {
 //        Toast.makeText(getApplicationContext(), "hihihihi", Toast.LENGTH_LONG).show();
         Log.v("ac", "ab");
         int id = intent.getIntExtra("id", -1);
-        Log.v("service", id+"");
+        Log.v("service", id + "");
         DbHelper dbHelper = new DbHelper(this);
         Note note = dbHelper.getNoteById(id);
         NotificationCompat.Builder mBuilder =
@@ -58,7 +58,7 @@ public class ReminderService extends Service {
         }
 
         Intent resultIntent = new Intent(this, NoteDetailActivity.class);
-        resultIntent.putExtra("id",note.getId());
+        resultIntent.putExtra("id", note.getId());
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntentWithParentStack(resultIntent);
         PendingIntent resultPendingIntent =

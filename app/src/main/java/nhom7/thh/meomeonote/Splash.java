@@ -8,7 +8,6 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 import nhom7.thh.meomeonote.dbhelper.DbHelper;
-import nhom7.thh.meomeonote.model.Cat;
 
 public class Splash extends AppCompatActivity {
 

@@ -1,37 +1,43 @@
 package nhom7.thh.meomeonote.entity;
 
-public class Checklist {
+import java.io.Serializable;
+
+public class Checklist implements Serializable {
     private int id;
     private String password;
     private String title;
-    private String content;
     private String created;
     private String last_modified;
     private int status;
     private int user_id;
-    private String dateRemove;
 
-    public Checklist(int id, String password,
-                     String content, String created, String last_modified, int status, int user_id, String dateRemove) {
+    public Checklist(int id, String password, String created, String last_modified, int status, int user_id, String title) {
         this.id = id;
         this.password = password;
-        this.content = content;
+        this.title = title;
         this.created = created;
         this.last_modified = last_modified;
         this.status = status;
         this.user_id = user_id;
-        this.dateRemove = dateRemove;
     }
 
     public Checklist() {
     }
 
-    public String getDateRemove() {
-        return dateRemove;
+    public String getTitle() {
+        return title;
     }
 
-    public void setDateRemove(String dateRemove) {
-        this.dateRemove = dateRemove;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getPassword() {
@@ -40,14 +46,6 @@ public class Checklist {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public String getCreated() {
@@ -66,14 +64,6 @@ public class Checklist {
         this.last_modified = last_modified;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getStatus() {
         return status;
     }
@@ -89,4 +79,6 @@ public class Checklist {
     public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
+
+
 }

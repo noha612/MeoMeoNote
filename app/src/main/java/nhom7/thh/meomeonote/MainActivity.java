@@ -20,10 +20,14 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import nhom7.thh.meomeonote.dbhelper.DbHelper;
+import nhom7.thh.meomeonote.entity.Checklist;
+import nhom7.thh.meomeonote.util.BaseUtil;
+
 public class MainActivity extends AppCompatActivity {
 
-    private AppBarConfiguration mAppBarConfiguration;
     boolean flag;
+    private AppBarConfiguration mAppBarConfiguration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +82,15 @@ public class MainActivity extends AppCompatActivity {
         fabChecklist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this, NoteDetailActivity.class), 0);
+                Checklist c = new Checklist();
+                c.setUser_id(9999);
+                c.setStatus(1);
+                c.setCreated(BaseUtil.getCurrentTime());
+                c.setLast_modified(BaseUtil.getCurrentTime());
+                int checklistId = (int) new DbHelper(getApplicationContext()).addChecklist(c);
+                Intent intent = new Intent(MainActivity.this, ChecklistActivity.class);
+                intent.putExtra("checklistId", checklistId);
+                startActivityForResult(intent, 0);
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -105,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                startActivityForResult(new Intent(this,Sync.class),0);
+                startActivityForResult(new Intent(this, Sync.class), 0);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
